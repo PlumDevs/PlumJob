@@ -32,9 +32,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### Languages to exclude in stats ###
-*.html linguist-vendored
-*.js linguist-vendored
-*.xml linguist-vendored
-*.css linguist-vendored
