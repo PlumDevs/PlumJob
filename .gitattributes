@@ -1,6 +1,7 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
 
+### Exclude unnecessary languages from statistics ###
 *.html linguist-vendored=false
 *.js linguist-vendored=false
 *.ts linguist-vendored=false
