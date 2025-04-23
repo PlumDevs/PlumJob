@@ -74,5 +74,8 @@ public class MainLayout extends AppLayout {
 
         //TODO: pageTitle from @PageTitle
 
+        //TODO: (Stage 2 task) Place adds in the MainLayout (here) and in separate file contain logic to make them work
+
+        //TODO: This is how you do a todo
     }
 }
