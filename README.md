@@ -17,12 +17,11 @@
 ### Instalation -->
 
 ## Contributors
-👩🏻‍💻[Kinga Żmuda](https://github.com/kingazm) <br>
-👨🏼‍💻[Dominik Szymczyk](https://github.com/tytusszymczyk) <br>
-👩🏼‍💻[Martyna Cios](https://github.com/cssma) <br>
-👨🏻‍💻[Wojciech Popiel](https://github.com/PopielWojciech) <br>
-👨🏻‍💻[Piotr Szulej](https://github.com/PiterParker32)
-
+👩🏻‍💻[Kinga Żmuda](https://github.com/kingazm) - Project Manager and Software Engineer <br>
+👨🏼‍💻[Dominik Szymczyk](https://github.com/tytusszymczyk) - Tester <br>
+👩🏼‍💻[Martyna Cios](https://github.com/cssma) - Software Engineer <br>
+👨🏻‍💻[Wojciech Popiel](https://github.com/PopielWojciech) - Database and Documentation Engineer <br>
+👨🏻‍💻[Piotr Szulej](https://github.com/PiterParker32) - Software Engineer
 <!-- ## Contact
 
 ### Acknowledgements -->
