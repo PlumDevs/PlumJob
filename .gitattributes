@@ -1,9 +1,4 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
 
-
-### Languages to exclude in stats ###
-*.html linguist-vendored
-*.js linguist-vendored
-*.xml linguist-vendored
-*.css linguist-vendored
+*.* linguist-language=Java
