@@ -21,7 +21,7 @@
 👨🏼‍💻[Dominik Szymczyk](https://github.com/tytusszymczyk) <br>
 👩🏼‍💻[Martyna Cios](https://github.com/cssma) <br>
 👨🏻‍💻[Wojciech Popiel](https://github.com/PopielWojciech) <br>
-👨🏻‍💻[Piotr Szulej]()
+👨🏻‍💻[Piotr Szulej](https://github.com/PiterParker32)
 
 <!-- ## Contact
 
