@@ -3,6 +3,7 @@ package com.plumdevs.plumjob.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+@Controller
 public class CvTemplatesController {
     @GetMapping("template1")
     public String GetTemplate1() {
