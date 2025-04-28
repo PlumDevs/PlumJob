@@ -7,7 +7,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @PageTitle("Login")
-@Route(value="login")
+@Route(value="login", layout = MainLayout.class)
 public class LoginView extends VerticalLayout {
     LoginView() {
         System.out.println("Login");
