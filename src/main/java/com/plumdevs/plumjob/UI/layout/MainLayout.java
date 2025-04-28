@@ -1,35 +1,33 @@
 package com.plumdevs.plumjob.UI.layout;
 
 import com.plumdevs.plumjob.UI.*;
-import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.*;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.Scroller;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.Layout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
-@CssImport("./themes/plum-theme-light/styles.css")
 @Layout
 public class MainLayout extends AppLayout {
 
     public MainLayout() {
 
-        //Header
         HorizontalLayout header = new HorizontalLayout();
         header.setWidthFull();
         header.setPadding(true);
         header.setAlignItems(FlexComponent.Alignment.CENTER);
         header.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
-        Image logo = new Image("img/logo.png", "Plum Job logo");
-        logo.setWidth(160, Unit.PIXELS);
-        logo.setHeight(60, Unit.PIXELS);
-        header.add(logo);
+        header.add(new H1("Plum Job"));
 
         //Navigation on the side
         SideNav nav = new SideNav();
@@ -41,7 +39,7 @@ public class MainLayout extends AppLayout {
         addToDrawer(scroller);
         addToNavbar(toggle, header);
 
-        // #### navigation items ####
+        // #### navigation links ####
         SideNavItem homeLink = new SideNavItem("Home",
                 HomeView.class);
         nav.addItem(homeLink);
@@ -80,15 +78,6 @@ public class MainLayout extends AppLayout {
 
 
         //TODO: This is how you do a todo
-
-        HorizontalLayout footer = new HorizontalLayout();
-
-        footer.setWidthFull();
-        footer.setPadding(true);
-        footer.setAlignItems(FlexComponent.Alignment.CENTER);
-        footer.add(new Paragraph("© Plum Job"));
-        footer.addClassName("footer");
-        addToDrawer(footer);
 
     }
 }
