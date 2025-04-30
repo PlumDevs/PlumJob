@@ -24,24 +24,27 @@
             margin: 10mm auto;
             width: 210mm;
             color: #000;
+        //border: 2px solid black;
         }
         input, textarea, div[contenteditable="true"] {
             font-family: 'Cormorant Garamond', serif;
         }
 
         .cv-container {
-            width: 21cm;
+            width: 100%;
             min-height: 29.7cm;
-            max-width: 900px;
-            margin: 2rem auto;
+            max-width: 100%;
+            margin: 1rem auto;
             background-color: #fff;
-            padding: 2rem;
+            padding: 1.5rem;
+            box-sizing: border-box;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
         h1 {
+            margin-top: 0;
             text-align: center;
-            margin-bottom: 0.1rem;
+            margin-bottom: 1px;
         }
         .contact-wrapper {
             display: flex;
@@ -93,6 +96,9 @@
             margin-bottom: 15px;
             color: #666;
         }
+        h2 {
+            margin-bottom: 0;
+        }
         .buttons {
             display: flex;
             flex-wrap: wrap;
@@ -115,7 +121,7 @@
             transform: translateY(-2px);
         }
         .done-btn {
-            background-color: #28a745;
+            background-color: #730D3F;
             color: white;
             border: none;
             padding: 8px 20px;
@@ -126,7 +132,7 @@
             transition: background-color 0.3s, transform 0.3s;
         }
         .done-btn:hover {
-            background-color: #218838;
+            background-color: #730D3F;
             transform: translateY(-2px);
         }
         input[type="text"], input[type="email"] {
@@ -192,7 +198,7 @@
         .custom-li::before {
             content: "◦";
             position: absolute;
-            top: 0;
+            top: -3px;
             left: -15px;
             font-size: 20px;
         }
@@ -200,7 +206,7 @@
             cursor: pointer;
             font-weight: bold;
             margin-left: 10px;
-            color: #007bff;
+            color: #730D3F;
         }
 
         .delete-button {
@@ -217,7 +223,7 @@
         }
 
         .add-button:hover {
-            color: #0056b3;  /* Zmiana koloru po najechaniu na przycisk + */
+            color: #730D3F;
         }
         .language-level {
             display: inline-flex;
@@ -231,7 +237,26 @@
             user-select: none;
         }
         .section {
-            margin-bottom: 1rem;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        textarea {
+            margin: 0;
+        }
+        .generate-pdf-btn {
+            background-color: #730D3F;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .generate-pdf-btn:hover {
+            background-color: #730D3F;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -314,11 +339,90 @@
         </h2>
         <div id="rodo-section"></div>
     </div>
+    <button id="toggle-edit" class="done-btn">Finished</button>
+    <button id="generate-pdf-btn" class="generate-pdf-btn" onclick="generatePDF(event)" style="display:none;">Generate PDF</button>
 </div>
-<button id="toggle-edit" class="done-btn">Finished</button>
-<button id="generate-pdf-btn" type="button" onclick="generatePDF()" style="display: none;">Generate PDF</button>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 
 <script>
+
+    let originalInputs = [];
+    function replaceInputsWithText() {
+        originalInputs = [];
+
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach((input, index) => {
+            const span = document.createElement('span');
+            span.textContent = input.value || input.placeholder;
+            span.style.cssText = input.style.cssText;
+            span.style.border = 'none';
+            span.style.background = 'transparent';
+            span.style.display = 'inline-block';
+            span.style.width = input.style.width;
+            span.style.marginTop = 0;
+
+            if(index !== inputs.length-1){
+                span.style.marginRight = '40px'; // Adjust the value according to your needs
+            }
+
+            originalInputs.push({ input: input, parent: input.parentNode, clone: span });
+            input.parentNode.replaceChild(span, input);
+        });
+    }
+
+    function restoreInputs() {
+        originalInputs.forEach(item => {
+            item.parent.replaceChild(item.input, item.clone);
+        });
+    }
+
+    function generatePDF(event) {
+        event.preventDefault();
+
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(btn => btn.style.display = 'none');
+
+        replaceInputsWithText();
+
+        const cvContainer = document.querySelector('.cv-container');
+
+        const opt = {
+            margin: [0, 0, 0, 0],
+            filename: 'CV.pdf',
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 4, useCORS: true, letterRendering: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            enableLinks: true,
+            pagebreak: { mode: ['css', 'legacy'] }
+        };
+
+        html2pdf().from(cvContainer).set(opt).save()
+            .then(() => {
+                restoreInputs();
+                buttons.forEach(btn => btn.style.display = 'inline-block');
+            })
+            .catch((error) => {
+                console.error('Błąd podczas generowania PDF:', error);
+                restoreInputs();
+                buttons.forEach(btn => btn.style.display = 'inline-block');
+            });
+    }
+
+    function replaceTextWithInputs() {
+        if (!originalInputs || originalInputs.length === 0) {
+            return;
+        }
+
+        originalInputs.forEach(entry => {
+            entry.parent.replaceChild(entry.input, entry.clone);
+        });
+
+        originalInputs = [];
+    }
+
     function autoGrow(id) {
         const element = document.getElementById(id);
         if (element) {
@@ -341,14 +445,14 @@
         <div style="display: flex; flex-direction: column; justify-content: flex-start;">
             <div style="display: flex; justify-content: space-between;">
                 <div style="font-size:17px; font-weight:bold;">
-                    <textarea style="border:none; width: 100%; height: 15px; font-size:17px; font-weight:bold;" placeholder="Position"></textarea>
+                    <textarea style="border:none; width: 100%; height: 17px; font-size:17px; font-weight:bold; margin-bottom: 0;" placeholder="Position"></textarea>
                 </div>
                 <div>
-                    <textarea style="border:none; width: 100%; height: 15px;" placeholder="Period"></textarea>
+                    <textarea style="border:none; width: 100%; height: 17px;" placeholder="Period"></textarea>
                 </div>
             </div>
             <div style="margin-top:4px;">
-              <textarea style="border:none; width: 100%; height: 15px;" placeholder="Company"></textarea>
+              <textarea style="border:none; width: 100%; height: 15px;font-size:15px;" placeholder="Company"></textarea>
             </div>
         </div>
         <ul>
@@ -362,10 +466,10 @@
         div.className = "dynamic-entry";
         div.innerHTML = `
     <div style="display: flex; align-items: center;">
-        <textarea style="width: 100%; height: 15px; border:none; font-size:17px; font-weight:bold;" placeholder="Project name"></textarea>
+        <textarea style="width: 100%; height: 17px; border:none; font-size:17px; font-weight:bold;" placeholder="Project name"></textarea>
     </div>
     <ul>
-         <li class="custom-li" style="margin-top:4px;"><textarea style="border:none; width: 100%; height: 18px;" placeholder="Project link (github.com/...)"></textarea></li>
+         <li class="custom-li" style="margin-top:0;"><textarea style="border:none; width: 100%; height: 15px;  font-size:15px;" placeholder="Project link (github.com/...)"></textarea></li>
          <li class="custom-li"><textarea style="border:none; width: 100%; height: 34px;" placeholder="Project feature or functionality"></textarea></li>
     </ul>`;
         document.getElementById("projects-list").appendChild(div);
@@ -490,20 +594,20 @@
         div.className = "dynamic-entry";
         div.innerHTML = `
     <div style="display: flex; flex-direction: column; justify-content: flex-start;">
-        <div style="display: flex; justify-content: space-between;">
-          <div style="font-size:17px; font-weight:bold;">
-            <textarea style="border:none; width: 100%; height: 15px; font-size:17px; font-weight:bold;" placeholder="University name"></textarea>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0;">
+          <div style="font-size:17px; font-weight:bold; margin-bottom: 0;">
+            <textarea style="border:none; width: 100%; height: 17px; font-size:17px; font-weight:bold; margin-bottom: 0;" placeholder="University name"></textarea>
           </div>
-          <div>
-            <textarea style="border:none; width: 100%; height: 15px;" placeholder="Years attended"></textarea>
+          <div style="margin-bottom: 0;">
+            <textarea style="border:none; width: 100%; height: 17px; margin-bottom: 0;" placeholder="Years attended"></textarea>
           </div>
         </div>
-        <div style="margin-top:4px;">
-            <textarea style="border:none; width: 100%; height: 15px;" placeholder="Field of study"></textarea>
+        <div style="margin:0;">
+          <textarea style="border:none; width: 100%; height: 15px; font-size:15px; margin:0;" placeholder="Field of study"></textarea>
         </div>
     </div>
-    <ul>
-        <li class="custom-li"><textarea style="border:none; width: 100%; height: 34px;" placeholder="Subject, project, or activity"></textarea></li>
+    <ul style="margin:0;">
+        <li class="custom-li"><textarea style="border:none; width: 100%; height: 34px; margin:0;" placeholder="Subject, project, or activity"></textarea></li>
     </ul>`;
         document.getElementById("education-list").appendChild(div);
     }
@@ -662,6 +766,7 @@
         }
     });
 
+
     window.onload = () => {
         addExperience();
         addProject();
@@ -670,6 +775,7 @@
         addStrength();
         addLanguage();
     };
+
 </script>
 </body>
 </html>
