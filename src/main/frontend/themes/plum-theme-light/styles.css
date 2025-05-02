@@ -1,9 +1,9 @@
-.plum-button, .light-button:hover {
+.plum-button, .light-button:hover, vaadin-login-form vaadin-button {
     background-color: #730D3F;
     color: #FFFFFF;
 }
 
-.light-button, .plum-button:hover {
+.plum-button:hover, .light-button, vaadin-login-form vaadin-button:hover {
     background-color: #FAFAFA;
     color: #730D3F;
 }
@@ -23,5 +23,27 @@ vaadin-side-nav-item[current]::part(link) {
 
 .footer {
     bottom: 0;
-    color: #730D3F
+    color: #730D3F;
+}
+
+
+.transparent-button, vaadin-login-form-wrapper::part(form-title), vaadin-login-form [slot="label"], vaadin-login-form [slot="forgot-password"], vaadin-login-form-wrapper vaadin-text-field, vaadin-login-form-wrapper vaadin-password-field  {
+    color: #730D3F;
+    background-color: #FFFFFF;
+}
+
+vaadin-login-form-wrapper::part(form-title) {
+    text-align: center;
+}
+
+h2, .plum-text, vaadin-text-field::part(label), vaadin-password-field::part(label), vaadin-email-field::part(label) {
+    color: #730D3F;
+}
+
+.center-text {
+    text-align: center;
+}
+
+vaadin-avatar {
+    color: #730D3F;
 }

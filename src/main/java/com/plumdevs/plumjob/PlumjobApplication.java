@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 Compile and run this to run the app
 */
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class }) //delete the exclude and configure application properties when database is ready
+@SpringBootApplication()
 public class PlumjobApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PlumjobApplication.class, args);

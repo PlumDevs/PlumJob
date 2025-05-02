@@ -1,9 +1,11 @@
 package com.plumdevs.plumjob.UI.layout;
 
 import com.plumdevs.plumjob.UI.*;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -12,13 +14,21 @@ import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.Layout;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 @CssImport("./themes/plum-theme-light/styles.css")
 @Layout
 public class MainLayout extends AppLayout {
 
-    public MainLayout() {
+
+
+    public MainLayout(HttpServletRequest request, HttpServletResponse response) {
 
         //Header
         HorizontalLayout header = new HorizontalLayout();
@@ -42,9 +52,6 @@ public class MainLayout extends AppLayout {
         addToNavbar(toggle, header);
 
         // #### navigation items ####
-        SideNavItem homeLink = new SideNavItem("Home",
-                HomeView.class);
-        nav.addItem(homeLink);
 
         SideNavItem activeLink = new SideNavItem("Active recruitments",
                 ActiveView.class);
@@ -66,9 +73,12 @@ public class MainLayout extends AppLayout {
                 AboutView.class);
         nav.addItem(aboutLink);
 
+        /*
         SideNavItem logoutLink = new SideNavItem("Logout",
                 LogoutView.class);
         nav.addItem(logoutLink);
+
+         */
 
         // #### end navigation links ####
 
@@ -90,5 +100,13 @@ public class MainLayout extends AppLayout {
         footer.addClassName("footer");
         addToDrawer(footer);
 
+        Button logoutButton = new Button("Logout", e -> {
+            new SecurityContextLogoutHandler().logout(request, response, null);
+            getUI().ifPresent(ui -> ui.getPage().setLocation("/logout"));
+        });
+
+        logoutButton.addClassName("transparent-button");
+        header.add(logoutButton);
     }
+
 }

@@ -1,16 +1,43 @@
 package com.plumdevs.plumjob.UI;
 
-import com.plumdevs.plumjob.UI.layout.MainLayout;
-import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.Unit;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-@PageTitle("Login")
-@Route(value="login")
+
+@Route(value = "login", autoLayout = false)
+@AnonymousAllowed
 public class LoginView extends VerticalLayout {
-    LoginView() {
-        System.out.println("Login");
-        add(new Paragraph("Log in to Plum Job"));
+
+    public LoginView() {
+
+        //TODO: reusable component
+        Image logo = new Image("https://raw.githubusercontent.com/PlumDevs/PlumJob/refs/heads/master/src/main/resources/META-INF/resources/img/logo.png", "Plum");
+        logo.setWidth(180, Unit.PIXELS);
+        logo.setHeight(70, Unit.PIXELS);
+        add(logo);
+
+        setSizeFull();
+        setAlignItems(Alignment.CENTER);
+        setJustifyContentMode(JustifyContentMode.CENTER);
+
+
+        LoginForm login = new LoginForm();
+        login.setAction("login");
+        login.setForgotPasswordButtonVisible(false);
+        add(login);
+
+        Button registerButton = new Button("Register");
+        registerButton.addClassName("plum-text");
+
+        RouterLink routerLink = new RouterLink("", RegisterView.class);
+        routerLink.getElement().appendChild(registerButton.getElement());
+        add(routerLink);
     }
 }
