@@ -34,8 +34,12 @@ public class AddPositionView extends VerticalLayout {
         ComboBox status = new ComboBox("Status");
 
         Button submit = new Button("Submit");
+        Button backToActive = new Button("Back");
 
         submit.addClassName("plum-button");
+        backToActive.addClassName("light-button");
+        backToActive.addClickListener(buttonClickEvent -> getUI().ifPresent(ui ->
+                ui.navigate("active")));
 
         position.setWidthFull();
         company.setWidthFull();
@@ -70,6 +74,7 @@ public class AddPositionView extends VerticalLayout {
 
         HorizontalLayout lineOne = new HorizontalLayout(position, company);
         HorizontalLayout lineTwo = new HorizontalLayout(link, status);
+        HorizontalLayout buttons = new HorizontalLayout(backToActive, submit);
         VerticalLayout right = new VerticalLayout();
         VerticalLayout left = new VerticalLayout();
         HorizontalLayout page = new HorizontalLayout();
@@ -85,7 +90,7 @@ public class AddPositionView extends VerticalLayout {
         left.add(title, paragraph);
         left.add(lineOne, lineTwo);
         left.add(description);
-        left.add(submit);
+        left.add(buttons);
 
         right.add(articlePreview); //about where to look for job offers
 
