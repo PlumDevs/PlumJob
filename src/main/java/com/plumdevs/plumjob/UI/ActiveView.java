@@ -37,13 +37,14 @@ public class ActiveView extends VerticalLayout {
         Grid<RecruitmentItem> grid = new Grid(RecruitmentItem.class, false);
         grid.setWidthFull();
 
-        grid.addColumn(RecruitmentItem::getPositon).setHeader("Position");
-        grid.addColumn(RecruitmentItem::getCompany).setHeader("Company");
-        grid.addColumn(RecruitmentItem::getStatus).setHeader("Status");
+        grid.addColumn(RecruitmentItem::getPositon).setHeader("Position").setSortable(true);
+        grid.addColumn(RecruitmentItem::getCompany).setHeader("Company").setSortable(true);
+        grid.addColumn(RecruitmentItem::getStatus).setHeader("Status").setSortable(true);
 
         //grid.addColumn(RecruitmentItem::).setHeader("Date started");
         //grid.addColumn(RecruitmentItem::).setHeader("Last updated");
         //grid.addColumn(RecruitmentItem::).setHeader("Link");
+        // TODO: Item filters, search bar and item details view
 
         //FOR FRONTEND TESTING PURPOSES ONLY
         List<RecruitmentItem> items = new ArrayList<>();
