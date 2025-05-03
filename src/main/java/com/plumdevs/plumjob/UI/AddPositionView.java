@@ -59,6 +59,21 @@ public class AddPositionView extends VerticalLayout {
                 "accepted the offer"
         ));
 
+        /*comboBox.setClassNameGenerator((item) -> {
+            switch (item) {
+                case "Apple":
+                    return "coral";
+                case "Banana":
+                    return "gold";
+                case "Orange":
+                    return "orange";
+                case "Pear":
+                    return "yellowgreen";
+                default:
+                    return "";
+            }
+        });  TODO KOLORKI STATUSÓW*/
+
         Image articlePreview = new Image("https://m.media-amazon.com/images/I/41qW0-s6kSL._AC_UF894,1000_QL80_.jpg", "Where to look for job offers - article preview");
         //articlePreview.setSizeFull();
         articlePreview.setWidth(550, Unit.PIXELS);
