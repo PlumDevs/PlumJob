@@ -58,7 +58,7 @@ public class AddPositionView extends VerticalLayout {
         Image articlePreview = new Image("https://m.media-amazon.com/images/I/41qW0-s6kSL._AC_UF894,1000_QL80_.jpg", "Where to look for job offers - article preview");
         //articlePreview.setSizeFull();
         articlePreview.setWidth(550, Unit.PIXELS);
-        articlePreview.setHeight(45a0, Unit.PIXELS);
+        articlePreview.setHeight(450, Unit.PIXELS);
         //TODO: SWAP FOR REAL DATA ABOUT WHERE TO LOOK FOR JOB OFFERS
         //great to both fill the empty space on the right, and to provide some extra value
         //best if on click guides to the full article or just straight job offer page(s)
