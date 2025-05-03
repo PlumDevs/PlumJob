@@ -36,7 +36,7 @@ vaadin-login-form-wrapper::part(form-title) {
     text-align: center;
 }
 
-h2, .plum-text, vaadin-text-field::part(label), vaadin-password-field::part(label), vaadin-email-field::part(label) {
+h2, .plum-text, vaadin-text-field::part(label), vaadin-password-field::part(label), vaadin-email-field::part(label), vaadin-text-area::part(label), vaadin-combo-box::part(label) {
     color: #730D3F;
 }
 
