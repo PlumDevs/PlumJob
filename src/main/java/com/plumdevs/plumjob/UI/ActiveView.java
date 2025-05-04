@@ -3,18 +3,25 @@ package com.plumdevs.plumjob.UI;
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.entity.RecruitmentItem;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.function.SerializableFunction;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import jakarta.annotation.security.PermitAll;
 
+import java.awt.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @PermitAll
 @PageTitle("Plum Job - Active recruitments")
@@ -41,6 +48,26 @@ public class ActiveView extends VerticalLayout {
         grid.addColumn(RecruitmentItem::getCompany).setHeader("Company").setSortable(true);
         grid.addColumn(RecruitmentItem::getStatus).setHeader("Status").setSortable(true);
 
+
+        grid.setItemDetailsRenderer(new ComponentRenderer<RecruitmentItemDetails, RecruitmentItem>(RecruitmentItemDetails::new, RecruitmentItemDetails::setItem));
+        //grid.setDetailsVisibleOnClick(false); //false for the extra button
+        grid.setDetailsVisibleOnClick(true);
+
+        /*
+        grid.addColumn(
+                new ComponentRenderer<Button, RecruitmentItem>((SerializableFunction<RecruitmentItem, Button>) item -> {
+                    Button toggle = new Button("...");
+                    toggle.addClickListener(event -> {
+                        grid.setDetailsVisible(item, !grid.isDetailsVisible(item));
+                    });
+                    toggle.setClassName("plum-text");
+                    return toggle;
+                })
+        ).setWidth("1rem");
+        //Without that, default: details appear on click on the row
+         */
+
+
         //grid.addColumn(RecruitmentItem::).setHeader("Date started");
         //grid.addColumn(RecruitmentItem::).setHeader("Last updated");
         //grid.addColumn(RecruitmentItem::).setHeader("Link");
@@ -48,9 +75,9 @@ public class ActiveView extends VerticalLayout {
 
         //FOR FRONTEND TESTING PURPOSES ONLY
         List<RecruitmentItem> items = new ArrayList<>();
-        items.add(new RecruitmentItem("Software Engineer", "Google", "Interview scheduled"));
-        items.add(new RecruitmentItem("Site Reliability Engineer", "IBM", "After OA"));
-        items.add(new RecruitmentItem("Software Engineer", "Relativity", "Applied"));
+        items.add(new RecruitmentItem("Software Engineer", "Google", "Interview scheduled", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", LocalDate.of(2025, 1, 3)));
+        items.add(new RecruitmentItem("Site Reliability Engineer", "IBM", "After OA", "Great job", LocalDate.of(2024, 12, 3)));
+        items.add(new RecruitmentItem("Software Engineer", "Relativity", "Applied", "Please hire me", LocalDate.of(2025, 3, 4)));
         items.add(new RecruitmentItem("Backend Developer", "Amazon", "Interview scheduled"));
         items.add(new RecruitmentItem("Frontend Engineer", "Meta", "Applied"));
         items.add(new RecruitmentItem("Data Scientist", "Netflix", "OA received"));
@@ -71,4 +98,6 @@ public class ActiveView extends VerticalLayout {
 
         add(top, grid);
     }
+
 }
+

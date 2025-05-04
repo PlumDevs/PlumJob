@@ -1,3 +1,12 @@
+html, :host { /* default styling colors ovewriting */
+    --lumo-primary-color: #730D3F;
+    --lumo-primary-color-10pct: #ffe8f3;
+}
+
+vaadin-side-nav-item[current]{
+    --lumo-primary-color-10pct: #730D3F;
+}
+
 .plum-button, .light-button:hover, vaadin-login-form vaadin-button {
     background-color: #730D3F;
     color: #FFFFFF;
@@ -46,4 +55,13 @@ h2, .plum-text, vaadin-text-field::part(label), vaadin-password-field::part(labe
 
 vaadin-avatar {
     color: #730D3F;
+}
+
+vaadin-grid::part(selected-row-cell), vaadin-grid::part(header-cell), vaadin-grid::part(header-cell):hover, vaadin-grid::part(details-cell) {
+    --vaadin-grid-cell-background: #FFFFFF;
+    --vaadin-input-field-readonly-border: #FFFFFF;
+}
+
+vaadin-grid::part(row):hover {
+    --vaadin-grid-cell-background: #fcedf5;
 }
