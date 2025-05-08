@@ -1,5 +1,7 @@
 package com.plumdevs.plumjob.UI;
 
+import com.plumdevs.plumjob.repository.UserInfoRepository;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -13,26 +15,19 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.component.button.Button;
-import org.apache.catalina.security.SecurityConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
 @AnonymousAllowed
 @Route(value = "register", autoLayout = false)
 public class RegisterView extends VerticalLayout {
-
     private final JdbcUserDetailsManager userDetailsManager;
+    private final UserService userService;
 
-    public RegisterView(JdbcUserDetailsManager userDetailsManager) {
+    public RegisterView(JdbcUserDetailsManager userDetailsManager, UserService userService) {
         this.userDetailsManager = userDetailsManager;
+        this.userService = userService;
 
         Image logo = new Image("https://raw.githubusercontent.com/PlumDevs/PlumJob/refs/heads/master/src/main/resources/META-INF/resources/img/logo.png", "Plum");
         logo.setWidth(180, Unit.PIXELS);
@@ -70,7 +65,7 @@ public class RegisterView extends VerticalLayout {
                 return;
             }
 
-            if (emailExists(email)) {
+            if (userService.emailExists(email).equals(1)) {
                 Notification.show("Email already in use", 1000, Notification.Position.MIDDLE);
                 return;
             }
@@ -83,8 +78,7 @@ public class RegisterView extends VerticalLayout {
                     .build();
             userDetailsManager.createUser(user);
 
-            //TODO: ADD ALSO email and full name TO USER INFO MANUALLY, more organized using repo etc.
-            addUserInfo(username, firstName, lastName, email);
+            userService.addUserInfo(username, firstName, lastName, email);
 
             //TODO: HERE AND IN LOGIN, ADD PASSWORD ENCODER
 
@@ -128,42 +122,4 @@ public class RegisterView extends VerticalLayout {
 
     }
 
-
-    @Autowired
-    private DataSource dataSource; //from app.properties
-
-    public boolean emailExists(String email) { //TODO: move to other place to structure metter
-        String sql = "SELECT 1 FROM UserInfo WHERE user_email = " + email;
-
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            try (ResultSet rs = ps.executeQuery()) {
-                return rs.next();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-    }
-
-
-    //TODO: Move that somewhere else too
-    public boolean addUserInfo(String username, String firstName, String lastName, String email) {
-        String sql = "INSERT INTO UserInfo VALUES('" + username + "', '" + firstName + "', '" + lastName + "', '" + email + "', CURDATE(), TRUE);"; //maybe make that into a function in db?
-        System.out.println(sql);
-        try (Connection conn = dataSource.getConnection();
-             Statement statement = conn.createStatement()) {
-
-            statement.executeUpdate(sql);
-
-        } catch (Exception e) {
-            //e.printStackTrace(); sometimes shows syntax errors that actually are not syntax errors
-            return false;
-        }
-
-        return true;
-    }
 }

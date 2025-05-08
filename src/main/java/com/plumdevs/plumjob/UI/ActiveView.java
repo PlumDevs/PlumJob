@@ -37,7 +37,7 @@ public class ActiveView extends VerticalLayout {
         top.setWidthFull();
         add(top);
 
-        add(new PositionsGrid(positionsRepository, false));
+        add(new PositionsGrid(positionsRepository, true));
     }
 
 }
