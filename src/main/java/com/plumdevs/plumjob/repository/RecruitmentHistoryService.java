@@ -12,11 +12,11 @@ public class RecruitmentHistoryService {
     @Autowired
     PositionsRepository positionsRepository;
 
-    List<RecruitmentItem> findActivePositions(String username) {
+    public List<RecruitmentItem> findActivePositions(String username) {
         return positionsRepository.findActivePositions(username);
     }
 
-    List<RecruitmentItem> findArchivePositions(String username) {
+    public List<RecruitmentItem> findArchivePositions(String username) {
         return positionsRepository.findArchivePositions(username);
     }
 

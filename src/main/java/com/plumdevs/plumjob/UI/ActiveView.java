@@ -4,6 +4,7 @@ import com.plumdevs.plumjob.UI.component.PositionsGrid;
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.entity.RecruitmentItem;
 import com.plumdevs.plumjob.repository.PositionsRepository;
+import com.plumdevs.plumjob.repository.UserInfoRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
@@ -23,7 +24,7 @@ import java.util.List;
 @Route(value="active", layout = MainLayout.class)
 @RouteAlias(value="/")
 public class ActiveView extends VerticalLayout {
-    ActiveView(PositionsRepository positionsRepository) {
+    ActiveView(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository) {
         System.out.println("Active recruitments");
 
         H2 title = new H2("Active recruitments");
@@ -37,7 +38,7 @@ public class ActiveView extends VerticalLayout {
         top.setWidthFull();
         add(top);
 
-        add(new PositionsGrid(positionsRepository, true));
+        add(new PositionsGrid(userInfoRepository, positionsRepository, true));
     }
 
 }

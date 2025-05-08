@@ -3,6 +3,7 @@ package com.plumdevs.plumjob.UI;
 import com.plumdevs.plumjob.UI.component.PositionsGrid;
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.repository.PositionsRepository;
+import com.plumdevs.plumjob.repository.UserInfoRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
@@ -18,7 +19,7 @@ import jakarta.annotation.security.PermitAll;
 @Route(value="archive", layout = MainLayout.class)
 public class ArchiveView extends VerticalLayout {
 
-    ArchiveView(PositionsRepository positionsRepository) {
+    ArchiveView(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository) {
         System.out.println("Archive");
         H2 title = new H2("Archive recruitments");
 
@@ -26,6 +27,6 @@ public class ArchiveView extends VerticalLayout {
         top.setWidthFull();
         add(top);
 
-        add(new PositionsGrid(positionsRepository, false));
+        add(new PositionsGrid(userInfoRepository, positionsRepository, false));
     }
 }
