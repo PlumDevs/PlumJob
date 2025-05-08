@@ -1,53 +1,61 @@
 package com.plumdevs.plumjob.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.time.LocalDate;
 import java.util.Date;
 
+@Entity
 public class RecruitmentItem {
 
-    String positon;
-    String company;
-    String status;
-    String description;
+    @Id
+    int history_id;
 
-    LocalDate startDate;
+    String position;
+    String company;
+    String stage;
+    //String description;
+
+    //LocalDate startDate;
 
     RecruitmentItem(){
-        positon = "";
+        position = "";
         company = "";
-        status = "";
-        startDate = LocalDate.now(); //temp, later fetch from database
+        stage = "";
+        //startDate = LocalDate.now(); //temp, later fetch from database
     }
 
-    public RecruitmentItem(String positon, String company, String status) {
-        this.positon = positon;
+    public RecruitmentItem(String positon, String company, String stage) {
+        this.position = positon;
         this.company = company;
-        this.status = status;
-        startDate = LocalDate.now(); //temp, later fetch from database
+        this.stage = stage;
+        //startDate = LocalDate.now(); //temp, later fetch from database
     }
 
-    public RecruitmentItem(String positon, String company, String status, String description) {
-        this.positon = positon;
+    public RecruitmentItem(String positon, String company, String stage, String description) {
+        this.position = positon;
         this.company = company;
-        this.status = status;
-        this.description = description;
-        startDate = LocalDate.now(); //temp, later fetch from database
+        this.stage = stage;
+        //this.description = description;
+        //startDate = LocalDate.now(); //temp, later fetch from database
     }
 
-    public RecruitmentItem(String positon, String company, String status, String description, LocalDate startDate) {
-        this.positon = positon;
+    public RecruitmentItem(String positon, String company, String stage, String description, LocalDate startDate) {
+        this.position = positon;
         this.company = company;
-        this.status = status;
-        this.description = description;
-        this.startDate = startDate; //temp, later fetch from database
+        this.stage = stage;
+        //this.description = description;
+        //this.startDate = startDate; //temp, later fetch from database
     }
 
     public String getPositon() {
-        return positon;
+        return position;
     }
 
     public void setPositon(String positon) {
-        this.positon = positon;
+        this.position = positon;
     }
 
     public String getCompany() {
@@ -58,15 +66,15 @@ public class RecruitmentItem {
         this.company = company;
     }
 
-    public String getStatus() {
-        return status;
+    public String getStage() {
+        return stage;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStage(String stage) {
+        this.stage = stage;
     }
 
-    public String getDescription() {
+    /*public String getDescription() {
         return description;
     }
 
@@ -74,6 +82,9 @@ public class RecruitmentItem {
         this.description = description;
     }
 
+     */
+
+    /*
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -81,4 +92,6 @@ public class RecruitmentItem {
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
+
+     */
 }

@@ -65,3 +65,11 @@ vaadin-grid::part(selected-row-cell), vaadin-grid::part(header-cell), vaadin-gri
 vaadin-grid::part(row):hover {
     --vaadin-grid-cell-background: #fcedf5;
 }
+
+.status-green {
+    color: green;
+}
+
+.status-red {
+    color: red;
+}

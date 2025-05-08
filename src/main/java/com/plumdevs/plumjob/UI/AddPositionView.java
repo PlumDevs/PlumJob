@@ -31,7 +31,7 @@ public class AddPositionView extends VerticalLayout {
         TextField company = new TextField("Company");
         TextArea description = new TextArea("Description");
         TextField link = new TextField("Offer link");
-        ComboBox status = new ComboBox("Status");
+        ComboBox<String> status = new ComboBox("Status");
 
         Button submit = new Button("Submit");
         Button backToActive = new Button("Back");
@@ -58,6 +58,17 @@ public class AddPositionView extends VerticalLayout {
                 "ghosted",
                 "accepted the offer"
         ));
+
+        status.setClassNameGenerator((item) -> {
+            switch (item) {
+                case "received offer", "accepted the offer":
+                    return "status-green";
+                case "rejected":
+                    return "status-red";
+                default:
+                    return "";
+            }
+        });
 
         Image articlePreview = new Image("https://m.media-amazon.com/images/I/41qW0-s6kSL._AC_UF894,1000_QL80_.jpg", "Where to look for job offers - article preview");
         //articlePreview.setSizeFull();

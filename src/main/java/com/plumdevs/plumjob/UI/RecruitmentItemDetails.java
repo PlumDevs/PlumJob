@@ -25,7 +25,8 @@ public class RecruitmentItemDetails extends FormLayout {
 
     public void setItem(RecruitmentItem item) {
 
-        String descText = item.getDescription();
+        //String descText = item.getDescription();
+        String descText = "";
 
         if (descText == null) {
             descField.setValue("");
@@ -33,7 +34,8 @@ public class RecruitmentItemDetails extends FormLayout {
         }
 
         descField.setValue(descText);
-        startDateField.setValue(item.getStartDate().toString());
+        //startDateField.setValue(item.getStartDate().toString());
+        startDateField.setValue("");
         jobLink.setValue(""); //temp
     }
 
