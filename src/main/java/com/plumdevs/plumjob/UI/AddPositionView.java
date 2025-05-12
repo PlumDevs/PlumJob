@@ -1,12 +1,15 @@
 package com.plumdevs.plumjob.UI;
 
 import com.plumdevs.plumjob.UI.layout.MainLayout;
+import com.plumdevs.plumjob.repository.PositionsRepository;
+import com.plumdevs.plumjob.repository.UserInfoRepository;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -14,6 +17,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -22,16 +27,16 @@ import java.util.List;
 @Route(value="addPosition", layout = MainLayout.class)
 public class AddPositionView extends VerticalLayout {
 
-    AddPositionView(){
+    AddPositionView(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository){
 
         H2 title = new H2("Add new position");
         Paragraph paragraph = new Paragraph("Enter information about the job posting below.");
 
-        TextField position = new TextField("Position");
-        TextField company = new TextField("Company");
-        TextArea description = new TextArea("Description");
-        TextField link = new TextField("Offer link");
-        ComboBox<String> status = new ComboBox("Status");
+        final TextField positionField = new TextField("Position");
+        final TextField companyField = new TextField("Company");
+        final TextArea descriptionField = new TextArea("Description");
+        final TextField linkField = new TextField("Offer link");
+        final ComboBox<String> statusField = new ComboBox("Status");
 
         Button submit = new Button("Submit");
         Button backToActive = new Button("Back");
@@ -41,12 +46,12 @@ public class AddPositionView extends VerticalLayout {
         backToActive.addClickListener(buttonClickEvent -> getUI().ifPresent(ui ->
                 ui.navigate("active")));
 
-        position.setWidthFull();
-        company.setWidthFull();
+        positionField.setWidthFull();
+        companyField.setWidthFull();
         //description.setWidthFull();
-        link.setWidthFull();
+        linkField.setWidthFull();
 
-        status.setItems(List.of(
+        statusField.setItems(List.of(
                 "to apply",
                 "applied",
                 "OA in progress",
@@ -59,7 +64,7 @@ public class AddPositionView extends VerticalLayout {
                 "accepted the offer"
         ));
 
-        status.setClassNameGenerator((item) -> {
+        statusField.setClassNameGenerator((item) -> {
             switch (item) {
                 case "received offer", "accepted the offer":
                     return "status-green";
@@ -78,13 +83,13 @@ public class AddPositionView extends VerticalLayout {
         //great to both fill the empty space on the right, and to provide some extra value
         //best if on click guides to the full article or just straight job offer page(s)
 
-        position.setMaxLength(50);
-        company.setMaxLength(50);
-        link.setMaxLength(100);
-        description.setMaxLength(100);
+        positionField.setMaxLength(50);
+        companyField.setMaxLength(50);
+        linkField.setMaxLength(100);
+        descriptionField.setMaxLength(100);
 
-        HorizontalLayout lineOne = new HorizontalLayout(position, company);
-        HorizontalLayout lineTwo = new HorizontalLayout(link, status);
+        HorizontalLayout lineOne = new HorizontalLayout(positionField, companyField);
+        HorizontalLayout lineTwo = new HorizontalLayout(linkField, statusField);
         HorizontalLayout buttons = new HorizontalLayout(backToActive, submit);
         VerticalLayout right = new VerticalLayout();
         VerticalLayout left = new VerticalLayout();
@@ -94,13 +99,13 @@ public class AddPositionView extends VerticalLayout {
         lineOne.setWidth(600, Unit.PIXELS);
         lineTwo.setPadding(false);
         lineTwo.setWidth(600, Unit.PIXELS);
-        description.setWidth(600, Unit.PIXELS);
+        descriptionField.setWidth(600, Unit.PIXELS);
 
         page.setSizeFull();
 
         left.add(title, paragraph);
         left.add(lineOne, lineTwo);
-        left.add(description);
+        left.add(descriptionField);
         left.add(buttons);
 
         right.add(articlePreview); //about where to look for job offers
@@ -108,5 +113,71 @@ public class AddPositionView extends VerticalLayout {
         page.add(left, right);
         add(page);
 
+
+        //NEW POSITION CREATION
+        submit.addClickListener(e -> {
+            String position = "";
+            position += positionField.getValue().trim();
+            String company = "";
+            company += companyField.getValue().trim();
+            String description = "";
+            description += descriptionField.getValue().trim();
+            String link = "";
+            link += linkField.getValue().trim();
+
+            String status = "";
+            status += statusField.getValue().trim();
+
+            int statusNumber = getStatusNumber(status);
+
+
+            positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, statusNumber);
+
+            Notification.show("Position added successfully", 3000, Notification.Position.MIDDLE);
+
+        });
+
+
+    }
+
+    private static int getStatusNumber(String status) {
+
+        int statusNumber;
+
+        switch(status) {
+            case "to apply":
+                statusNumber = 1;
+                break;
+            case "applied":
+                statusNumber = 2;
+                break;
+            case "OA in progress":
+                statusNumber = 3;
+                break;
+            case "after OA":
+                statusNumber = 4;
+                break;
+            case "interview scheduled":
+                statusNumber = 5;
+                break;
+            case "after interview":
+                statusNumber = 6;
+                break;
+            case "received offer":
+                statusNumber = 7;
+                break;
+            case "rejected":
+                statusNumber = 8;
+                break;
+            case "ghosted":
+                statusNumber = 9;
+                break;
+            case "accepted the offer":
+                statusNumber = 10;
+                break;
+            default:
+                statusNumber = 1;
+        }
+        return statusNumber;
     }
 }
