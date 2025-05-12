@@ -34,8 +34,7 @@ public class RecruitmentItemDetails extends FormLayout {
         }
 
         descField.setValue(descText);
-        //startDateField.setValue(item.getStartDate().toString());
-        startDateField.setValue("");
+        startDateField.setValue(item.getStartDate().toString());
         jobLink.setValue(""); //temp
     }
 

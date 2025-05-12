@@ -6,6 +6,7 @@ import com.plumdevs.plumjob.repository.UserInfoRepository;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
@@ -20,6 +21,7 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @PageTitle("Add new position - Plum Job")
@@ -37,6 +39,7 @@ public class AddPositionView extends VerticalLayout {
         final TextArea descriptionField = new TextArea("Description");
         final TextField linkField = new TextField("Offer link");
         final ComboBox<String> statusField = new ComboBox("Status");
+        DatePicker datePicker = new DatePicker("Start date");
 
         Button submit = new Button("Submit");
         Button backToActive = new Button("Back");
@@ -85,11 +88,12 @@ public class AddPositionView extends VerticalLayout {
 
         positionField.setMaxLength(50);
         companyField.setMaxLength(50);
-        linkField.setMaxLength(100);
+        linkField.setMaxLength(50);
+        datePicker.setMaxWidth(100, Unit.PIXELS); //SPR
         descriptionField.setMaxLength(100);
 
         HorizontalLayout lineOne = new HorizontalLayout(positionField, companyField);
-        HorizontalLayout lineTwo = new HorizontalLayout(linkField, statusField);
+        HorizontalLayout lineTwo = new HorizontalLayout(/*linkField*/ datePicker, statusField, linkField);
         HorizontalLayout buttons = new HorizontalLayout(backToActive, submit);
         VerticalLayout right = new VerticalLayout();
         VerticalLayout left = new VerticalLayout();
@@ -122,16 +126,18 @@ public class AddPositionView extends VerticalLayout {
             company += companyField.getValue().trim();
             String description = "";
             description += descriptionField.getValue().trim();
-            String link = "";
-            link += linkField.getValue().trim();
+            //String link = "";
+            //link += linkField.getValue().trim();
 
             String status = "";
             status += statusField.getValue().trim();
 
             int statusNumber = getStatusNumber(status);
 
+            LocalDate date = datePicker.getValue();
 
-            positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, statusNumber, description, ifEnded(status));
+
+            positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, date, statusNumber, description, ifEnded(status));
 
             Notification.show("Position added successfully", 3000, Notification.Position.MIDDLE);
 

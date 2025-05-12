@@ -2,12 +2,14 @@ package com.plumdevs.plumjob.repository;
 
 import com.plumdevs.plumjob.entity.RecruitmentItem;
 import jakarta.transaction.Transactional;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -21,10 +23,11 @@ public interface PositionsRepository extends JpaRepository<RecruitmentItem, Long
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO RecruitmentHistory (user_id, position, company, user_start_date, stage, description, ended) VALUES(:user_id, :position_name, :company_name, CURDATE(), :stage, :description, :ended);", nativeQuery = true)
+    @Query(value = "INSERT INTO RecruitmentHistory (user_id, position, company, user_start_date, stage, description, ended) VALUES(:user_id, :position_name, :company_name, :user_start_date, :stage, :description, :ended);", nativeQuery = true)
     void addPosition(@Param("user_id") String user_id, //username
                      @Param("position_name") String position,
                      @Param("company_name") String company,
+                     @Param("user_start_date") LocalDate user_start_date,
                      @Param("stage") int stage,
                      @Param("description") String description,
                      @Param("ended") boolean ended);

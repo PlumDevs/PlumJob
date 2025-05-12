@@ -1,6 +1,8 @@
 html, :host { /* default styling colors ovewriting */
     --lumo-primary-color: #730D3F;
     --lumo-primary-color-10pct: #ffe8f3;
+    --lumo-primary-text-color: #730D3F;
+    --lumo-secondary-text-color: #730D3F;
 }
 
 vaadin-side-nav-item[current]{
@@ -72,4 +74,8 @@ vaadin-grid::part(row):hover {
 
 .status-red {
     color: red;
+}
+
+vaadin-month-calendar::part(selected date), vaadin-month-calendar::part(today date), vaadin-date-picker-year::part(year-number), vaadin-date-picker-overlay-content > vaadin-button {
+    color: #730D3F;
 }
