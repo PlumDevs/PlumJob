@@ -137,7 +137,7 @@ public class AddPositionView extends VerticalLayout {
             LocalDate date = datePicker.getValue();
 
 
-            positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, date, statusNumber, description, ifEnded(status));
+            positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, date, status, description, ifEnded(status));
 
             Notification.show("Position added successfully", 3000, Notification.Position.MIDDLE);
 

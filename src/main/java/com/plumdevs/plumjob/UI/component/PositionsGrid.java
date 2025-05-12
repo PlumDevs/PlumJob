@@ -12,8 +12,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PositionsGrid extends Grid<RecruitmentItem> {
+
+    private List<RecruitmentItem> originalItems = new ArrayList<>();
 
     public PositionsGrid(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository, boolean active) {
 
@@ -26,19 +29,34 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
         setItemDetailsRenderer(new ComponentRenderer<RecruitmentItemDetails, RecruitmentItem>(RecruitmentItemDetails::new, RecruitmentItemDetails::setItem));
         setDetailsVisibleOnClick(true);
 
-        List<RecruitmentItem> items;
+        //List<RecruitmentItem> items;
 
 
         if (active) {
             //addColumn(RecruitmentItem::getStage).setHeader("Stage").setSortable(true);
-            items = new ArrayList<>(positionsRepository.findActivePositions(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
+            originalItems = new ArrayList<>(positionsRepository.findActivePositions(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
         }
 
         else {
-            items = new ArrayList<>(positionsRepository.findArchivePositions(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
+            originalItems = new ArrayList<>(positionsRepository.findArchivePositions(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
         }
 
-        setItems(items);
+        setItems(originalItems);
+
 
     }
+
+    public void filterByStage(String stage) {
+        if ("All".equals(stage)) {
+            setItems(originalItems);
+        } else {
+            setItems(originalItems.stream()
+                    .filter(item -> stage.equals(item.getStage()))
+                    .collect(Collectors.toList()));
+        }
+    }
 }
+
+//TODO: RESTRUCTURE STATUSES VIEWING - FETCH THE TEXT VALUE, NOT NUMBER
+//TODO: FILTERING BY STATUSES
+//TODO: STATUS EDITING

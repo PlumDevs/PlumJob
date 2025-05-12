@@ -6,7 +6,9 @@ import com.plumdevs.plumjob.entity.RecruitmentItem;
 import com.plumdevs.plumjob.repository.PositionsRepository;
 import com.plumdevs.plumjob.repository.UserInfoRepository;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.editor.Editor;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -34,11 +36,33 @@ public class ActiveView extends VerticalLayout {
         addNewPosition.addClickListener(buttonClickEvent -> getUI().ifPresent(ui ->
                 ui.navigate("addPosition")));
 
-        HorizontalLayout top = new HorizontalLayout(title, addNewPosition);
-        top.setWidthFull();
-        add(top);
+        PositionsGrid grid = new PositionsGrid(userInfoRepository, positionsRepository, true);
 
-        add(new PositionsGrid(userInfoRepository, positionsRepository, true));
+        ComboBox<String> stageFilter = new ComboBox<>();
+
+        stageFilter.setItems("All",
+                "to apply",
+                "applied",
+                "OA in progress",
+                "after OA",
+                "interview scheduled",
+                "after interview",
+                "received offer",
+                "rejected",
+                "ghosted",
+                "accepted the offer");
+        stageFilter.setValue("All"); // Default
+
+        stageFilter.addValueChangeListener(event -> {
+            String selected = event.getValue();
+            grid.filterByStage(selected);
+        });
+
+        HorizontalLayout top = new HorizontalLayout(title, addNewPosition, stageFilter);
+        top.setWidthFull();
+
+        add(top);
+        add(grid);
     }
 
 }

@@ -28,10 +28,9 @@ public interface PositionsRepository extends JpaRepository<RecruitmentItem, Long
                      @Param("position_name") String position,
                      @Param("company_name") String company,
                      @Param("user_start_date") LocalDate user_start_date,
-                     @Param("stage") int stage,
+                     @Param("stage") String stage,
                      @Param("description") String description,
                      @Param("ended") boolean ended);
-    //INSERT DO RECRUITMENTOFFER
-    //TODO: depending on the status, assign bool ended, by a function
+
     //TODO: and fix status, STATUS UPDATE FUNCTIONALITY
 }
