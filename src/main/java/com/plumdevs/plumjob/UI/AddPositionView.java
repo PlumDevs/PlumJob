@@ -131,7 +131,7 @@ public class AddPositionView extends VerticalLayout {
             int statusNumber = getStatusNumber(status);
 
 
-            positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, statusNumber, ifEnded(status));
+            positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, statusNumber, description, ifEnded(status));
 
             Notification.show("Position added successfully", 3000, Notification.Position.MIDDLE);
 

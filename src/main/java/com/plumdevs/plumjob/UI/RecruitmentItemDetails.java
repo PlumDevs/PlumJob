@@ -26,7 +26,7 @@ public class RecruitmentItemDetails extends FormLayout {
     public void setItem(RecruitmentItem item) {
 
         //String descText = item.getDescription();
-        String descText = "";
+        String descText = item.getDescription();
 
         if (descText == null) {
             descField.setValue("");

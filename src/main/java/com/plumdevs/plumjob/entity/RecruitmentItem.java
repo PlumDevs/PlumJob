@@ -16,7 +16,7 @@ public class RecruitmentItem {
     String position;
     String company;
     String stage;
-    //String description;
+    String description;
 
     //LocalDate startDate;
 
@@ -31,14 +31,14 @@ public class RecruitmentItem {
         this.position = positon;
         this.company = company;
         this.stage = stage;
-        //startDate = LocalDate.now(); //temp, later fetch from database
+        //this.startDate = LocalDate.now(); //temp, later fetch from database
     }
 
     public RecruitmentItem(String positon, String company, String stage, String description) {
         this.position = positon;
         this.company = company;
         this.stage = stage;
-        //this.description = description;
+        this.description = description;
         //startDate = LocalDate.now(); //temp, later fetch from database
     }
 
@@ -46,7 +46,7 @@ public class RecruitmentItem {
         this.position = positon;
         this.company = company;
         this.stage = stage;
-        //this.description = description;
+        this.description = description;
         //this.startDate = startDate; //temp, later fetch from database
     }
 
@@ -74,7 +74,7 @@ public class RecruitmentItem {
         this.stage = stage;
     }
 
-    /*public String getDescription() {
+    public String getDescription() {
         return description;
     }
 
@@ -82,16 +82,18 @@ public class RecruitmentItem {
         this.description = description;
     }
 
-     */
 
     /*
     public LocalDate getStartDate() {
         return startDate;
     }
 
+     */
+
+    /*
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
+    */
 
-     */
 }
