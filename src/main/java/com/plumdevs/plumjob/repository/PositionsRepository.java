@@ -21,12 +21,13 @@ public interface PositionsRepository extends JpaRepository<RecruitmentItem, Long
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO RecruitmentHistory (user_id, position, company, user_start_date, stage, description, ended) VALUES(:user_id, :position_name, :company_name, null, :stage, null, 1);", nativeQuery = true)
+    @Query(value = "INSERT INTO RecruitmentHistory (user_id, position, company, user_start_date, stage, description, ended) VALUES(:user_id, :position_name, :company_name, null, :stage, null, :ended);", nativeQuery = true)
     void addPosition(@Param("user_id") String user_id, //username
                      @Param("position_name") String position,
                      @Param("company_name") String company,
-                     @Param("stage") int stage);
+                     @Param("stage") int stage,
+                     @Param("ended") boolean ended);
     //INSERT DO RECRUITMENTOFFER
     //TODO: depending on the status, assign bool ended, by a function
-    //TODO: and fix status
+    //TODO: and fix status, STATUS UPDATE FUNCTIONALITY
 }

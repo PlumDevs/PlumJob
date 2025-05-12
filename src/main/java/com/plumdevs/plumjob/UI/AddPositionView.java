@@ -131,7 +131,7 @@ public class AddPositionView extends VerticalLayout {
             int statusNumber = getStatusNumber(status);
 
 
-            positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, statusNumber);
+            positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, statusNumber, ifEnded(status));
 
             Notification.show("Position added successfully", 3000, Notification.Position.MIDDLE);
 
@@ -179,5 +179,16 @@ public class AddPositionView extends VerticalLayout {
                 statusNumber = 1;
         }
         return statusNumber;
+    }
+
+    private static boolean ifEnded(String status) {
+
+        switch(status) {
+            case "accepted the offer", "rejected":
+                return true;
+            default:
+                return false;
+        }
+
     }
 }
