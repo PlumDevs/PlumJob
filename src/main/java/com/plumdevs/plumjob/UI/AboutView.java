@@ -1,6 +1,7 @@
 package com.plumdevs.plumjob.UI;
 
 import com.plumdevs.plumjob.UI.layout.MainLayout;
+import com.plumdevs.plumjob.service.ArticleService;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -15,6 +16,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import java.io.IOException;
+
 @PageTitle("Plum Job - About")
 @AnonymousAllowed
 @Route(value="about", layout = MainLayout.class) //the view will appear on localhost:8080/about, and use layout from MainLayout besides about own unique components
@@ -23,12 +26,14 @@ public class AboutView extends VerticalLayout {
     public int AVATAR_SIZE = 70;
     public int BOX_SIZE = 120;
 
-    AboutView() {
+    AboutView() throws IOException {
         System.out.println("About");
-        add(new H2("About"));
+        add(new H2("Have you ever felt like looking for a job is more stressful than the actual work?"));
 
-        //TODO: Add real text about the project
-        add(new Paragraph("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."));
+        add(new Paragraph(" Plum Job is a web platform designed to make the job-hunting experience for young seekers more organized and less frustrating. To support this mission, we’ve designed features like: application archive with real-time updatable statuses, CV builder that transforms user data into a clean, ATS-friendly PDF using one of our beautiful templates, blog filled with tips and insights from seasoned recruiters, and visual graph summarizing each user’s job-seeking journey."));
+
+        add(new H2("Why Plum Job?"));
+        add(new Paragraph("According to multiple dictionaries, plum job means a highly desirable job or position, often characterised by excellent pay, benefits, working conditions, and opportunities for advancement. Which is exactly the type of job we strive for our users to find in these uncertain times."));
 
         add(new H2("Our Team"));
 
