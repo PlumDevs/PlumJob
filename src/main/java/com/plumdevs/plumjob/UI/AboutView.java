@@ -1,14 +1,12 @@
 package com.plumdevs.plumjob.UI;
 
+import ch.qos.logback.core.pattern.SpacePadder;
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.service.ArticleService;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -32,6 +30,11 @@ public class AboutView extends VerticalLayout {
 
         add(new Paragraph(" Plum Job is a web platform designed to make the job-hunting experience for young seekers more organized and less frustrating. To support this mission, we’ve designed features like: application archive with real-time updatable statuses, CV builder that transforms user data into a clean, ATS-friendly PDF using one of our beautiful templates, blog filled with tips and insights from seasoned recruiters, and visual graph summarizing each user’s job-seeking journey."));
 
+        Paragraph motto = new Paragraph("According to multiple dictionaries, plum job means a highly desirable job or position, often characterised by excellent pay, benefits, working conditions, and opportunities for advancement. Which is exactly the type of job we strive for our users to find in these uncertain times.");
+        motto.addClassName("italics");
+
+        add(motto);
+
         add(new H2("Our Team"));
 
         HorizontalLayout team = new HorizontalLayout();
@@ -43,10 +46,6 @@ public class AboutView extends VerticalLayout {
         team.add(createAvatarBox("Piotr Sz.", "Software Engineer", ""));
 
         add(team);
-
-        add(new H2("Why Plum Job?"));
-        add(new Paragraph("According to multiple dictionaries, plum job means a highly desirable job or position, often characterised by excellent pay, benefits, working conditions, and opportunities for advancement. Which is exactly the type of job we strive for our users to find in these uncertain times."));
-
 
     }
 
