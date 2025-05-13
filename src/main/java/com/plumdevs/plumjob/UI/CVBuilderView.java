@@ -1,6 +1,7 @@
 package com.plumdevs.plumjob.UI;
 
 import com.plumdevs.plumjob.UI.layout.MainLayout;
+import com.plumdevs.plumjob.service.ArticleService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
@@ -18,6 +19,8 @@ import jakarta.annotation.security.PermitAll;
 @PageTitle("Plum Job - CV Builder")
 @Route(value="CVBuilder", layout = MainLayout.class)
 public class CVBuilderView extends VerticalLayout {
+
+    private final ArticleService articleService = new ArticleService();
     CVBuilderView() {
         System.out.println("CV Builder");
         add(new H2("Create your own resume!"));
@@ -66,6 +69,8 @@ public class CVBuilderView extends VerticalLayout {
 
         HorizontalLayout templates = new HorizontalLayout(choiceOne, choiceTwo, choiceThree);
         add(templates);
+
+       //add(articleService.createArticleThumbnail("resume", "Crafting a Standout Tech CV"));
 
     }
 }

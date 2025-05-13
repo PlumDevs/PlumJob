@@ -33,12 +33,13 @@ public class ArticlesView extends VerticalLayout {
     ArticlesView() throws IOException {
         System.out.println("Articles/Tips");
         add(new H2("Read articles by recruiters from top companies"));
-
         setWidthFull();
 
         add(articleService.createArticleThumbnail("interviews", "5 Quick Tips to Succeed in Tech Interviews"));
         add(articleService.createArticleThumbnail("behavioural", "Acing the Behavioral Interview in Tech"));
         add(articleService.createArticleThumbnail("resume", "Crafting a Standout Tech CV"));
+        add(articleService.createArticleThumbnail("jobhunt", "Mastering the Tech Job Hunt"));
+        add(articleService.createArticleThumbnail("portfolio", "Building a Portfolio That Gets Interviews"));
 
     }
 

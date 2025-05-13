@@ -3,6 +3,7 @@ package com.plumdevs.plumjob.UI;
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.repository.PositionsRepository;
 import com.plumdevs.plumjob.repository.UserInfoRepository;
+import com.plumdevs.plumjob.service.ArticleService;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -29,6 +30,7 @@ import java.util.List;
 @Route(value="addPosition", layout = MainLayout.class)
 public class AddPositionView extends VerticalLayout {
 
+    private final ArticleService articleService = new ArticleService();
     AddPositionView(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository){
 
         H2 title = new H2("Add new position");
@@ -113,7 +115,11 @@ public class AddPositionView extends VerticalLayout {
         left.add(descriptionField);
         left.add(buttons);
 
-        right.add(articlePreview); //about where to look for job offers
+        //right.add(articlePreview); //about where to look for job offers
+        right.add(
+            articleService.createArticleThumbnail("jobhunt", "Mastering the Tech Job Hunt"),
+            articleService.createArticleThumbnail("portfolio", "Building a Portfolio That Gets Interviews")
+        );
 
         page.add(left, right);
         add(page);

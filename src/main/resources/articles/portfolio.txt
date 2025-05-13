@@ -1,0 +1,14 @@
+Building a Portfolio That Gets Interviews
+Daniel Kim
+A strong portfolio can do what words on a resume can't—it shows, not just tells. Here's how to make yours shine:
+1. Focus on quality over quantity
+Two polished projects with good documentation beat five half-finished ones.
+2. Make it relevant
+Choose projects that reflect the kind of work you want to do—frontend, backend, data, etc.
+3. Write clear READMEs
+Explain what the project is, your role, and how someone can run it.
+4. Show your process
+Include notes about challenges and decisions. Employers love seeing how you think.
+5. Host it
+Use GitHub Pages, Netlify, or Heroku to make projects easily viewable. Link them directly on your resume and LinkedIn.
+Your portfolio is proof of what you can build. Treat it like your second resume—and keep improving it.
