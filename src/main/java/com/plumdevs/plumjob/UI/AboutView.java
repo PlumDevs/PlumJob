@@ -32,9 +32,6 @@ public class AboutView extends VerticalLayout {
 
         add(new Paragraph(" Plum Job is a web platform designed to make the job-hunting experience for young seekers more organized and less frustrating. To support this mission, we’ve designed features like: application archive with real-time updatable statuses, CV builder that transforms user data into a clean, ATS-friendly PDF using one of our beautiful templates, blog filled with tips and insights from seasoned recruiters, and visual graph summarizing each user’s job-seeking journey."));
 
-        add(new H2("Why Plum Job?"));
-        add(new Paragraph("According to multiple dictionaries, plum job means a highly desirable job or position, often characterised by excellent pay, benefits, working conditions, and opportunities for advancement. Which is exactly the type of job we strive for our users to find in these uncertain times."));
-
         add(new H2("Our Team"));
 
         HorizontalLayout team = new HorizontalLayout();
@@ -46,6 +43,10 @@ public class AboutView extends VerticalLayout {
         team.add(createAvatarBox("Piotr Sz.", "Software Engineer", ""));
 
         add(team);
+
+        add(new H2("Why Plum Job?"));
+        add(new Paragraph("According to multiple dictionaries, plum job means a highly desirable job or position, often characterised by excellent pay, benefits, working conditions, and opportunities for advancement. Which is exactly the type of job we strive for our users to find in these uncertain times."));
+
 
     }
 
