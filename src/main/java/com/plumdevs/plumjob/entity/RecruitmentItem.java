@@ -50,6 +50,14 @@ public class RecruitmentItem {
         this.user_start_Date = startDate; //temp, later fetch from database
     }
 
+    public int getHistory_id() {
+        return history_id;
+    }
+
+    public void setHistory_id(int history_id) {
+        this.history_id = history_id;
+    }
+
     public String getPositon() {
         return position;
     }

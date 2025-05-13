@@ -32,5 +32,21 @@ public interface PositionsRepository extends JpaRepository<RecruitmentItem, Long
                      @Param("description") String description,
                      @Param("ended") boolean ended);
 
-    //TODO: and fix status, STATUS UPDATE FUNCTIONALITY
+    //TODO: INSERT TO THE SECOND TABLE THAT KEEPS WHOLE HISTORY TOO!
+    //TODO: WRAP IT WITH A FUNCTION IN DATABASE - AND AUTOMATICALLY WHEN ENDING STATUS IS CHOSEN, SET ENDED TO 1
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE RecruitmentHistory SET stage = :stage WHERE history_id = :history_id;", nativeQuery = true)
+    void updateStatus(
+            @Param("history_id") int history_id,
+            @Param("stage") String stage
+            );
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE RecruitmentHistory SET description = :description WHERE history_id = :history_id;", nativeQuery = true)
+    void updateDescription(
+            @Param("history_id") int history_id,
+            @Param("description") String description
+    );
 }

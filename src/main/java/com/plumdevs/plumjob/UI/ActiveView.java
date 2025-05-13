@@ -47,10 +47,7 @@ public class ActiveView extends VerticalLayout {
                 "after OA",
                 "interview scheduled",
                 "after interview",
-                "received offer",
-                "rejected",
-                "ghosted",
-                "accepted the offer");
+                "received offer");
         stageFilter.setValue("All"); // Default
 
         stageFilter.addValueChangeListener(event -> {

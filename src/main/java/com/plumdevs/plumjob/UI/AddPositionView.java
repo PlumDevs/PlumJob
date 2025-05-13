@@ -63,6 +63,7 @@ public class AddPositionView extends VerticalLayout {
                 "after interview",
                 "received offer",
                 "rejected",
+                "declined the offer",
                 "ghosted",
                 "accepted the offer"
         ));

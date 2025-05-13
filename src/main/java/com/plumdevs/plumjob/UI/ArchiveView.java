@@ -5,6 +5,7 @@ import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.repository.PositionsRepository;
 import com.plumdevs.plumjob.repository.UserInfoRepository;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -23,10 +24,26 @@ public class ArchiveView extends VerticalLayout {
         System.out.println("Archive");
         H2 title = new H2("Archive recruitments");
 
-        HorizontalLayout top = new HorizontalLayout(title);
+        PositionsGrid grid = new PositionsGrid(userInfoRepository, positionsRepository, false);
+
+        ComboBox<String> stageFilter = new ComboBox<>();
+
+        stageFilter.setItems("All",
+                "rejected",
+                "declined the offer",
+                "ghosted",
+                "accepted the offer");
+        stageFilter.setValue("All");
+
+        stageFilter.addValueChangeListener(event -> {
+            String selected = event.getValue();
+            grid.filterByStage(selected);
+        });
+
+        HorizontalLayout top = new HorizontalLayout(title, stageFilter);
         top.setWidthFull();
         add(top);
 
-        add(new PositionsGrid(userInfoRepository, positionsRepository, false));
+        add(grid);
     }
 }

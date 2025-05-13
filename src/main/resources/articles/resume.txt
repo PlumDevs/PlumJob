@@ -1,0 +1,24 @@
+Crafting a Standout Tech CV
+Martin Hardman
+Your CV is often your first impression—and in the tech industry, it needs to be more than just a list of jobs. A well-structured, thoughtful CV shows not only your experience but also your clarity of thought and communication skills. Here's how to make yours count.
+1. Keep It Clear and Concise
+A tech recruiter scans a CV in seconds. Stick to 1–2 pages, use consistent formatting, and avoid clutter. Use a simple font, enough white space, and bold for key sections. Clarity trumps creativity—save fancy layouts for your portfolio.
+2. Tailor to the Role
+Don’t send the same CV everywhere. Highlight the skills, tools, and achievements that align with the job description. If the job emphasizes frontend work, your React and UX work should be front and center. Match the language of the job post without copying it.
+3. Start With a Strong Summary
+Begin with a short paragraph or bullet list summarizing your experience and goals. Think of it as your elevator pitch. Example: “Software engineer with 4 years of experience in backend development and cloud infrastructure. Passionate about building scalable APIs and automating workflows.”
+4. Emphasize Achievements, Not Tasks
+Instead of writing “Worked on frontend using React,” say: “Built and maintained a React-based dashboard used by 1,000+ daily users, reducing load time by 35%.” Use numbers, percentages, or impact where possible—it shows business value.
+5. Highlight Key Skills Separately
+Create a skills section that’s easy to scan. Divide it into categories if helpful: Languages, Frameworks, Tools, DevOps, etc. Keep it up to date and relevant—listing MS Word or “basic HTML” doesn’t add value if you're applying for a developer role.
+6. Include Personal Projects
+Especially if you’re early in your career, projects speak volumes. Link to GitHub, describe what you built, what tech you used, and why. Passion projects or hackathon wins can set you apart from candidates with similar job experience.
+7. Open Source or Community Work Counts
+Contributions to open source, tech blogs, speaking at meetups—these all show initiative. If you’ve mentored juniors, written documentation, or reviewed PRs, mention it. It shows leadership beyond coding.
+8. Keep Education Focused
+List degrees, institutions, and graduation years. For recent grads, include relevant courses or GPA if it’s strong. If you’ve done bootcamps or certifications, only include those relevant to the job.
+9. Avoid Common Pitfalls
+No typos. No outdated contact info. Don’t overuse buzzwords like “dynamic” or “ninja.” And never lie—if you can’t explain something listed in your skills, it’s better to leave it out.
+10. Review and Iterate
+Ask a peer to review your CV. Read it aloud. Update it regularly, even when you’re not job hunting. Think of it as your career snapshot—it should evolve as you do.
+Your CV is a tool. Make it easy for someone to say, “We need to talk to this person.” Structure it to guide the reader, tailor it to their needs, and let your work speak with impact and clarity.
