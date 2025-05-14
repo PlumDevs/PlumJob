@@ -16,10 +16,10 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO UserInfo (user_id, user_name, user_lastname, user_email, account_creation_date, is_active) VALUES (:user_id, :user_name, :user_lastname, :user_email, CURDATE(), TRUE)", nativeQuery = true)
-    void addUserInfo(@Param("user_id") String username,
-                        @Param("user_name") String firstName,
+    @Query(value = "INSERT INTO UserInfo (username, user_legalname, user_lastname, user_email, account_creation_date, is_active) VALUES (:username, :user_legalname, :user_lastname, :user_email, CURDATE(), TRUE)", nativeQuery = true)
+    void addUserInfo(@Param("username") String username,
+                        @Param("user_legalname") String firstName,
                         @Param("user_lastname") String lastName,
-                        @Param("user_email") String email);
+                        @Param("user_email") String email)
 
 }
