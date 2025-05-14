@@ -76,11 +76,11 @@ vaadin-grid::part(row):hover {
     color: red;
 }
 
-vaadin-month-calendar::part(selected date), vaadin-month-calendar::part(today date), vaadin-date-picker-year::part(year-number), vaadin-date-picker-overlay-content > vaadin-button {
+.italics, vaadin-month-calendar::part(selected date), vaadin-month-calendar::part(today date), vaadin-date-picker-year::part(year-number), vaadin-date-picker-overlay-content > vaadin-button {
     color: #730D3F;
 }
 
-.italics {
+.plum-text-white {
     color: #730D3F;
-
+    background: white;
 }

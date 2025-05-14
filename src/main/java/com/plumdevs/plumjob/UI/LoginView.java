@@ -39,5 +39,12 @@ public class LoginView extends VerticalLayout {
         RouterLink routerLink = new RouterLink("", RegisterView.class);
         routerLink.getElement().appendChild(registerButton.getElement());
         add(routerLink);
+
+        Button aboutButton = new Button("About");
+        aboutButton.addClassName("plum-text-white");
+
+        RouterLink aboutLink = new RouterLink("", AboutView.class);
+        aboutLink.getElement().appendChild(aboutButton.getElement());
+        add(aboutLink);
     }
 }

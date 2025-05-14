@@ -2,7 +2,6 @@ package com.plumdevs.plumjob.repository;
 
 import com.plumdevs.plumjob.entity.RecruitmentItem;
 import jakarta.transaction.Transactional;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +19,11 @@ public interface PositionsRepository extends JpaRepository<RecruitmentItem, Long
     List<RecruitmentItem> findActivePositions(@Param("username") String username);
     @Query(value = "CALL sp_showUserHistory(:username, false);", nativeQuery = true)
     List<RecruitmentItem> findArchivePositions(@Param("username") String username);
+
+    /* TODO
+    @Query(value = "CALL sp_getUserStatusHistory(:username)", nativeQuery = true)
+    List<RecruitmentStatusHistory> getStatusHistories();
+     */
 
     @Transactional
     @Modifying

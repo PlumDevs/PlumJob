@@ -22,7 +22,7 @@ import java.io.IOException;
 public class AboutView extends VerticalLayout {
 
     public int AVATAR_SIZE = 70;
-    public int BOX_SIZE = 120;
+    public int BOX_SIZE = 150;
 
     AboutView() throws IOException {
         System.out.println("About");
@@ -42,7 +42,7 @@ public class AboutView extends VerticalLayout {
         team.add(createAvatarBox("Kinga Ż.", "Project Manager", "Software Engineer"));
         team.add(createAvatarBox("Dominik Sz.", "Software Tester", ""));
         team.add(createAvatarBox("Martyna C.", "Software Engineer", ""));
-        team.add(createAvatarBox("Wojciech P.", "Database Engineer", ""));
+        team.add(createAvatarBox("Wojciech P.", "Database Engineer", "Documentation Lead"));
         team.add(createAvatarBox("Piotr Sz.", "Software Engineer", ""));
 
         add(team);
