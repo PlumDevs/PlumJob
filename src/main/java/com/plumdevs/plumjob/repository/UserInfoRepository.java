@@ -20,6 +20,6 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
     void addUserInfo(@Param("username") String username,
                         @Param("user_legalname") String firstName,
                         @Param("user_lastname") String lastName,
-                        @Param("user_email") String email)
+                        @Param("user_email") String email);
 
 }
