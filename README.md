@@ -49,5 +49,5 @@ _According to multiple dictionaries, plum job means a __highly desirable job__ o
   <br>
   <img src="https://github.com/user-attachments/assets/1d1d6996-92f8-4662-bf9c-a4ab75241286" width="15" height="15"><br>
   <br>
-  <i>This project is done as a project for 2024/2025 Software Engineering course @ JU </i>
+  <i>This project is done for 2024/2025 Software Engineering course @ JU </i>
 </div>
