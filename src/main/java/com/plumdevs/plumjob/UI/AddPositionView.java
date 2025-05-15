@@ -145,13 +145,12 @@ public class AddPositionView extends VerticalLayout {
 
 
             positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, date, status, description, ifEnded(status));
-            positionsRepository.updateStatus(status);
 
             Notification.show("Position added successfully", 3000, Notification.Position.MIDDLE);
 
         });
 
-
+        // TODO: IF OTHER STATUS THAN APPLIED, ADD OTHER STATUSES AUTOMATICALLY? (THE BEFORE STATUSES, SO THAT THE DIAGRAM IS CREATED CORRECTLY? AND THE DATES WILL BE JUST TAKEN ONLY FROM RECRUITMENTHISTORY NOT STATUSES (NULL/SAME AS CREATION)
     }
 
     private static int getStatusNumber(String status) {

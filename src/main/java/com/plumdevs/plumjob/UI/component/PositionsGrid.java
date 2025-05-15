@@ -12,6 +12,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.editor.Editor;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -37,6 +38,8 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
         addColumn(RecruitmentItem::getCompany).setHeader("Company").setSortable(true);
         Column<RecruitmentItem> stageColumn = addColumn(RecruitmentItem::getStage).setHeader("Stage").setSortable(true);
 
+
+
         Editor<RecruitmentItem> editor = getEditor();
 
         Column<RecruitmentItem> editColumn = addComponentColumn(person -> {
@@ -48,7 +51,16 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
             });
             return editButton;
         }).setWidth("150px").setFlexGrow(0);
-        //button to edit, now add its functionality... TODO
+
+        Column<RecruitmentItem> deleteColumn = addComponentColumn(item -> {
+            Button deleteButton = new Button(VaadinIcon.TRASH.create());
+            deleteButton.getElement().getThemeList().add("error");
+            deleteButton.addClickListener(e -> {
+                positionsRepository.deletePosition(item.getHistory_id());
+                getListDataView().removeItem(item);
+            });
+            return deleteButton;
+        }).setWidth("150px").setFlexGrow(0);
 
         Binder<RecruitmentItem> binder = new Binder<>(RecruitmentItem.class);
         editor.setBinder(binder);

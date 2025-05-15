@@ -27,7 +27,7 @@ public interface PositionsRepository extends JpaRepository<RecruitmentItem, Long
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO RecruitmentHistory (user_id, position, company, user_start_date, stage, description, ended) VALUES(:user_id, :position_name, :company_name, :user_start_date, :stage, :description, :ended);", nativeQuery = true)
+    @Query(value = "CALL sp_addNewRecruitment(:user_id, :position_name, :company_name, :user_start_date, :stage, :description, :ended)", nativeQuery = true)
     void addPosition(@Param("user_id") String user_id, //username
                      @Param("position_name") String position,
                      @Param("company_name") String company,
@@ -46,8 +46,8 @@ public interface PositionsRepository extends JpaRepository<RecruitmentItem, Long
 
     @Transactional
     @Modifying
-    @Query(value = "CALL sp_updateStatus(LAST_INSERT_ID(), :stage);", nativeQuery = true)
-    void updateStatus(
-            @Param("stage") String stage
+    @Query(value = "CALL sp_DeleteRecruitmentRecord(:history_id);", nativeQuery = true)
+    void deletePosition(
+            @Param("history_id") int history_id
     );
 }
