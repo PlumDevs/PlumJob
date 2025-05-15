@@ -35,3 +35,6 @@ build/
 
 ### Environmental variables ###
 .env
+
+### Application properies ###
+!**src/main/resources/application.properties
