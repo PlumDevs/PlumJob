@@ -3,7 +3,10 @@
   <i>Get that job. Ditch the stress.</i>
 </div>
 
-<!-- ### Table of contents -->
+## 📋 Table of contents
++ [About](#about)
++ [Contributors](#contributors)
++ [Project Roadmap](https://github.com/PlumDevs/.github-private/blob/main/Roadmap.md)
 
 ## About
 Have you ever felt like looking for a job is more stressful than the actual work?
