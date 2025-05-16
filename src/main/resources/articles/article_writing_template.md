@@ -1,6 +1,6 @@
 ## How to add new article for the Tips module? ##
 
-Every article is parsed from a .txt file in this directory by the ArticleService, responsible for both creating a thumbnail and comminicating with ArticleView to display the chosen article in full.
+Every article is parsed from a .txt file in this directory by the ArticleService, responsible for both creating a thumbnail and communicating with ArticleView to display the chosen article in full.
 
 ### Format of the .txt file ###
 __1st line:__ Title <br>
