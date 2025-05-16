@@ -23,6 +23,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import com.plumdevs.plumjob.UI.component.StickyAdBar;
+import com.plumdevs.plumjob.service.TagService;
+import com.vaadin.flow.spring.security.AuthenticationContext;
+
 @PermitAll
 @PageTitle("Plum Job - Articles")
 @Route(value="articles", layout = MainLayout.class)
@@ -30,7 +34,7 @@ public class ArticlesView extends VerticalLayout {
 
     private final ArticleService articleService = new ArticleService();
 
-    ArticlesView() throws IOException {
+    ArticlesView( TagService tagService, AuthenticationContext authContext ) throws IOException {
         System.out.println("Articles/Tips");
         add(new H2("Read articles by recruiters from top companies"));
         setWidthFull();
@@ -41,6 +45,7 @@ public class ArticlesView extends VerticalLayout {
         add(articleService.createArticleThumbnail("jobhunt", "Mastering the Tech Job Hunt"));
         add(articleService.createArticleThumbnail("portfolio", "Building a Portfolio That Gets Interviews"));
 
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext);
+        add(adBar);
     }
-
 }

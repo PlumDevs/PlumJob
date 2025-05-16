@@ -14,6 +14,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import com.plumdevs.plumjob.UI.component.StickyAdBar;
+import com.plumdevs.plumjob.service.TagService;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 
 @PermitAll
 @PageTitle("Plum Job - CV Builder")
@@ -21,7 +24,7 @@ import jakarta.annotation.security.PermitAll;
 public class CVBuilderView extends VerticalLayout {
 
     private final ArticleService articleService = new ArticleService();
-    CVBuilderView() {
+    CVBuilderView( TagService tagService, AuthenticationContext authContext ) {
         System.out.println("CV Builder");
         add(new H2("Create your own resume!"));
         add(new Paragraph("With our custom, ATS-friendly templates catching a recruiter's eye will be a breeze! Just choose one below and use our built-in editor to get the resume of your dreams."));
@@ -72,5 +75,7 @@ public class CVBuilderView extends VerticalLayout {
 
        //add(articleService.createArticleThumbnail("resume", "Crafting a Standout Tech CV"));
 
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext);
+        add(adBar);
     }
 }

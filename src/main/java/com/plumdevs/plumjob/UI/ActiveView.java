@@ -17,6 +17,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import jakarta.annotation.security.PermitAll;
+import com.plumdevs.plumjob.UI.component.StickyAdBar;
+import com.plumdevs.plumjob.service.TagService;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,7 @@ import java.util.List;
 @Route(value="active", layout = MainLayout.class)
 @RouteAlias(value="/")
 public class ActiveView extends VerticalLayout {
-    ActiveView(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository) {
+    ActiveView(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository, TagService tagService, AuthenticationContext authContext) {
         System.out.println("Active recruitments");
 
         H2 title = new H2("Active recruitments");
@@ -60,7 +63,9 @@ public class ActiveView extends VerticalLayout {
 
         add(top);
         add(grid);
-    }
 
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext);
+        add(adBar);
+    }
 }
 
