@@ -39,7 +39,7 @@ _According to multiple dictionaries, plum job means a __highly desirable job__ o
 👩🏻‍💻[Kinga Żmuda](https://github.com/kingazm) - Project Manager and Software Engineer <br>
 👨🏼‍💻[Dominik Szymczyk](https://github.com/tytusszymczyk) - Tester <br>
 👩🏼‍💻[Martyna Cios](https://github.com/cssma) - Software Engineer <br>
-👨🏻‍💻[Wojciech Popiel](https://github.com/PopielWojciech) - Database and Documentation Engineer <br>
+👨🏻‍💻[Wojciech Popiel](https://github.com/PopielWojciech) - Database Engineer and Documentation Lead <br>
 👨🏻‍💻[Piotr Szulej](https://github.com/PiterParker32) - Software Engineer
 
 <!-- ## Contact -->
