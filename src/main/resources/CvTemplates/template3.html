@@ -420,26 +420,34 @@
 
     let originalInputs = [];
     function replaceInputsWithText() {
-        originalInputs = [];
+        const container = document.getElementById("contact-fields");
+        const fields = container.querySelectorAll(".contact-field");
 
-        const inputs = document.querySelectorAll('input');
-        inputs.forEach((input, index) => {
-            const span = document.createElement('span');
-            span.textContent = input.value || input.placeholder;
-            span.style.cssText = input.style.cssText;
-            span.style.border = 'none';
-            span.style.background = 'transparent';
-            span.style.display = 'inline-block';
-            span.style.width = input.style.width;
-            span.style.marginTop = 0;
+        fields.forEach(field => {
+            const input = field.querySelector("input");
+            const icon = field.querySelector("i");
 
-            if(index !== inputs.length-1){
-                span.style.marginRight = '40px'; // Adjust the value according to your needs
+            if (input && icon) {
+                const value = input.value.trim();
+                field.innerHTML = '';
+
+                if (value !== '') {
+                    const newIcon = document.createElement("i");
+                    newIcon.className = icon.className;
+
+                    const span = document.createElement("span");
+                    span.textContent = value;
+                    span.style.marginRight = "40px";
+
+                    field.appendChild(newIcon);
+                    field.appendChild(span);
+                } else {
+                    field.remove();
+                }
             }
-
-            originalInputs.push({ input: input, parent: input.parentNode, clone: span });
-            input.parentNode.replaceChild(span, input);
         });
+
+        contactFieldsAdded = 0;
     }
 
     function restoreInputs() {

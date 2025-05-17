@@ -13,6 +13,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import com.plumdevs.plumjob.UI.component.StickyAdBar;
+import com.plumdevs.plumjob.service.TagService;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 
 import java.io.IOException;
 
@@ -24,7 +27,7 @@ public class AboutView extends VerticalLayout {
     public int AVATAR_SIZE = 70;
     public int BOX_SIZE = 150;
 
-    AboutView() throws IOException {
+    AboutView( TagService tagService, AuthenticationContext authContext) throws IOException {
         System.out.println("About");
         add(new H2("Have you ever felt like looking for a job is more stressful than the actual work?"));
 
@@ -46,6 +49,9 @@ public class AboutView extends VerticalLayout {
         team.add(createAvatarBox("Piotr Sz.", "Software Engineer", ""));
 
         add(team);
+
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext);
+        add(adBar);
 
     }
 

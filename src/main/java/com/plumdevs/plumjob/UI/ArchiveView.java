@@ -14,13 +14,26 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 
+
+import com.plumdevs.plumjob.UI.component.StickyAdBar;
+import com.plumdevs.plumjob.service.TagService;
+import com.vaadin.flow.spring.security.AuthenticationContext;
+
+
+
+
+
 @PermitAll
 
 @PageTitle("Plum Job - Archive")
 @Route(value="archive", layout = MainLayout.class)
 public class ArchiveView extends VerticalLayout {
 
-    ArchiveView(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository) {
+    ArchiveView(UserInfoRepository userInfoRepository,
+                PositionsRepository positionsRepository,
+                TagService tagService,
+                AuthenticationContext authContext)
+    {
         System.out.println("Archive");
         H2 title = new H2("Archive recruitments");
 
@@ -45,5 +58,9 @@ public class ArchiveView extends VerticalLayout {
         add(top);
 
         add(grid);
+
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext);
+        add(adBar);
+
     }
 }

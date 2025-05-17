@@ -71,6 +71,10 @@ public class MainLayout extends AppLayout {
                 ArticlesView.class);
         nav.addItem(articlesLink);
 
+        SideNavItem profileLink = new SideNavItem("Your Profile",
+                UserProfileView.class);
+        nav.addItem(profileLink);
+
         SideNavItem aboutLink = new SideNavItem("About",
                 AboutView.class);
         nav.addItem(aboutLink);
