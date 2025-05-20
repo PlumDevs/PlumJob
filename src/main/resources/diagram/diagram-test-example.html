@@ -1,0 +1,67 @@
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['sankey']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'From');
+          data.addColumn('string', 'To');
+          data.addColumn('number', 'Weight');
+
+          data.addRows([
+            [ 'Applications', 'Interviews', 10 ],
+            [ 'Applications', 'Rejected', 30 ],
+            [ 'Applications', 'No answer', 10 ],
+            [ 'Interviews', 'Offers', 5 ],
+            [ 'Interviews', 'Rejected', 5 ],
+            [ 'Offers', 'Accepted', 1 ],
+            [ 'Offers', 'Declined', 4 ]
+          ]);
+
+          var colors = ['#730D3F', '#941f58', '#c43f80', '#e065a1', '#d799ae'];
+
+
+          // Sets chart options.
+          var options = {
+          width: 1000,
+          sankey: {
+            node: {
+              colors: colors,
+              nodePadding: 120
+            },
+            link: {
+                color: {
+                    fill: colors[4],
+                    strokeWidth: 1
+                },
+            },
+          }
+        };
+
+
+
+          // Instantiates and draws our chart, passing in some options.
+          var chart = new google.visualization.Sankey(document.getElementById('sankey_basic'));
+          chart.draw(data, options);
+        }
+
+        //var date = new Date();
+    </script>
+</head>
+<body>
+<center><div id="content">
+    <span style="font-family: 'Titillium Web', sans-serif; font-weight: 50;"><h3>Your job search summarized :)</h3></span>
+    <div id="sankey_basic" style="width: 900px; height: 500px;"></div></div>
+</center>
+
+
+</body>
+</html>
+
