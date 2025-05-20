@@ -32,6 +32,7 @@ public class RegisterView extends VerticalLayout {
         Image logo = new Image("https://raw.githubusercontent.com/PlumDevs/PlumJob/refs/heads/master/src/main/resources/META-INF/resources/img/logo.png", "Plum");
         logo.setWidth(180, Unit.PIXELS);
         logo.setHeight(70, Unit.PIXELS);
+        //logo.setId("logo");
         add(logo);
 
         setSizeFull();
@@ -39,12 +40,18 @@ public class RegisterView extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.CENTER);
 
         TextField firstNameField = new TextField("First Name");
+        //firstNameField.setId("firstName");
         TextField lastNameField = new TextField("Last Name");
+        //lastNameField.setId("lastName");
         EmailField emailAddressField = new EmailField("E-mail");
+        //emailAddressField.setId("email");
         TextField usernameField = new TextField("Username");
+        //usernameField.setId("username");
         PasswordField passwordField = new PasswordField("Password");
+        //passwordField.setId("password");
         Button registerButton = new Button("Register");
-
+        //registerButton.setId("register-btn");
+        //addClassName("register-view");
         registerButton.addClassName("plum-button");
 
         registerButton.addClickListener(e -> {
@@ -83,11 +90,13 @@ public class RegisterView extends VerticalLayout {
             //TODO: HERE AND IN LOGIN, ADD PASSWORD ENCODER
 
             Notification.show("Registration successful!", 3000, Notification.Position.MIDDLE);
+            //Notification.show("Registration successful!", 3000, Notification.Position.MIDDLE).getElement().setAttribute("id", "success-msg");
             getUI().ifPresent(ui -> ui.navigate("login"));
         });
 
 
         H2 registerTitle = new H2("Register");
+        //registerTitle.setId("register-title");
         add(registerTitle);
 
         firstNameField.setWidth("200px");
@@ -95,6 +104,7 @@ public class RegisterView extends VerticalLayout {
 
         HorizontalLayout nameLayout = new HorizontalLayout(firstNameField, lastNameField);
         nameLayout.setSpacing("15px");
+        //nameLayout.setId("name-layout");
 
         add(nameLayout);
 
@@ -106,10 +116,12 @@ public class RegisterView extends VerticalLayout {
 
         HorizontalLayout passwordLayout = new HorizontalLayout(usernameField, passwordField);
         passwordLayout.setSpacing("15px");
+        //passwordLayout.setId("password-layout");
 
         add(passwordLayout);
 
         Button loginButton = new Button("Back to login");
+        //loginButton.setId("login-btn");
         loginButton.addClassName("plum-text");
 
         RouterLink routerLink = new RouterLink("", LoginView.class);
@@ -117,6 +129,7 @@ public class RegisterView extends VerticalLayout {
 
         HorizontalLayout buttonLayout = new HorizontalLayout(routerLink, registerButton);
         buttonLayout.setSpacing(true);
+        //buttonLayout.setId("button-layout");
 
         add(buttonLayout);
 

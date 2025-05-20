@@ -43,9 +43,15 @@ public class SecurityConfig extends VaadinWebSecurity {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl(System.getenv("DB_URL"));
-        dataSource.setUsername(System.getenv("DB_USER"));
-        dataSource.setPassword(System.getenv("DB_PASSWORD"));
+        dataSource.setUrl("jdbc:mysql://localhost:3306/Plum");
+        dataSource.setUsername("root");
+        dataSource.setPassword("Crash1234#");
+        //dataSource.setUrl("jdbc:mysql://database-2.cfosus26aipm.eu-north-1.rds.amazonaws.com/plum_test");
+        //dataSource.setUsername("plum_user_1");
+        //dataSource.setPassword("s&H2Lp-q$aaWr");
+        //dataSource.setUrl(System.getenv("DB_URL"));
+        //dataSource.setUsername(System.getenv("DB_USER"));
+        //dataSource.setPassword(System.getenv("DB_PASSWORD"));
 
         return dataSource;
     }
