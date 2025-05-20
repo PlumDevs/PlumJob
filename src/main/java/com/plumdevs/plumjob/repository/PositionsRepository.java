@@ -38,7 +38,7 @@ public interface PositionsRepository extends JpaRepository<RecruitmentItem, Long
 
     @Transactional
     @Modifying
-    @Query(value = "CALL sp_updateStatus(:hi story_id, :stage);", nativeQuery = true)
+    @Query(value = "CALL sp_updateStatus(:history_id, :stage);", nativeQuery = true)
     void updateStatus(
             @Param("history_id") int history_id,
             @Param("stage") String stage
