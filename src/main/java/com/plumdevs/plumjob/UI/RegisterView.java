@@ -77,21 +77,29 @@ public class RegisterView extends VerticalLayout {
                 return;
             }
 
+            //correct email validation
+            if (!email.isEmpty() && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+([.com]|[.pl])$")) {
+                UserDetails user = User.withUsername(username)
+                        //.password(passwordEncoder.encode(password))
+                        .password("{noop}" + password)
+                        .roles("USER")
+                        .build();
+                userDetailsManager.createUser(user);
 
-            UserDetails user = User.withUsername(username)
-                    //.password(passwordEncoder.encode(password))
-                    .password("{noop}" + password)
-                    .roles("USER")
-                    .build();
-            userDetailsManager.createUser(user);
+                userService.addUserInfo(username, firstName, lastName, email);
 
-            userService.addUserInfo(username, firstName, lastName, email);
+                //TODO: HERE AND IN LOGIN, ADD PASSWORD ENCODER
 
-            //TODO: HERE AND IN LOGIN, ADD PASSWORD ENCODER
+                Notification.show("Registration successful!", 3000, Notification.Position.MIDDLE);
+                //Notification.show("Registration successful!", 3000, Notification.Position.MIDDLE).getElement().setAttribute("id", "success-msg");
+                getUI().ifPresent(ui -> ui.navigate("login"));
+            }
 
-            Notification.show("Registration successful!", 3000, Notification.Position.MIDDLE);
-            //Notification.show("Registration successful!", 3000, Notification.Position.MIDDLE).getElement().setAttribute("id", "success-msg");
-            getUI().ifPresent(ui -> ui.navigate("login"));
+            else {
+                Notification.show("Incorrect email!", 3000, Notification.Position.MIDDLE);
+
+            }
+
         });
 
 
@@ -134,5 +142,6 @@ public class RegisterView extends VerticalLayout {
         add(buttonLayout);
 
     }
+
 
 }

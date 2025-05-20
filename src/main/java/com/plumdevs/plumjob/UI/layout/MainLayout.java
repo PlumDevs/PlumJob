@@ -97,7 +97,7 @@ public class MainLayout extends AppLayout {
         Button logoutButton = new Button("Logout", e -> {
             new SecurityContextLogoutHandler().logout(request, response, null);
             getUI().ifPresent(ui -> ui.getPage().setLocation("/logout"));
-        });
+        }); //TODO: Show only when logged in
 
         logoutButton.addClassName("transparent-button");
         header.add(logoutButton);
