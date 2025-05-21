@@ -1,6 +1,7 @@
 package com.plumdevs.plumjob.service;
 
 import com.plumdevs.plumjob.repository.UserInfoRepository;
+import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,6 @@ public class UserService {
 
     @Autowired
     UserInfoRepository userInfoRepository;
-    JdbcUserDetailsManager userDetailsManager;
 
     public Integer emailExists(String email) {
         return userInfoRepository.emailExists(email);
@@ -23,6 +23,11 @@ public class UserService {
     }
 
     //TODO; figure out and transition to services
+
+    /*public boolean isLoggedIn() {
+
+        return authContext.getPrincipalName().orElse(null) != null;
+    }
     public String getUsername(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -32,4 +37,6 @@ public class UserService {
             return principal.toString();
         }
     }
+
+     */
 }

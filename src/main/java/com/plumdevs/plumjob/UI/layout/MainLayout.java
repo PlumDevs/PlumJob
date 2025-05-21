@@ -30,7 +30,7 @@ public class MainLayout extends AppLayout {
 
 
 
-    public MainLayout(HttpServletRequest request, HttpServletResponse response) {
+    public MainLayout(HttpServletRequest request, HttpServletResponse response, AuthenticationContext authContext) {
 
         //Header
         HorizontalLayout header = new HorizontalLayout();
@@ -94,12 +94,36 @@ public class MainLayout extends AppLayout {
         footer.addClassName("footer");
         addToDrawer(footer);
 
-        Button logoutButton = new Button("Logout", e -> {
-            new SecurityContextLogoutHandler().logout(request, response, null);
-            getUI().ifPresent(ui -> ui.getPage().setLocation("/logout"));
-        }); //TODO: Show only when logged in
+        Button authButton = getButton(request, response, authContext);
+        header.add(authButton);
 
-        logoutButton.addClassName("transparent-button");
-        header.add(logoutButton);
+    }
+
+    private Button getButton(HttpServletRequest request, HttpServletResponse response, AuthenticationContext authContext) {
+
+        String username = authContext.getPrincipalName().orElse(null); // TODO: Consider moving this logic to a UserService
+        Button authButton;
+
+
+        if (username == null) {
+
+            authButton = new Button("Login");
+            authButton.addClickListener(e -> {
+                new SecurityContextLogoutHandler().logout(request, response, null);
+                getUI().ifPresent(ui -> ui.getPage().setLocation("/login"));
+            });
+        }
+
+        else {
+
+            authButton = new Button("Logout");
+            authButton.addClickListener(e -> {
+                new SecurityContextLogoutHandler().logout(request, response, null);
+                getUI().ifPresent(ui -> ui.getPage().setLocation("/logout"));
+            });
+        }
+
+        authButton.addClassName("transparent-button");
+        return authButton;
     }
 }
