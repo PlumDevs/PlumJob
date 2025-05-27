@@ -1,6 +1,7 @@
 package com.plumdevs.plumjob.UI;
 
 import com.plumdevs.plumjob.service.TagService;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,7 +29,7 @@ public class UserProfileView extends VerticalLayout {
     private final TagService tagService;
     private final AuthenticationContext authContext;
 
-    public UserProfileView(TagService tagService, AuthenticationContext authContext) {
+    public UserProfileView(TagService tagService, AuthenticationContext authContext, UserService userService) {
         this.tagService = tagService;
         this.authContext = authContext;
 
@@ -58,7 +59,7 @@ public class UserProfileView extends VerticalLayout {
         Span currentPreferencesLabel = new Span();
         currentPreferencesLabel.getStyle().set("margin-top", "20px");
 
-        String username = authContext.getPrincipalName().orElse(null);
+        String username = userService.getUsername();//authContext.getPrincipalName().orElse(null);
         if (username != null) {
             String savedIndustry = tagService.getTagValueForType(username, "industry");
             String savedExperience = tagService.getTagValueForType(username, "experience");
@@ -100,7 +101,7 @@ public class UserProfileView extends VerticalLayout {
 
         add(industryComboBox, experienceComboBox, saveButton, currentPreferencesLabel);
 
-        StickyAdBar adBar = new StickyAdBar(tagService, authContext);
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
         add(adBar);
     }
 }

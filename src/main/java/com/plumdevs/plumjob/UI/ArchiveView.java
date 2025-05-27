@@ -4,6 +4,7 @@ import com.plumdevs.plumjob.UI.component.PositionsGrid;
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.repository.PositionsRepository;
 import com.plumdevs.plumjob.repository.UserInfoRepository;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H2;
@@ -32,7 +33,8 @@ public class ArchiveView extends VerticalLayout {
     ArchiveView(UserInfoRepository userInfoRepository,
                 PositionsRepository positionsRepository,
                 TagService tagService,
-                AuthenticationContext authContext)
+                AuthenticationContext authContext,
+                UserService userService)
     {
         System.out.println("Archive");
         H2 title = new H2("Archive recruitments");
@@ -64,7 +66,7 @@ public class ArchiveView extends VerticalLayout {
 
         add(grid);
 
-        StickyAdBar adBar = new StickyAdBar(tagService, authContext);
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
         add(adBar);
 
     }

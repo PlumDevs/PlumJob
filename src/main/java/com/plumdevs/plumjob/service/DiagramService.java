@@ -1,19 +1,11 @@
 package com.plumdevs.plumjob.service;
 
-import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.entity.DiagramLink;
 import com.plumdevs.plumjob.repository.DiagramRepository;
-import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service

@@ -5,6 +5,7 @@ import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.entity.RecruitmentItem;
 import com.plumdevs.plumjob.repository.PositionsRepository;
 import com.plumdevs.plumjob.repository.UserInfoRepository;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
@@ -29,7 +30,7 @@ import java.util.List;
 @Route(value="active", layout = MainLayout.class)
 @RouteAlias(value="/")
 public class ActiveView extends VerticalLayout {
-    ActiveView(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository, TagService tagService, AuthenticationContext authContext) {
+    ActiveView(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository, TagService tagService, AuthenticationContext authContext, UserService userService) {
         System.out.println("Active recruitments");
 
         H2 title = new H2("Active recruitments");
@@ -64,7 +65,7 @@ public class ActiveView extends VerticalLayout {
         add(top);
         add(grid);
 
-        StickyAdBar adBar = new StickyAdBar(tagService, authContext);
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
         add(adBar);
     }
 }

@@ -1,6 +1,7 @@
 package com.plumdevs.plumjob.UI.component;
 
 import com.plumdevs.plumjob.service.TagService;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
@@ -25,7 +26,7 @@ public class StickyAdBar extends Div {
 
     private int currentAdIndex = 0;
 
-    public StickyAdBar(TagService tagService, AuthenticationContext authContext) {
+    public StickyAdBar(TagService tagService, AuthenticationContext authContext, UserService userService) {
         setStyle();
 
         adsByIndustry.put("Software Development", Arrays.asList(
@@ -105,7 +106,7 @@ public class StickyAdBar extends Div {
                 new AdImage("/images/pracuj_pl_ad_3.png", "https://www.pracuj.pl/praca/software%20developer;kw")
         );
 
-        String username = authContext.getPrincipalName().orElse(null); //TODO: MAYBE REPLACE BY USER SERVICE METHOD CALL?
+        String username = userService.getUsername(); //authContext.getPrincipalName().orElse(null); //TODO: MAYBE REPLACE BY USER SERVICE METHOD CALL?
         List<AdImage> userAds = defaultAds;
         if (username != null) {
             String industry = tagService.getTagValueForType(username, "industry");

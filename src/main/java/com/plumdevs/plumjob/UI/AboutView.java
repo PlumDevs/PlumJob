@@ -3,6 +3,7 @@ package com.plumdevs.plumjob.UI;
 import ch.qos.logback.core.pattern.SpacePadder;
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.service.ArticleService;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -27,7 +28,7 @@ public class AboutView extends VerticalLayout {
     public int AVATAR_SIZE = 70;
     public int BOX_SIZE = 150;
 
-    AboutView( TagService tagService, AuthenticationContext authContext) throws IOException {
+    AboutView(TagService tagService, AuthenticationContext authContext, UserService userService) throws IOException {
         System.out.println("About");
         add(new H2("Have you ever felt like looking for a job is more stressful than the actual work?"));
 
@@ -50,7 +51,7 @@ public class AboutView extends VerticalLayout {
 
         add(team);
 
-        StickyAdBar adBar = new StickyAdBar(tagService, authContext);
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
         add(adBar);
 
     }

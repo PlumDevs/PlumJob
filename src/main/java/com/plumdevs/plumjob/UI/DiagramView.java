@@ -4,6 +4,7 @@ import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.entity.DiagramLink;
 import com.plumdevs.plumjob.repository.DiagramRepository;
 import com.plumdevs.plumjob.service.DiagramService;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
@@ -27,7 +28,7 @@ import java.util.List;
 public class DiagramView extends VerticalLayout {
 
 
-    public DiagramView(DiagramRepository diagramRepository) {
+    public DiagramView(DiagramRepository diagramRepository, UserService userService) {
         //todo: rethink the diagram type - when it comes to job search timerframe?
         //or just take a cap always from one before last accepted offer (not including) to last accepted offer (defined job search frame), like defined boxes, whole db divided to searches, and the user can choose only from those calculated timeframes :))
         //therefore, we avoid diagrams that do not make sense or generation errors!!!
@@ -61,7 +62,10 @@ public class DiagramView extends VerticalLayout {
 
         //List<DiagramLink> links = diagramService.getLinksForUser((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
 
-        List<DiagramLink> links = diagramRepository.callDiagramLinkProcedure("diagramTester1");
+        List<DiagramLink> links = diagramRepository.callDiagramLinkProcedure(userService.getUsername());
+
+
+        //List<DiagramLink> links = diagramRepository.callDiagramLinkProcedure("diagramTester1");
 
         DiagramService diagramService = new DiagramService(links);
 
