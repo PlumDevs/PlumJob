@@ -34,6 +34,7 @@ public class LoginView extends VerticalLayout {
         login.setAction("login");
         login.setForgotPasswordButtonVisible(false);
         add(login);
+        //TODO: ERROR MESSAGE WHEN INCORRECT CREDENTIALS
 
         Button registerButton = new Button("Register");
         //registerButton.setId("register-btn");

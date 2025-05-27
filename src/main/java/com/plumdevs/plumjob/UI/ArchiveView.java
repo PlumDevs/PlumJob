@@ -37,6 +37,11 @@ public class ArchiveView extends VerticalLayout {
         System.out.println("Archive");
         H2 title = new H2("Archive recruitments");
 
+        Button generateDiagram = new Button("Generate diagram"); //TODO TIMEFRAME CHOICE & DB
+        generateDiagram.addClassName("plum-button");
+        generateDiagram.addClickListener(buttonClickEvent -> getUI().ifPresent(ui ->
+                ui.navigate("diagram")));
+
         PositionsGrid grid = new PositionsGrid(userInfoRepository, positionsRepository, false);
 
         ComboBox<String> stageFilter = new ComboBox<>();
@@ -53,7 +58,7 @@ public class ArchiveView extends VerticalLayout {
             grid.filterByStage(selected);
         });
 
-        HorizontalLayout top = new HorizontalLayout(title, stageFilter);
+        HorizontalLayout top = new HorizontalLayout(title, stageFilter, generateDiagram);
         top.setWidthFull();
         add(top);
 
