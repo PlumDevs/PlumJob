@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -31,5 +32,35 @@ public class UserService {
         } else {
             return principal.toString();
         }
+    }
+
+    public String getUserFirstName(String username) {
+        return userInfoRepository.getUserFirstNameByUsername(username);
+    }
+
+    public String getUserLastName(String username) {
+        return userInfoRepository.getUserLastNameByUsername(username);
+    }
+
+
+    public String getUserEmail(String username) {
+        return userInfoRepository.getUserEmailByUsername(username);
+    }
+
+    @Transactional
+    public void updateProfilePicture(String username, byte[] profilePicture, String profilePictureType) {
+        userInfoRepository.updateProfilePicture(username, profilePicture, profilePictureType);
+    }
+
+    public byte[] getProfilePicture(String username) {
+        return userInfoRepository.findProfilePictureByUsername(username);
+    }
+
+    public String getProfilePictureType(String username) {
+        return userInfoRepository.findProfilePictureTypeByUsername(username);
+    }
+
+    public boolean userExists(String username) {
+        return userInfoRepository.findUsername(username) != null;
     }
 }

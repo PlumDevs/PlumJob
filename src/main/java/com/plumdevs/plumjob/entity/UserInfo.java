@@ -18,6 +18,14 @@ public class UserInfo {
     @Column
     String email;
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "profile_picture", columnDefinition = "LONGBLOB")
+    private byte[] profilePicture;
+
+    @Column(name = "profile_picture_type", length = 50)
+    private String profilePictureType;
+
     public String getUsername() {
         return username;
     }
@@ -49,4 +57,12 @@ public class UserInfo {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public byte[] getProfilePicture() { return profilePicture; }
+
+    public void setProfilePicture(byte[] profilePicture) { this.profilePicture = profilePicture; }
+
+    public String getProfilePictureType() { return profilePictureType; }
+
+    public void setProfilePictureType(String profilePictureType) { this.profilePictureType = profilePictureType; }
 }
