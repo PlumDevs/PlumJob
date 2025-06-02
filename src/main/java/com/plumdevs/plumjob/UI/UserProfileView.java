@@ -1,51 +1,16 @@
 package com.plumdevs.plumjob.UI;
 
-import com.plumdevs.plumjob.entity.Event;
-import com.plumdevs.plumjob.repository.EventRepository;
-
 import com.plumdevs.plumjob.service.UserService;
-
-import com.plumdevs.plumjob.service.TagService;
-
 import com.plumdevs.plumjob.UI.component.StickyAdBar;
-
+import com.plumdevs.plumjob.service.TagService;
 import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.plumdevs.plumjob.UI.layout.MainLayout;
-import com.vaadin.flow.component.Component;
-
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.service.TagService;
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
-
-import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.datetimepicker.DateTimePicker;
-import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.spring.security.AuthenticationContext;
-import jakarta.annotation.security.PermitAll;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
-import com.plumdevs.plumjob.UI.component.Calendar;
-
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
@@ -86,16 +51,16 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 
-
 @PermitAll
 @PageTitle("Plum Job - User Profile")
 @Route(value = "profile", layout = MainLayout.class)
 public class UserProfileView extends VerticalLayout {
-    private final TagService tagService;
-    private final AuthenticationContext authContext;
+
+    private TagService tagService;
+    private AuthenticationContext authContext;
     private Image profileImage;
     private String username;
-    private final UserService userService;
+    private UserService userService;
     private Span currentPreferencesLabel;
     private Span profileStatsSpan;
     private VerticalLayout skillsList;
@@ -121,11 +86,7 @@ public class UserProfileView extends VerticalLayout {
     );
 
 
-    public UserProfileView(TagService tagService,
-                           AuthenticationContext authContext,
-                           EventRepository eventRepository,
-                           UserService userService) {
-
+    public UserProfileView(TagService tagService, AuthenticationContext authContext, UserService userService) {
         this.tagService = tagService;
         this.authContext = authContext;
         this.userService = userService;
@@ -169,7 +130,7 @@ public class UserProfileView extends VerticalLayout {
         mainContainer.add(twoColumnLayout);
         add(mainContainer);
 
-        add(new StickyAdBar(tagService, authContext));
+        add(new StickyAdBar(tagService, authContext, userService));
     }
 
     private void createHeader() {
@@ -264,22 +225,6 @@ public class UserProfileView extends VerticalLayout {
                 .set("font-weight", "600")
                 .set("text-shadow", "0 0 10px rgba(115, 13, 63, 0.1)");
 
-        add(createProfileSection());
-        add(new StickyAdBar(tagService, authContext));
-        add(new Calendar(eventRepository, authContext));
-    }
-
-    private Component createProfileSection() {
-        VerticalLayout profileSection = new VerticalLayout();
-        profileSection.add(new H2("Your Profile"));
-
-        ComboBox<String> industryComboBox = new ComboBox<>("Interested Industry");
-        industryComboBox.setItems(
-                "Software Development", "Data Science", "Cybersecurity",
-                "Product Management", "UI/UX Design", "Cloud Engineering",
-                "Project Management", "QA / Testing"
-        );
-
         cardHeader.add(cardTitle);
         card.add(cardHeader);
 
@@ -306,7 +251,6 @@ public class UserProfileView extends VerticalLayout {
         industryComboBox.setItems(industries);
         industryComboBox.setWidthFull();
 
-
         ComboBox<String> experienceComboBox = new ComboBox<>("Experience Level");
         experienceComboBox.setItems("Student", "Junior", "Mid-Level", "Senior", "Lead", "Manager");
         experienceComboBox.setWidthFull();
@@ -329,19 +273,10 @@ public class UserProfileView extends VerticalLayout {
             String savedIndustry = tagService.getTagValueForType(username, "industry");
             String savedExperience = tagService.getTagValueForType(username, "experience");
 
-
-            industryComboBox.setValue(savedIndustry);
-            experienceComboBox.setValue(savedExperience);
-
-            currentPreferencesLabel.setText("Your current preferences: " +
-                    (savedIndustry != null ? savedIndustry : "No industry") + " / " +
-                    (savedExperience != null ? savedExperience : "No experience level"));
-
             if (savedIndustry != null) industryComboBox.setValue(savedIndustry);
             if (savedExperience != null) experienceComboBox.setValue(savedExperience);
 
             updatePreferencesLabel(savedIndustry, savedExperience);
-
         }
 
         Button saveButton = new Button("Save Preferences", VaadinIcon.CHECK.create());
@@ -364,23 +299,6 @@ public class UserProfileView extends VerticalLayout {
             }
             tagService.assignTagToUser(username, "industry:" + industry);
             tagService.assignTagToUser(username, "experience:" + experience);
-
-            Notification.show("Preferences saved!");
-            currentPreferencesLabel.setText("Your current preferences: " + industry + " / " + experience);
-        });
-
-
-        profileSection.add(industryComboBox, experienceComboBox, saveButton, currentPreferencesLabel);
-        return profileSection;
-
-        add(industryComboBox, experienceComboBox, saveButton, currentPreferencesLabel);
-
-        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
-        add(adBar);
-
-    }
-}
-
 
             Notification.show("Preferences saved successfully!");
             updatePreferencesLabel(industry, experience);
@@ -1518,10 +1436,9 @@ public class UserProfileView extends VerticalLayout {
             this.totalSkills = totalSkills;
         }
 
-        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
-        add(adBar);
+        //StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
+        //add(adBar);
 
     }
 }
-
 
