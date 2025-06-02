@@ -2,6 +2,7 @@ package com.plumdevs.plumjob.UI;
 
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.service.ArticleService;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
@@ -24,7 +25,7 @@ import com.vaadin.flow.spring.security.AuthenticationContext;
 public class CVBuilderView extends VerticalLayout {
 
     private final ArticleService articleService = new ArticleService();
-    CVBuilderView( TagService tagService, AuthenticationContext authContext ) {
+    CVBuilderView(TagService tagService, AuthenticationContext authContext, UserService userService) {
         System.out.println("CV Builder");
         add(new H2("Create your own resume!"));
         add(new Paragraph("With our custom, ATS-friendly templates catching a recruiter's eye will be a breeze! Just choose one below and use our built-in editor to get the resume of your dreams."));
@@ -75,7 +76,7 @@ public class CVBuilderView extends VerticalLayout {
 
        //add(articleService.createArticleThumbnail("resume", "Crafting a Standout Tech CV"));
 
-        StickyAdBar adBar = new StickyAdBar(tagService, authContext);
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
         add(adBar);
     }
 }

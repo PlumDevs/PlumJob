@@ -30,7 +30,7 @@ public class MainLayout extends AppLayout {
 
 
 
-    public MainLayout(HttpServletRequest request, HttpServletResponse response) {
+    public MainLayout(HttpServletRequest request, HttpServletResponse response, AuthenticationContext authContext) {
 
         //Header
         HorizontalLayout header = new HorizontalLayout();
@@ -56,46 +56,34 @@ public class MainLayout extends AppLayout {
         // #### navigation items ####
 
         SideNavItem activeLink = new SideNavItem("Active recruitments",
-                ActiveView.class);
+                ActiveView.class, VaadinIcon.BULLETS.create());
         nav.addItem(activeLink);
 
         SideNavItem archiveLink = new SideNavItem("Archive",
-                ArchiveView.class);
+                ArchiveView.class, VaadinIcon.ARCHIVE.create());
         nav.addItem(archiveLink);
 
         SideNavItem CVBuilderLink = new SideNavItem("CV Builder",
-                CVBuilderView.class);
+                CVBuilderView.class, VaadinIcon.EDIT.create());
         nav.addItem(CVBuilderLink);
 
         SideNavItem articlesLink = new SideNavItem("Tips",
-                ArticlesView.class);
+                ArticlesView.class, VaadinIcon.BOOK.create());
         nav.addItem(articlesLink);
 
-        SideNavItem profileLink = new SideNavItem("Your Profile",
-                UserProfileView.class);
-        nav.addItem(profileLink);
-
         SideNavItem aboutLink = new SideNavItem("About",
-                AboutView.class);
+                AboutView.class, VaadinIcon.QUESTION_CIRCLE.create());
         nav.addItem(aboutLink);
 
-        /*
-        SideNavItem logoutLink = new SideNavItem("Logout",
-                LogoutView.class);
-        nav.addItem(logoutLink);
 
-         */
+        SideNavItem profileLink = new SideNavItem("Your profile",
+                UserProfileView.class, VaadinIcon.USER.create());
+        nav.addItem(profileLink);
+
 
         // #### end navigation links ####
 
         setPrimarySection(Section.DRAWER);
-
-        //TODO: pageTitle from @PageTitle
-
-        //TODO: (Stage 2 task) Place adds in the MainLayout (here) and in separate file contain logic to make them work
-
-
-        //TODO: This is how you do a todo
 
         HorizontalLayout footer = new HorizontalLayout();
 
@@ -106,13 +94,36 @@ public class MainLayout extends AppLayout {
         footer.addClassName("footer");
         addToDrawer(footer);
 
-        Button logoutButton = new Button("Logout", e -> {
-            new SecurityContextLogoutHandler().logout(request, response, null);
-            getUI().ifPresent(ui -> ui.getPage().setLocation("/logout"));
-        });
+        Button authButton = getButton(request, response, authContext);
+        header.add(authButton);
 
-        logoutButton.addClassName("transparent-button");
-        header.add(logoutButton);
     }
 
+    private Button getButton(HttpServletRequest request, HttpServletResponse response, AuthenticationContext authContext) {
+
+        String username = authContext.getPrincipalName().orElse(null); // TODO: Consider moving this logic to a UserService
+        Button authButton;
+
+
+        if (username == null) {
+
+            authButton = new Button("Login");
+            authButton.addClickListener(e -> {
+                new SecurityContextLogoutHandler().logout(request, response, null);
+                getUI().ifPresent(ui -> ui.getPage().setLocation("/login"));
+            });
+        }
+
+        else {
+
+            authButton = new Button("Logout");
+            authButton.addClickListener(e -> {
+                new SecurityContextLogoutHandler().logout(request, response, null);
+                getUI().ifPresent(ui -> ui.getPage().setLocation("/logout"));
+            });
+        }
+
+        authButton.addClassName("transparent-button");
+        return authButton;
+    }
 }

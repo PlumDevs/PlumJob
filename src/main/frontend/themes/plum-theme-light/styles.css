@@ -5,6 +5,7 @@ html, :host { /* default styling colors ovewriting */
     --lumo-secondary-text-color: #730D3F;
 }
 
+
 vaadin-side-nav-item[current]{
     --lumo-primary-color-10pct: #730D3F;
 }
@@ -19,7 +20,7 @@ vaadin-side-nav-item[current]{
     color: #730D3F;
 }
 
-vaadin-side-nav-item {
+vaadin-side-nav-item, vaadin-side-nav-item > [slot="prefix"] {
     color: #730D3F;
 }
 
@@ -28,7 +29,7 @@ vaadin-side-nav-item[current] {
     color: white;
 }
 
-vaadin-side-nav-item[current]::part(link) {
+vaadin-side-nav-item[current]::part(link), vaadin-side-nav-item[current] > [slot="prefix"]  {
     color: white;
 }
 
@@ -66,6 +67,10 @@ vaadin-grid::part(selected-row-cell), vaadin-grid::part(header-cell), vaadin-gri
 
 vaadin-grid::part(row):hover {
     --vaadin-grid-cell-background: #fcedf5;
+}
+
+vaadin-grid::part(body-cell):hover, vaadin-button:hover {
+  cursor: pointer;
 }
 
 .status-green {

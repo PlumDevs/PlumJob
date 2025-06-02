@@ -2,6 +2,10 @@ package com.plumdevs.plumjob.UI;
 
 import com.plumdevs.plumjob.service.UserService;
 import com.plumdevs.plumjob.UI.component.StickyAdBar;
+import com.plumdevs.plumjob.service.TagService;
+import com.plumdevs.plumjob.service.UserService;
+import com.vaadin.flow.spring.security.AuthenticationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.service.TagService;
 import com.vaadin.flow.component.button.Button;
@@ -260,6 +264,10 @@ public class UserProfileView extends VerticalLayout {
                 .set("border-left", "4px solid #730D3F")
                 .set("font-size", "0.9rem")
                 .set("box-shadow", "0 0 15px rgba(115, 13, 63, 0.1)");
+
+
+
+        String username = userService.getUsername();//authContext.getPrincipalName().orElse(null);
 
         if (username != null) {
             String savedIndustry = tagService.getTagValueForType(username, "industry");
@@ -1427,6 +1435,10 @@ public class UserProfileView extends VerticalLayout {
             this.matchingSkills = matchingSkills;
             this.totalSkills = totalSkills;
         }
+
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
+        add(adBar);
+
     }
 }
 

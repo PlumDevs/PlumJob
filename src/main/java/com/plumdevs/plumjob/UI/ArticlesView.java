@@ -2,6 +2,7 @@ package com.plumdevs.plumjob.UI;
 
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.service.ArticleService;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.card.Card;
@@ -34,7 +35,7 @@ public class ArticlesView extends VerticalLayout {
 
     private final ArticleService articleService = new ArticleService();
 
-    ArticlesView( TagService tagService, AuthenticationContext authContext ) throws IOException {
+    ArticlesView(TagService tagService, AuthenticationContext authContext, UserService userService) throws IOException {
         System.out.println("Articles/Tips");
         add(new H2("Read articles by recruiters from top companies"));
         setWidthFull();
@@ -45,7 +46,7 @@ public class ArticlesView extends VerticalLayout {
         add(articleService.createArticleThumbnail("jobhunt", "Mastering the Tech Job Hunt"));
         add(articleService.createArticleThumbnail("portfolio", "Building a Portfolio That Gets Interviews"));
 
-        StickyAdBar adBar = new StickyAdBar(tagService, authContext);
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
         add(adBar);
     }
 }

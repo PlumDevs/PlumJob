@@ -4,6 +4,7 @@ import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.repository.PositionsRepository;
 import com.plumdevs.plumjob.repository.UserInfoRepository;
 import com.plumdevs.plumjob.service.ArticleService;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -19,8 +20,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,7 +30,7 @@ import java.util.List;
 public class AddPositionView extends VerticalLayout {
 
     private final ArticleService articleService = new ArticleService();
-    AddPositionView(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository){
+    AddPositionView(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository, UserService userService){
 
         H2 title = new H2("Add new position");
         Paragraph paragraph = new Paragraph("Enter information about the job posting below.");
@@ -144,13 +143,14 @@ public class AddPositionView extends VerticalLayout {
             LocalDate date = datePicker.getValue();
 
 
-            positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, date, status, description, ifEnded(status));
+            //positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, date, status, description, ifEnded(status));
+            positionsRepository.addPosition(userService.getUsername(), position, company, date, status, description, ifEnded(status));
 
             Notification.show("Position added successfully", 3000, Notification.Position.MIDDLE);
 
         });
 
-
+        // TODO: IF OTHER STATUS THAN APPLIED, ADD OTHER STATUSES AUTOMATICALLY? (THE BEFORE STATUSES, SO THAT THE DIAGRAM IS CREATED CORRECTLY? AND THE DATES WILL BE JUST TAKEN ONLY FROM RECRUITMENTHISTORY NOT STATUSES (NULL/SAME AS CREATION)
     }
 
     private static int getStatusNumber(String status) {

@@ -1,6 +1,7 @@
-package com.plumdevs.plumjob.repository;
+package com.plumdevs.plumjob.service;
 
 import com.plumdevs.plumjob.entity.RecruitmentItem;
+import com.plumdevs.plumjob.repository.PositionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

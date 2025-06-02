@@ -4,6 +4,7 @@ import com.plumdevs.plumjob.UI.component.PositionsGrid;
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.plumdevs.plumjob.repository.PositionsRepository;
 import com.plumdevs.plumjob.repository.UserInfoRepository;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H2;
@@ -32,10 +33,16 @@ public class ArchiveView extends VerticalLayout {
     ArchiveView(UserInfoRepository userInfoRepository,
                 PositionsRepository positionsRepository,
                 TagService tagService,
-                AuthenticationContext authContext)
+                AuthenticationContext authContext,
+                UserService userService)
     {
         System.out.println("Archive");
         H2 title = new H2("Archive recruitments");
+
+        Button generateDiagram = new Button("Generate diagram"); //TODO TIMEFRAME CHOICE & DB
+        generateDiagram.addClassName("plum-button");
+        generateDiagram.addClickListener(buttonClickEvent -> getUI().ifPresent(ui ->
+                ui.navigate("diagram")));
 
         PositionsGrid grid = new PositionsGrid(userInfoRepository, positionsRepository, false);
 
@@ -53,13 +60,13 @@ public class ArchiveView extends VerticalLayout {
             grid.filterByStage(selected);
         });
 
-        HorizontalLayout top = new HorizontalLayout(title, stageFilter);
+        HorizontalLayout top = new HorizontalLayout(title, stageFilter, generateDiagram);
         top.setWidthFull();
         add(top);
 
         add(grid);
 
-        StickyAdBar adBar = new StickyAdBar(tagService, authContext);
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
         add(adBar);
 
     }

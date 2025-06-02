@@ -1,5 +1,6 @@
 package com.plumdevs.plumjob.repository;
 
+import com.plumdevs.plumjob.entity.DiagramLink;
 import com.plumdevs.plumjob.entity.RecruitmentItem;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,14 +21,13 @@ public interface PositionsRepository extends JpaRepository<RecruitmentItem, Long
     @Query(value = "CALL sp_showUserHistory(:username, false);", nativeQuery = true)
     List<RecruitmentItem> findArchivePositions(@Param("username") String username);
 
-    /* TODO
-    @Query(value = "CALL sp_getUserStatusHistory(:username)", nativeQuery = true)
-    List<RecruitmentStatusHistory> getStatusHistories();
-     */
+    // TODO in database
+    @Query(value = "CALL sp_getDiagramContent(:username)", nativeQuery = true)
+    List<DiagramLink> getDiagramContent(@Param("username") String username);
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO RecruitmentHistory (user_id, position, company, user_start_date, stage, description, ended) VALUES(:user_id, :position_name, :company_name, :user_start_date, :stage, :description, :ended);", nativeQuery = true)
+    @Query(value = "CALL sp_addNewRecruitment(:user_id, :position_name, :company_name, :user_start_date, :stage, :description, :ended)", nativeQuery = true)
     void addPosition(@Param("user_id") String user_id, //username
                      @Param("position_name") String position,
                      @Param("company_name") String company,
@@ -43,4 +43,11 @@ public interface PositionsRepository extends JpaRepository<RecruitmentItem, Long
             @Param("history_id") int history_id,
             @Param("stage") String stage
             );
+
+    @Transactional
+    @Modifying
+    @Query(value = "CALL sp_DeleteRecruitmentRecord(:history_id);", nativeQuery = true)
+    void deletePosition(
+            @Param("history_id") int history_id
+    );
 }
