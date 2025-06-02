@@ -24,7 +24,6 @@
             margin: 10mm auto;
             width: 210mm;
             color: #000;
-        //border: 2px solid black;
         }
         input, textarea, div[contenteditable="true"] {
             font-family: 'Cormorant Garamond', serif;
@@ -40,6 +39,27 @@
             box-sizing: border-box;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            position: relative;
+        //padding-bottom: 60px;
+        }
+
+        #rodo-section-container {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            right: 1.5rem;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .contact-btn.selected {
+            background-color: #730D3F;
+            color: white;
         }
         h1 {
             margin-top: 0;
@@ -174,7 +194,7 @@
         .bullet-list { list-style: disc; margin-left: 2rem; }
         .column-layout { display: flex; gap: 3rem; }
         .left, .right { flex: 1; }
-        .strengths span, .languages span {
+        .languages span {
             display: inline-block;
             background-color: #ddd;
             padding: 0.25rem 0.5rem;
@@ -261,7 +281,7 @@
     </style>
 </head>
 <body>
-<div class="cv-container">
+<div class="cv-container" id="main-container">
     <h1><input id="name" type="text" placeholder="Your Full Name" style="font-size:40px;width:80%;border:none;text-align:center;" /></h1>
     <div class="contact-wrapper">
         <div id="contact-fields" class="contact-fields"></div>
@@ -269,11 +289,11 @@
         <div id="contact-options" class="contact-options">
             <h2>Select Your Contact Information</h2>
             <div class="buttons">
-                <button onclick="addContactField('email')" class="contact-btn">Email</button>
-                <button onclick="addContactField('phone')" class="contact-btn">Phone</button>
-                <button onclick="addContactField('address')" class="contact-btn">Address</button>
-                <button onclick="addContactField('linkedin')" class="contact-btn">LinkedIn</button>
-                <button onclick="addContactField('github')" class="contact-btn">GitHub</button>
+                <button onclick="addContactField('email')" class="contact-btn" id="email-btn">Email</button>
+                <button onclick="addContactField('phone')" class="contact-btn" id="phone-btn">Phone</button>
+                <button onclick="addContactField('address')" class="contact-btn" id="address-btn">Address</button>
+                <button onclick="addContactField('linkedin')" class="contact-btn" id="linkedin-btn">LinkedIn</button>
+                <button onclick="addContactField('github')" class="contact-btn" id="github-btn">GitHub</button>
             </div>
             <button onclick="finalizeContactFields()" class="done-btn">Done</button>
         </div>
@@ -311,13 +331,6 @@
                 <li><textarea style="border:none; width: 100%; height: 15px;" placeholder="Achievement 3"></textarea></li>
             </ul>
 
-            <h2>Strengths
-                <span class="add-button" onclick="addStrength()">➕</span>
-                <span class="delete-button" onclick="removeLast('strengths')">🗑</span>
-            </h2>
-            <div class="strengths"
-                 id="strengths"></div>
-
             <h2>Languages
                 <span class="add-button" onclick="addLanguage()">➕</span>
                 <span class="delete-button" onclick="removeLast('languages')">🗑</span>
@@ -332,104 +345,369 @@
             <div id="education-list"></div>
         </div>
     </div>
-    <div class="section">
+    <div class="section" id="rodo-section-container">
         <h2>
             <span class="add-button" onclick="addRODO()">➕</span>
             <span class="delete-button" onclick="removeLast('rodo-section')">🗑</span>
         </h2>
         <div id="rodo-section"></div>
     </div>
+</div>
+<div class="buttons-container">
     <button id="toggle-edit" class="done-btn">Finished</button>
     <button id="generate-pdf-btn" class="generate-pdf-btn" onclick="generatePDF(event)" style="display:none;">Generate PDF</button>
 </div>
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-
 <script>
 
-    let originalInputs = [];
-    function replaceInputsWithText() {
-        const container = document.getElementById("contact-fields");
-        const fields = container.querySelectorAll(".contact-field");
+    async function generatePDF() {
+        const container = document.querySelector('.cv-container');
+        const originalContainer = container.cloneNode(true);
 
-        fields.forEach(field => {
-            const input = field.querySelector("input");
-            const icon = field.querySelector("i");
+        const elementsToRemove = originalContainer.querySelectorAll(
+            '.add-button, .delete-button, .contact-options, #toggle-edit, #generate-pdf-btn'
+        );
+        elementsToRemove.forEach(el => el.remove());
 
-            if (input && icon) {
-                const value = input.value.trim();
-                field.innerHTML = '';
+        const rodoSection = originalContainer.querySelector('#rodo-section-container');
+        if (rodoSection) {
+            originalContainer.removeChild(rodoSection);
+            originalContainer.appendChild(rodoSection);
 
-                if (value !== '') {
-                    const newIcon = document.createElement("i");
-                    newIcon.className = icon.className;
-
-                    const span = document.createElement("span");
-                    span.textContent = value;
-                    span.style.marginRight = "40px";
-
-                    field.appendChild(newIcon);
-                    field.appendChild(span);
-                } else {
-                    field.remove();
-                }
-            }
-        });
-
-        contactFieldsAdded = 0;
-    }
-
-    function restoreInputs() {
-        originalInputs.forEach(item => {
-            item.parent.replaceChild(item.input, item.clone);
-        });
-    }
-
-    function generatePDF(event) {
-        event.preventDefault();
-
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(btn => btn.style.display = 'none');
-
-        replaceInputsWithText();
-
-        const cvContainer = document.querySelector('.cv-container');
-
-        const opt = {
-            margin: [0, 0, 0, 0],
-            filename: 'CV.pdf',
-            image: { type: 'jpeg', quality: 1 },
-            html2canvas: { scale: 4, useCORS: true, letterRendering: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            enableLinks: true,
-            pagebreak: { mode: ['css', 'legacy'] }
-        };
-
-        html2pdf().from(cvContainer).set(opt).save()
-            .then(() => {
-                restoreInputs();
-                buttons.forEach(btn => btn.style.display = 'inline-block');
-            })
-            .catch((error) => {
-                console.error('Błąd podczas generowania PDF:', error);
-                restoreInputs();
-                buttons.forEach(btn => btn.style.display = 'inline-block');
-            });
-    }
-
-    function replaceTextWithInputs() {
-        if (!originalInputs || originalInputs.length === 0) {
-            return;
+            rodoSection.style.marginTop = 'auto';
+            rodoSection.style.paddingTop = '20px';
         }
 
-        originalInputs.forEach(entry => {
-            entry.parent.replaceChild(entry.input, entry.clone);
+        originalContainer.querySelectorAll('textarea').forEach(textarea => {
+            const span = document.createElement('span');
+            span.textContent = textarea.value;
+            span.style.cssText = textarea.style.cssText;
+            span.style.fontFamily = "'Cormorant Garamond', serif";
+            span.style.fontWeight ='normal';
+            span.style.fontSize = textarea.style.fontSize || 'inherit';
+            textarea.parentNode.replaceChild(span, textarea);
         });
 
-        originalInputs = [];
+        originalContainer.querySelectorAll('input[type="text"], input[type="email"]').forEach(input => {
+            const span = document.createElement('span');
+            span.textContent = input.value;
+            span.style.cssText = input.style.cssText;
+            span.style.fontFamily = "'Cormorant Garamond', serif";
+            span.style.fontWeight ='normal';
+            span.style.fontSize = input.style.fontSize || 'inherit';
+            input.parentNode.replaceChild(span, input);
+        });
+
+        originalContainer.querySelectorAll('div[contenteditable="true"]').forEach(div => {
+            const span = document.createElement('span');
+            span.textContent = div.textContent;
+            span.style.cssText = div.style.cssText;
+            span.style.fontFamily = "'Cormorant Garamond', serif";
+            span.style.fontWeight ='normal';
+            span.style.fontSize = div.style.fontSize || 'inherit';
+            div.parentNode.replaceChild(span, div);
+        });
+
+        const additionalStyles = `
+        @page {
+    size: A4;
+    margin: 0;
+}
+@media print {
+    html, body {
+        height: 297mm;
+        width: 210mm;
+        margin: 0;
+        padding: 0;
     }
+    .cv-container {
+        height: 297mm !important;
+        width: 210mm !important;
+        margin: 0 !important;
+        padding: 1.5rem !important;
+        box-shadow: none !important;
+        border: none !important;
+        page-break-after: avoid;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
+    #rodo-section-container {
+        margin-top: auto;
+        padding-top: 20px;
+    }
+}
+body {
+    font-family: 'Cormorant Garamond', serif;
+    margin: 0;
+    padding: 0;
+    width: 210mm;
+    height: 297mm;
+    color: #000;
+}
+        input, textarea, div[contenteditable="true"] {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .cv-container {
+            width: 100%;
+            min-height: 29.7cm;
+            max-width: 100%;
+            margin: 1rem auto;
+            background-color: #fff;
+            padding: 1.5rem;
+            box-sizing: border-box;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+        #rodo-section-container {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+        h1 {
+            margin-top: 0;
+            text-align: center;
+            margin-bottom: 1px;
+        }
+        .contact-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 25px;
+            animation: fadeIn 1s ease;
+        }
+        .contact-fields {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 4px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 0.85rem;
+            color: #444;
+        }
+        .contact-field {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: fadeIn 0.5s ease;
+        }
+        .contact-field input[type="text"],
+        .contact-field input[type="email"] {
+            font-size : 12px;
+            border: none;
+            background-color: transparent;
+            box-shadow: none;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .contact-field input {
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+        .contact-options {
+            background: #f2f2f2;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+        .contact-options h2 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #666;
+        }
+        h2 {
+            margin-bottom: 0;
+        }
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .contact-btn {
+            background-color: #ddd;
+            color: #333;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .contact-btn:hover {
+            background-color: #ccc;
+            transform: translateY(-2px);
+        }
+        .done-btn {
+            background-color: #730D3F;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .done-btn:hover {
+            background-color: #730D3F;
+            transform: translateY(-2px);
+        }
+        input[type="text"], input[type="email"] {
+            font-size: 0.8rem;
+            padding: 5px 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 170px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+        .contact-info {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 1.2rem;
+            font-size: 0.40rem;
+        }
+        .contact-info-icon, .contact-info-divider {
+            font-size: 0.95rem;
+        }
+        .contact-info input {
+            border: none;
+            border-bottom: 1px solid #ccc;
+            outline: none;
+            font-size: 0.5rem;
+            padding: 0 4px;
+        }
+        .bullet-list { list-style: disc; margin-left: 2rem; }
+        .column-layout { display: flex; gap: 3rem; }
+        .left, .right { flex: 1; }
+        .languages span {
+            display: inline-block;
+            background-color: #ddd;
+            padding: 0.25rem 0.5rem;
+            margin: 0.25rem;
+            border-radius: 5px;
+        }
+        ul {
+            padding-left: 1.3rem;
+            margin: 0;
+        }
+        li {
+            margin-bottom: 0;
+        }
+        .custom-li {
+            position: relative;
+            list-style-type: none;
+        }
+        .custom-li::before {
+            content: "◦";
+            position: absolute;
+            top: -3px;
+            left: -15px;
+            font-size: 20px;
+        }
+        .add-button {
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+            color: #730D3F;
+        }
+        .delete-button {
+            cursor: pointer;
+            font-weight: bold;
+            color: red;
+            font-size: 18px;
+            margin-left: 10px;
+            transition: transform 0.3s;
+        }
+        .delete-button:hover {
+            transform: scale(1.2);
+        }
+        .add-button:hover {
+            color: #730D3F;
+        }
+        .language-level {
+            display: inline-flex;
+            front-size:1.2rem;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+        .language-level span {
+            margin: 0 1px;
+            font-size: 1.2rem;
+            user-select: none;
+        }
+        .section {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        textarea {
+            margin: 0;
+        }
+    `;
+
+        const html = `
+    <!DOCTYPE html>
+    <html lang="pl">
+    <head>
+        <meta charset="UTF-8" />
+        <title>CV</title>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+        <style>${additionalStyles}</style>
+    </head>
+    <body style="margin: 0; padding: 0;">
+        ${originalContainer.outerHTML}
+    </body>
+    </html>
+    `;
+
+        try {
+            const response = await fetch('http://localhost:3001/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    html: html,
+                    styles: additionalStyles
+                })
+            });
+
+            if (!response.ok) {
+                const errorDetails = await response.text();
+                console.log('Error details:', errorDetails);
+                throw new Error(`Server error: ${response.status} - ${errorDetails}`);
+            }
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'CV.pdf';
+            link.click();
+
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            console.log('Pełny błąd:', err);
+            alert('Błąd: ' + err.message);
+        }
+    }
+
+
 
     function autoGrow(id) {
         const element = document.getElementById(id);
@@ -518,12 +796,23 @@
         sel.addRange(range);
     }
 
-    let contactFieldsAdded = 0;
+    let selectedContacts = [];
+
     function addContactField(type) {
-        if (contactFieldsAdded >= 4) {
-            alert("You can only add up to 4 contact fields.");
+        const index = selectedContacts.indexOf(type);
+
+        if (index > -1) {
+            removeContactField(type);
+            selectedContacts.splice(index, 1);
+            document.querySelector(`button[onclick="addContactField('${type}')]`).classList.remove('selected');
             return;
         }
+
+        if (selectedContacts.length >= 3) {
+            alert("You can only select exactly 3 contact fields.");
+            return;
+        }
+
         const fields = {
             email: { icon: "fas fa-envelope", placeholder: "your.email@gmail.com", inputType: "email", id: "contact-email" },
             phone: { icon: "fas fa-phone", placeholder: "+1 000 000 0000", inputType: "text", id: "contact-phone" },
@@ -549,10 +838,16 @@
     `;
 
         container.appendChild(wrapper);
-        contactFieldsAdded += 1;
+        selectedContacts.push(type);
+
+        document.querySelector(`button[onclick="addContactField('${type}')]`).classList.add('selected');
     }
 
     function finalizeContactFields() {
+        if (selectedContacts.length !== 3) {
+            alert("Please select exactly 3 contact fields.");
+            return;
+        }
         const container = document.getElementById("contact-fields");
         const fields = container.querySelectorAll(".contact-field");
 
@@ -620,34 +915,6 @@
         document.getElementById("education-list").appendChild(div);
     }
 
-    function addStrength() {
-        const container = document.getElementById("strengths");
-
-        const wrapper = document.createElement("div");
-        wrapper.style.display = "flex";
-        wrapper.style.alignItems = "center";
-        wrapper.style.gap = "2px";
-        wrapper.style.padding = "6px 6px";
-        wrapper.style.border = "1px solid #ccc";
-        wrapper.style.borderRadius = "8px";
-        wrapper.style.backgroundColor = "#D3D3D3";
-        wrapper.style.marginBottom = "10px";
-        wrapper.style.width = "fit-content";
-
-        const input = document.createElement("input");
-        input.type = "text";
-        input.placeholder = "Strength";
-        input.style.width = "70px";
-        input.style.border = "none";
-        input.style.outline = "none";
-        input.style.background = "transparent";
-        input.style.fontSize = "14px";
-        input.style.padding = "0";
-        input.style.margin = "0";
-
-        wrapper.appendChild(input);
-        container.appendChild(wrapper);
-    }
     function addLanguage() {
         const container = document.getElementById("languages");
 
@@ -729,7 +996,7 @@
         div.innerHTML = `
         <textarea
             placeholder="Enter here e.g. GDPR clause…"
-            style="width: 100%; border: none; background-color: #f9f9f9; padding: 0.5rem; font-family: inherit; font-size: 0.85rem; line-height: 1.4; border-radius: 4px; resize: vertical; min-height: 70px;"></textarea>`;
+            style="width: 100%; border: none; padding: 0.5rem; font-family: inherit; font-size: 0.85rem; line-height: 1.4; border-radius: 4px; resize: vertical; min-height: 70px;"></textarea>`;
         document.getElementById("rodo-section").appendChild(div);
     }
 

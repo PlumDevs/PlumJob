@@ -4,6 +4,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import java.util.List;
+
 
 @Service
 public class TagService {
@@ -58,6 +60,30 @@ public class TagService {
         """, String.class, username, tagType + ":%");
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public List<String> getUserTags(String username) {
+        try {
+            return jdbc.queryForList("""
+                SELECT tc.tag_name
+                FROM TagUsers tu
+                JOIN TagCodes tc ON tu.tag_id = tc.tag_id
+                WHERE tu.user_id = ?
+            """, String.class, username);
+        } catch (Exception e) {
+            return List.of();
+        }
+    }
+
+    @Transactional
+    public void removeTagFromUser(String username, String tagName) {
+        Integer tagId = getTagIdByName(tagName);
+        if (tagId != null) {
+            jdbc.update("""
+                DELETE FROM TagUsers
+                WHERE user_id = ? AND tag_id = ?
+            """, username, tagId);
         }
     }
 
