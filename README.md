@@ -47,10 +47,3 @@ _According to multiple dictionaries, plum job means a __highly desirable job__ o
 ### Acknowledgements
 [Skill Icons](https://github.com/tandpfun/skill-icons) <br>
 [Google Chart - Sankey Diagram](https://developers.google.com/chart/interactive/docs/gallery/sankey?hl=pl)
-
-<div align="center">
-  <br>
-  <img src="https://github.com/user-attachments/assets/1d1d6996-92f8-4662-bf9c-a4ab75241286" width="15" height="15"><br>
-  <br>
-  <i>This project is done for 2024/2025 Software Engineering course @ JU </i>
-</div>

@@ -1,5 +1,6 @@
 package com.plumdevs.plumjob.repository;
 
+import com.plumdevs.plumjob.entity.DiagramLink;
 import com.plumdevs.plumjob.entity.RecruitmentItem;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,10 +21,9 @@ public interface PositionsRepository extends JpaRepository<RecruitmentItem, Long
     @Query(value = "CALL sp_showUserHistory(:username, false);", nativeQuery = true)
     List<RecruitmentItem> findArchivePositions(@Param("username") String username);
 
-    /* TODO
-    @Query(value = "CALL sp_getUserStatusHistory(:username)", nativeQuery = true)
-    List<RecruitmentStatusHistory> getStatusHistories();
-     */
+    // TODO in database
+    @Query(value = "CALL sp_getDiagramContent(:username)", nativeQuery = true)
+    List<DiagramLink> getDiagramContent(@Param("username") String username);
 
     @Transactional
     @Modifying

@@ -3,7 +3,14 @@ package com.plumdevs.plumjob.UI;
 import com.plumdevs.plumjob.entity.Event;
 import com.plumdevs.plumjob.repository.EventRepository;
 import com.plumdevs.plumjob.service.TagService;
+<<<<<<< HEAD
 import com.plumdevs.plumjob.UI.component.StickyAdBar;
+=======
+import com.plumdevs.plumjob.service.UserService;
+import com.vaadin.flow.spring.security.AuthenticationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+
+>>>>>>> 145a568b05368e2312842eaaf16e588016e86a2c
 import com.plumdevs.plumjob.UI.layout.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -38,9 +45,13 @@ public class UserProfileView extends VerticalLayout {
     private final TagService tagService;
     private final AuthenticationContext authContext;
 
+<<<<<<< HEAD
     public UserProfileView(TagService tagService,
                            AuthenticationContext authContext,
                            EventRepository eventRepository) {
+=======
+    public UserProfileView(TagService tagService, AuthenticationContext authContext, UserService userService) {
+>>>>>>> 145a568b05368e2312842eaaf16e588016e86a2c
         this.tagService = tagService;
         this.authContext = authContext;
 
@@ -70,7 +81,7 @@ public class UserProfileView extends VerticalLayout {
         Span currentPreferencesLabel = new Span();
         currentPreferencesLabel.getStyle().set("margin-top", "20px");
 
-        String username = authContext.getPrincipalName().orElse(null);
+        String username = userService.getUsername();//authContext.getPrincipalName().orElse(null);
         if (username != null) {
             String savedIndustry = tagService.getTagValueForType(username, "industry");
             String savedExperience = tagService.getTagValueForType(username, "experience");
@@ -103,7 +114,14 @@ public class UserProfileView extends VerticalLayout {
             currentPreferencesLabel.setText("Your current preferences: " + industry + " / " + experience);
         });
 
+<<<<<<< HEAD
         profileSection.add(industryComboBox, experienceComboBox, saveButton, currentPreferencesLabel);
         return profileSection;
+=======
+        add(industryComboBox, experienceComboBox, saveButton, currentPreferencesLabel);
+
+        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
+        add(adBar);
+>>>>>>> 145a568b05368e2312842eaaf16e588016e86a2c
     }
 }
