@@ -1,0 +1,22 @@
+{
+  "name": "puppeteer-pdf",
+  "version": "1.0.0",
+  "description": "Microservice for PDF generation using Puppeteer",
+  "main": "pdf-server.js",
+  "scripts": {
+    "start": "node pdf-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PlumDevs/PlumJob.git"
+  },
+  "private": true,
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "pdf-lib": "^1.17.1",
+    "puppeteer": "^20.9.0"
+  }
+}

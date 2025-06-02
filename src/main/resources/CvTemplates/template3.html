@@ -19,6 +19,11 @@
                 visibility: hidden;
             }
         }
+        @media print {
+            #contact-fields {
+                flex-direction: row;
+            }
+        }
         body {
             font-family: 'Libre Caslon Text', serif;
             width: 210mm;
@@ -27,7 +32,6 @@
             color: #000;
             box-sizing: border-box;
             page-break-after: always;
-        //border: 2px solid red;
         }
         .contact-wrapper {
             display: flex;
@@ -36,18 +40,504 @@
             margin-top: 1px;
             animation: fadeIn 1s ease;
         }
-        .contact-fields {
+        #contact-fields {
             display: flex;
-            flex-wrap: nowrap;
-            gap: 4px;
-            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
             align-items: center;
-            margin-bottom: 2px;
-            font-size: 0.85rem;
-            color: #444;
-            margin-top: 1px;
+        }
+
+
+        .contact-field {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: fadeIn 0.5s ease;
+            padding-top: 1px;
             box-shadow: none;
         }
+        .contact-field input[type="text"],
+        .contact-field input[type="email"] {
+            font-size : 12px;
+            border: none;
+            background-color: transparent;
+            box-shadow: none;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .contact-field input {
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+        .contact-options {
+            background: #f2f2f2;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            text-align: center;
+            animation: fadeIn 1s ease;
+            box-shadow: none;
+        }
+        .contact-options h2 {
+            font-size: 1rem;
+            margin-bottom: 1px;
+            color: #666;
+        }
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .contact-btn {
+            background-color: #ddd;
+            color: #333;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .contact-btn:hover {
+            background-color: #ccc;
+            transform: translateY(-2px);
+        }
+        .done-btn {
+            background-color: #730D3F;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .done-btn:hover {
+            background-color: #730D3F;
+            transform: translateY(-2px);
+        }
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .contact-btn {
+            background-color: #ddd;
+            color: #333;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .contact-btn:hover {
+            background-color: #ccc;
+            transform: translateY(-2px);
+        }
+        .contact-btn.selected {
+            background-color: #730D3F;
+            color: white;
+        }
+        .done-btn {
+            background-color: #730D3F;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .done-btn:hover {
+            background-color: #730D3F;
+            transform: translateY(-2px);
+        }
+        input[type="text"], input[type="email"] {
+            font-size: 0.8rem;
+            padding: 5px 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 170px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+        .contact-info {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 1.2rem;
+            font-size: 0.40rem;
+        }
+
+        .contact-info-icon, .contact-info-divider {
+            font-size: 0.95rem;
+        }
+
+        .contact-info input {
+            border: none;
+            border-bottom: 1px solid #ccc;
+            outline: none;
+            font-size: 0.5rem;
+            padding: 0 4px;
+        }
+        .bullet-list { list-style: disc; margin-left: 2rem; }
+        .column-layout { display: flex; gap: 3rem; }
+        .left, .right { flex: 1; }
+        .strengths span, .languages span {
+            display: inline-block;
+            background-color: #ddd;
+            padding: 0.25rem 0.5rem;
+            margin: 0.25rem;
+            border-radius: 5px;
+        }
+        .add-button {
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+            color: #007bff;
+        }
+
+        .delete-button {
+            cursor: pointer;
+            font-weight: bold;
+            color: red;
+            font-size: 18px;
+            margin-left: 10px;
+            transition: transform 0.3s;
+        }
+
+        .delete-button:hover {
+            transform: scale(1.2);
+        }
+
+        .add-button:hover {
+            color: #0056b3;
+        }
+
+        input, textarea, div[contenteditable="true"] {
+            font-family: 'Libre Caslon Text', serif;
+        }
+
+        .cv-container {
+            width: 100%;
+            min-height: 29.7cm;
+            max-width: 100%;
+            margin: 1rem auto;
+            background-color: #fff;
+            padding: 1.5rem;
+            box-sizing: border-box;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            position: relative;
+        //padding-bottom: 60px;
+        }
+
+        #rodo-section-container {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            right: 1.5rem;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin-top: 1px;
+            text-align: center;
+            margin-bottom: 1px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 1.2rem;
+            font-size: 0.10rem;
+        }
+
+        .contact-info-icon, .contact-info-divider {
+            font-size: 0.95rem;
+        }
+
+        .contact-info input {
+            border: none;
+            border-bottom: 1px solid #ccc;
+            outline: none;
+            font-size: 0.95rem;
+            padding: 0 4px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            margin-top: 1.2rem;
+            margin-bottom: 0.3rem;
+            border-bottom: 1px solid #999;
+            padding-bottom: 2px;
+        }
+
+        .section {
+            margin-bottom: 1rem;
+        }
+
+        .dynamic-entry {
+            margin-bottom: 0.7rem;
+        }
+
+        input[type="text"], input[type="email"] {
+            border: none;
+            border-bottom: 1px solid #ccc;
+            outline: none;
+            font-size: 0.95rem;
+            padding: 2px 4px;
+        }
+
+        ul {
+            padding-left: 1.3rem;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 0;
+        }
+
+        .custom-li {
+            position: relative;
+            list-style-type: none;
+        }
+
+        .custom-li::before {
+            content: "◦";
+            position: absolute;
+            top: -3px;
+            left: -15px;
+            font-size: 20px;
+        }
+
+        .add-button, .delete-button {
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .delete-button {
+            color: red;
+        }
+        .generate-pdf-btn {
+            background-color: #730D3F;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .generate-pdf-btn:hover {
+            background-color: #730D3F;
+            transform: scale(1.05);
+        }
+
+        @media print {
+            textarea {
+                border: none;
+                resize: none;
+                overflow: hidden;
+                outline: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="cv-container" id="main-container">
+    <h1><input id="name" type="text" placeholder="Your Full Name" style="font-size:40px;width:80%;border:none;text-align:center;" /></h1>
+    <div class="contact-wrapper">
+        <div id="contact-fields" class="contact-fields"></div>
+
+        <div id="contact-options" class="contact-options">
+            <h2>Select Your Contact Information</h2>
+            <div class="buttons">
+                <button onclick="addContactField('email')" class="contact-btn" id="email-btn">Email</button>
+                <button onclick="addContactField('phone')" class="contact-btn" id="phone-btn">Phone</button>
+                <button onclick="addContactField('address')" class="contact-btn" id="address-btn">Address</button>
+                <button onclick="addContactField('linkedin')" class="contact-btn" id="linkedin-btn">LinkedIn</button>
+                <button onclick="addContactField('github')" class="contact-btn" id="github-btn">GitHub</button>
+            </div>
+            <button onclick="finalizeContactFields()" class="done-btn">Done</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Education
+            <span class="add-button" onclick="addEducation()">➕</span>
+            <span class="delete-button" onclick="removeLast('education-list')">🗑</span>
+        </h2>
+        <div id="education-list"></div>
+    </div>
+
+    <div class="section">
+        <h2>Skills
+            <span class="add-button" onclick="addSkill()">➕</span>
+            <span class="delete-button" onclick="removeLast('skills-list')">🗑</span>
+        </h2>
+        <div id="skills-list"></div>
+    </div>
+
+    <div class="section">
+        <h2>Experience
+            <span class="add-button" onclick="addExperience()">➕</span>
+            <span class="delete-button" onclick="removeLast('experience-list')">🗑</span>
+        </h2>
+        <div id="experience-list"></div>
+    </div>
+
+    <div class="section">
+        <h2>Projects
+            <span class="add-button" onclick="addProject()">➕</span>
+            <span class="delete-button" onclick="removeLast('projects-list')">🗑</span>
+        </h2>
+        <div id="projects-list"></div>
+    </div>
+
+    <div class="section" id="rodo-section-container">
+        <h2>
+            <span class="add-button" onclick="addRODO()">➕</span>
+            <span class="delete-button" onclick="removeLast('rodo-section')">🗑</span>
+        </h2>
+        <div id="rodo-section"></div>
+    </div>
+</div>
+
+<div class="buttons-container">
+    <button id="toggle-edit" class="done-btn">Finished</button>
+    <button id="generate-pdf-btn" class="generate-pdf-btn" onclick="generatePDF(event)" style="display:none;">Generate PDF</button>
+</div>
+
+<script>
+
+    async function generatePDF() {
+        const container = document.querySelector('.cv-container');
+        const originalContainer = container.cloneNode(true);
+
+        const elementsToRemove = originalContainer.querySelectorAll(
+            '.add-button, .delete-button, .contact-options, #toggle-edit, #generate-pdf-btn'
+        );
+        elementsToRemove.forEach(el => el.remove());
+
+        const rodoSection = originalContainer.querySelector('#rodo-section-container');
+        if (rodoSection) {
+            originalContainer.removeChild(rodoSection);
+            originalContainer.appendChild(rodoSection);
+
+            rodoSection.style.marginTop = 'auto';
+            rodoSection.style.paddingTop = '20px';
+        }
+
+        originalContainer.querySelectorAll('textarea').forEach(textarea => {
+            const span = document.createElement('span');
+            span.textContent = textarea.value;
+            span.style.cssText = textarea.style.cssText;
+            span.style.fontFamily = "'Libre Caslon Text', serif";
+            span.style.fontWeight = 'normal';
+            span.style.fontSize = textarea.style.fontSize || 'inherit';
+            textarea.parentNode.replaceChild(span, textarea);
+        });
+
+        originalContainer.querySelectorAll('input[type="text"], input[type="email"]').forEach(input => {
+            const span = document.createElement('span');
+            span.textContent = input.value;
+            span.style.cssText = input.style.cssText;
+            span.style.fontFamily = "'Libre Caslon Text', serif";
+            span.style.fontWeight = 'normal';
+            span.style.fontSize = input.style.fontSize || 'inherit';
+            input.parentNode.replaceChild(span, input);
+        });
+
+        originalContainer.querySelectorAll('div[contenteditable="true"]').forEach(div => {
+            const span = document.createElement('span');
+            span.textContent = div.textContent;
+            span.style.cssText = div.style.cssText;
+            span.style.fontFamily = "'Libre Caslon Text', serif";
+            span.style.fontWeight = 'normal';
+            span.style.fontSize = div.style.fontSize || 'inherit';
+            div.parentNode.replaceChild(span, div);
+        });
+
+        const additionalStyles = `
+        @page {
+    size: A4;
+    margin: 0;
+}
+@media print {
+    html, body {
+        height: 297mm;
+        width: 210mm;
+        margin: 0;
+        padding: 0;
+    }
+    .cv-container {
+        height: 297mm !important;
+        width: 210mm !important;
+        margin: 0 !important;
+        padding: 1.5rem !important;
+        box-shadow: none !important;
+        border: none !important;
+        page-break-after: avoid;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
+    #rodo-section-container {
+        margin-top: auto;
+        padding-top: 20px;
+    }
+}
+body {
+    font-family: 'Libre Caslon Text', serif;
+    margin: 0;
+    padding: 0;
+    width: 210mm;
+    height: 297mm;
+    color: #000;
+}
+                .contact-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1px;
+            animation: fadeIn 1s ease;
+        }
+        #contact-fields {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+
         .contact-field {
             display: flex;
             align-items: center;
@@ -240,6 +730,12 @@
             box-sizing: border-box;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+        #rodo-section-container {
+            margin-top: auto;
+            padding-top: 20px;
         }
 
         h1 {
@@ -314,202 +810,74 @@
             left: -15px;
             font-size: 20px;
         }
+    `;
 
-        .add-button, .delete-button {
-            cursor: pointer;
-            font-weight: bold;
-            margin-left: 8px;
-        }
+        const html = `
+    <!DOCTYPE html>
+    <html lang="pl">
+    <head>
+        <meta charset="UTF-8" />
+        <title>CV</title>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+        <style>${additionalStyles}</style>
+    </head>
+    <body style="margin: 0; padding: 0;">
+        ${originalContainer.outerHTML}
+    </body>
+    </html>
+    `;
 
-        .delete-button {
-            color: red;
-        }
-        .generate-pdf-btn {
-            background-color: #730D3F;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-        .generate-pdf-btn:hover {
-            background-color: #730D3F;
-            transform: scale(1.05);
-        }
-
-        @media print {
-            textarea {
-                border: none;
-                resize: none;
-                overflow: hidden;
-                outline: none;
-            }
-        }
-    </style>
-</head>
-<body>
-<div class="cv-container">
-    <h1><input id="name" type="text" placeholder="Your Full Name" style="font-size:40px;width:80%;border:none;text-align:center;" /></h1>
-    <div class="contact-wrapper">
-        <div id="contact-fields" class="contact-fields"></div>
-
-        <div id="contact-options" class="contact-options">
-            <h2>Select Your Contact Information</h2>
-            <div class="buttons">
-                <button onclick="addContactField('email')" class="contact-btn">Email</button>
-                <button onclick="addContactField('phone')" class="contact-btn">Phone</button>
-                <button onclick="addContactField('address')" class="contact-btn">Address</button>
-                <button onclick="addContactField('linkedin')" class="contact-btn">LinkedIn</button>
-                <button onclick="addContactField('github')" class="contact-btn">GitHub</button>
-            </div>
-            <button onclick="finalizeContactFields()" class="done-btn">Done</button>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>Education
-            <span class="add-button" onclick="addEducation()">➕</span>
-            <span class="delete-button" onclick="removeLast('education-list')">🗑</span>
-        </h2>
-        <div id="education-list"></div>
-    </div>
-
-    <div class="section">
-        <h2>Skills
-            <span class="add-button" onclick="addSkill()">➕</span>
-            <span class="delete-button" onclick="removeLast('skills-list')">🗑</span>
-        </h2>
-        <div id="skills-list"></div>
-    </div>
-
-    <div class="section">
-        <h2>Experience
-            <span class="add-button" onclick="addExperience()">➕</span>
-            <span class="delete-button" onclick="removeLast('experience-list')">🗑</span>
-        </h2>
-        <div id="experience-list"></div>
-    </div>
-
-    <div class="section">
-        <h2>Projects
-            <span class="add-button" onclick="addProject()">➕</span>
-            <span class="delete-button" onclick="removeLast('projects-list')">🗑</span>
-        </h2>
-        <div id="projects-list"></div>
-    </div>
-
-    <div class="section">
-        <h2>
-            <span class="add-button" onclick="addRODO()">➕</span>
-            <span class="delete-button" onclick="removeLast('rodo-section')">🗑</span>
-        </h2>
-        <div id="rodo-section"></div>
-    </div>
-
-    <button id="toggle-edit" class="done-btn">Finished</button>
-    <button id="generate-pdf-btn" class="generate-pdf-btn" onclick="generatePDF(event)" style="display:none;">Generate PDF</button>
-
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-<script>
-
-    let originalInputs = [];
-    function replaceInputsWithText() {
-        const container = document.getElementById("contact-fields");
-        const fields = container.querySelectorAll(".contact-field");
-
-        fields.forEach(field => {
-            const input = field.querySelector("input");
-            const icon = field.querySelector("i");
-
-            if (input && icon) {
-                const value = input.value.trim();
-                field.innerHTML = '';
-
-                if (value !== '') {
-                    const newIcon = document.createElement("i");
-                    newIcon.className = icon.className;
-
-                    const span = document.createElement("span");
-                    span.textContent = value;
-                    span.style.marginRight = "40px";
-
-                    field.appendChild(newIcon);
-                    field.appendChild(span);
-                } else {
-                    field.remove();
-                }
-            }
-        });
-
-        contactFieldsAdded = 0;
-    }
-
-    function restoreInputs() {
-        originalInputs.forEach(item => {
-            item.parent.replaceChild(item.input, item.clone);
-        });
-    }
-
-    function generatePDF(event) {
-        event.preventDefault();
-
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(btn => btn.style.display = 'none');
-
-        replaceInputsWithText();
-
-        const cvContainer = document.querySelector('.cv-container');
-
-        const opt = {
-            margin: [0, 0, 0, 0],
-            filename: 'CV.pdf',
-            image: { type: 'jpeg', quality: 1 },
-            html2canvas: { scale: 4, useCORS: true, letterRendering: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            enableLinks: true,
-            pagebreak: { mode: ['css', 'legacy'] }
-        };
-
-        html2pdf().from(cvContainer).set(opt).save()
-            .then(() => {
-                restoreInputs();
-                buttons.forEach(btn => btn.style.display = 'inline-block');
-            })
-            .catch((error) => {
-                console.error('Błąd podczas generowania PDF:', error);
-                restoreInputs();
-                buttons.forEach(btn => btn.style.display = 'inline-block');
+        try {
+            const response = await fetch('http://localhost:3001/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    html: html,
+                    styles: additionalStyles
+                })
             });
+
+            if (!response.ok) throw new Error('Server error generating PDF.');
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'CV.pdf';
+            link.click();
+
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            alert('Failed to generate PDF: ' + err.message);
+            console.error('PDF error:', err);
+        }
     }
 
-    function replaceTextWithInputs() {
-        if (!originalInputs || originalInputs.length === 0) {
+
+    function autoGrow(id) {
+        const field = document.getElementById(id);
+        if (field) {
+            field.style.width = "1px";
+            field.style.width = (field.scrollWidth) + "px";
+        }
+    }
+
+    let selectedContacts = [];
+
+    function addContactField(type) {
+        const index = selectedContacts.indexOf(type);
+
+        if (index > -1) {
+            removeContactField(type);
+            selectedContacts.splice(index, 1);
+            document.querySelector(`button[onclick="addContactField('${type}')]`).classList.remove('selected');
             return;
         }
 
-        originalInputs.forEach(entry => {
-            entry.parent.replaceChild(entry.input, entry.clone);
-        });
-
-        originalInputs = [];
-    }
-
-    function autoGrow (elementID) {
-        let element = document.getElementById(elementID);
-        element.style.width = (element.value.length + 1) * 8 + 'px';
-    }
-
-    let contactFieldsAdded = 0;
-
-    function addContactField(type) {
-        if (contactFieldsAdded >= 4) {
-            alert("You can only add up to 4 contact fields.");
+        if (selectedContacts.length >= 3) {
+            alert("You can only select exactly 3 contact fields.");
             return;
         }
 
@@ -532,17 +900,23 @@
         wrapper.id = `contact-${type}`;
 
         wrapper.innerHTML = `
-    <i class="${fields[type].icon}"></i>
-    <input type="${fields[type].inputType}" placeholder="${fields[type].placeholder}" id="${fields[type].id}"
-           oninput="autoGrow('${fields[type].id}')" />
-`;
+        <i class="${fields[type].icon}"></i>
+        <input type="${fields[type].inputType}" placeholder="${fields[type].placeholder}" id="${fields[type].id}"
+               oninput="autoGrow('${fields[type].id}')" />
+    `;
 
         container.appendChild(wrapper);
-        contactFieldsAdded += 1;
+        selectedContacts.push(type);
+
+        document.querySelector(`button[onclick="addContactField('${type}')]`).classList.add('selected');
     }
 
 
     function finalizeContactFields() {
+        if (selectedContacts.length !== 3) {
+            alert("Please select exactly 3 contact fields.");
+            return;
+        }
         const container = document.getElementById("contact-fields");
         const fields = container.querySelectorAll(".contact-field");
 
@@ -697,7 +1071,7 @@
         div.innerHTML = `
         <textarea
             placeholder="Enter here e.g. GDPR clause…"
-            style="width: 100%; border: none; background-color: #f9f9f9; padding: 0.5rem; font-family: inherit; font-size: 0.85rem; line-height: 1.4; border-radius: 4px; resize: vertical; min-height: 70px;"></textarea>`;
+            style="width: 100%; border: none; padding: 0.5rem; font-family: inherit; font-size: 0.85rem; line-height: 1.4; border-radius: 4px; resize: vertical; min-height: 70px;"></textarea>`;
         document.getElementById("rodo-section").appendChild(div);
     }
 
@@ -707,9 +1081,6 @@
             list.removeChild(list.lastElementChild);
         }
     }
-
-    document.getElementById('generate-pdf-btn').addEventListener('click', generatePDF);
-
 
     document.getElementById('toggle-edit').addEventListener('click', function() {
         const addButtonEls = document.querySelectorAll(".add-button");
@@ -726,7 +1097,6 @@
                 el.style.resize = 'none';
             });
 
-            replaceInputsWithText();
 
             generatePDFButton.style.display = 'inline-block';
 
@@ -739,7 +1109,6 @@
                 el.style.resize = 'both';
             });
 
-            replaceTextWithInputs();
             generatePDFButton.style.display = 'none';
 
             this.innerText = "Finished";
