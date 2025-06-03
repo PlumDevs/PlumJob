@@ -105,8 +105,9 @@ public class Calendar extends VerticalLayout {
         return dialog;
     }
 
+
     @Transactional
-    private void saveEvent(LocalDate date, LocalTime time, String description) {
+    public void saveEvent(LocalDate date, LocalTime time, String description) {
         String username = authContext.getPrincipalName().orElse(null);
         if (date == null || username == null || description.isEmpty()) {
             throw new IllegalArgumentException("Please provide all event details");
