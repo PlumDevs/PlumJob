@@ -69,7 +69,6 @@ public class UserProfileView extends VerticalLayout {
     private Span compatibilityScore;
     private Div compatibilityProgressBar;
     private com.vaadin.flow.component.textfield.TextArea notesArea;
-    // Dodaj to jako pole klasy
     private boolean hasNotesFlag = false;
     private final EventRepository eventRepository;
 
@@ -868,15 +867,12 @@ public class UserProfileView extends VerticalLayout {
 
         final String skillsStorageKey = "plumjob_user_skills_" + userEmail;
 
-        // Always use localStorage as primary source, then sync with database
         UI.getCurrent().getPage().executeJs(
                         "return localStorage.getItem($0)", skillsStorageKey)
                 .then(String.class, savedLocalSkills -> {
                     if (savedLocalSkills != null && !savedLocalSkills.isEmpty() && !savedLocalSkills.equals("[]")) {
-                        // Load from localStorage first
                         parseAndDisplaySkills(savedLocalSkills);
                     } else if (username != null) {
-                        // If localStorage is empty but user is logged in, load from database
                         List<String> userTags = tagService.getUserTags(username);
                         for (String tag : userTags) {
                             if (tag.startsWith("skill:")) {
@@ -889,7 +885,6 @@ public class UserProfileView extends VerticalLayout {
                                 }
                             }
                         }
-                        // Save to localStorage after loading from database
                         saveSkillsToLocalStorage();
                     }
                     updateJobCompatibility();
@@ -898,7 +893,6 @@ public class UserProfileView extends VerticalLayout {
 
     private void parseAndDisplaySkills(String skillsJson) {
         try {
-            // Remove brackets and quotes, then split by comma
             String cleanJson = skillsJson.replace("[", "").replace("]", "").replace("\"", "");
             if (cleanJson.trim().isEmpty()) {
                 return;
@@ -933,22 +927,17 @@ public class UserProfileView extends VerticalLayout {
 
         final String skillsStorageKey = "plumjob_user_skills_" + userEmail;
 
-        // Build skills JSON from currently displayed skills
         List<String> skillEntries = new ArrayList<>();
 
-        // Get skills from the UI components instead of database
         skillsList.getChildren().forEach(component -> {
             if (component instanceof VerticalLayout) {
                 VerticalLayout skillContainer = (VerticalLayout) component;
-                // Get the first child which should be the header
                 skillContainer.getChildren().findFirst().ifPresent(headerComponent -> {
                     if (headerComponent instanceof HorizontalLayout) {
                         HorizontalLayout header = (HorizontalLayout) headerComponent;
-                        // Get skill name from first component
                         header.getChildren().findFirst().ifPresent(nameComponent -> {
                             if (nameComponent instanceof Span) {
                                 String skillName = ((Span) nameComponent).getText();
-                                // Get skill level from the right side
                                 header.getChildren().skip(1).findFirst().ifPresent(rightSideComponent -> {
                                     if (rightSideComponent instanceof HorizontalLayout) {
                                         HorizontalLayout rightSide = (HorizontalLayout) rightSideComponent;
@@ -1016,7 +1005,6 @@ public class UserProfileView extends VerticalLayout {
             Integer level = levelField.getValue();
 
             if (skill != null && level != null) {
-                // Check if skill already exists
                 if (username != null) {
                     List<String> userTags = tagService.getUserTags(username);
                     boolean skillExists = userTags.stream()
@@ -1113,7 +1101,6 @@ public class UserProfileView extends VerticalLayout {
     }
 
     private void removeSkill(String skillName, VerticalLayout skillContainer) {
-        // Remove from database first if user is logged in
         if (username != null) {
             List<String> userTags = tagService.getUserTags(username);
             for (String tag : userTags) {
@@ -1200,19 +1187,16 @@ public class UserProfileView extends VerticalLayout {
     private boolean hasNotes() {
         if (username == null) return false;
 
-        // Check if user has ever added notes (persistent flag)
         String userEmail = userService.getUserEmail(username);
         if (userEmail == null || userEmail.isEmpty()) {
             userEmail = "guest";
         }
 
-        // Check server-side first - if user has notes saved on server, they definitely have notes
         String savedServerNote = tagService.getTagValueForType(username, "note");
         if (savedServerNote != null && !savedServerNote.isEmpty()) {
             return true;
         }
 
-        // If not found on server, check the persistent flag
         return hasNotesFlag;
     }
 
@@ -1228,19 +1212,15 @@ public class UserProfileView extends VerticalLayout {
 
         final String notesFlagKey = "plumjob_user_has_notes_" + userEmail;
 
-        // Set localStorage flag (persistent)
         UI.getCurrent().getPage().executeJs(
                 "localStorage.setItem($0, 'true')", notesFlagKey);
 
-        // Set class variable
         hasNotesFlag = true;
 
-        // Update profile stats immediately
         updateProfileStats();
     }
 
 
-    // Add this method to load the flag when page loads
     private void loadNotesFlag() {
         if (username == null) {
             hasNotesFlag = false;
@@ -1255,18 +1235,15 @@ public class UserProfileView extends VerticalLayout {
 
         final String notesFlagKey = "plumjob_user_has_notes_" + userEmail;
 
-        // Najpierw sprawdź czy są notatki na serwerze
         String savedServerNote = tagService.getTagValueForType(username, "note");
         if (savedServerNote != null && !savedServerNote.isEmpty()) {
             hasNotesFlag = true;
-            // Ustaw również flagę w localStorage
             UI.getCurrent().getPage().executeJs(
                     "localStorage.setItem($0, 'true')", notesFlagKey);
             updateProfileStats();
             return;
         }
 
-        // Jeśli nie ma na serwerze, sprawdź localStorage
         UI.getCurrent().getPage().executeJs(
                         "return localStorage.getItem($0)", notesFlagKey)
                 .then(String.class, flagValue -> {
@@ -1284,14 +1261,12 @@ public class UserProfileView extends VerticalLayout {
 
         final String noteStorageKey = "plumjob_user_notes_" + userEmail;
 
-        // Sprawdź localStorage
         UI.getCurrent().getPage().executeJs(
                         "return localStorage.getItem($0)", noteStorageKey)
                 .then(String.class, savedLocalNote -> {
                     if (savedLocalNote != null && !savedLocalNote.trim().isEmpty()) {
                         markNotesAsCompleted();
                     } else {
-                        // Sprawdź serwer
                         String savedServerNote = tagService.getTagValueForType(username, "note");
                         if (savedServerNote != null && !savedServerNote.trim().isEmpty()) {
                             markNotesAsCompleted();
@@ -1567,8 +1542,6 @@ public class UserProfileView extends VerticalLayout {
             this.totalSkills = totalSkills;
         }
 
-        //StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
-        //add(adBar);
 
     }
 }
