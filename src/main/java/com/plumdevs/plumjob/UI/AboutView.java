@@ -18,6 +18,7 @@ import com.plumdevs.plumjob.UI.component.StickyAdBar;
 import com.plumdevs.plumjob.service.TagService;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+import com.plumdevs.plumjob.repository.CounterRepository;
 
 import java.io.IOException;
 
@@ -29,18 +30,12 @@ public class AboutView extends VerticalLayout {
     public int AVATAR_SIZE = 70;
     public int BOX_SIZE = 150;
 
-    AboutView(TagService tagService, AuthenticationContext authContext, UserService userService, JdbcTemplate jdbcTemplate) throws IOException {
+    AboutView(TagService tagService,
+              AuthenticationContext authContext,
+              UserService userService,
+              CounterRepository counterRepository) throws IOException {
 
-        int acceptedCount = jdbcTemplate.queryForObject(
-                "select count(*) from plum.RecruitmentHistory where stage = 'accepted'",
-                Integer.class);
-
-        H1 counterHeading = new H1("This is how many people found a job with us: " + acceptedCount);
-        counterHeading.getStyle()
-                .set("margin-bottom", "1em");
-        counterHeading.addClassName("plum-text");
-
-        add(counterHeading);
+        int acceptedCount = counterRepository.countAcceptedOffers();
 
         add(new H2("Have you ever felt like looking for a job is more stressful than the actual work?"));
 
@@ -62,6 +57,13 @@ public class AboutView extends VerticalLayout {
         team.add(createAvatarBox("Piotr Sz.", "Software Engineer", ""));
 
         add(team);
+
+        H1 counterHeading = new H1("This is how many people found a job with us: " + acceptedCount);
+        counterHeading.getStyle().set("font-size", "1.5rem");
+        counterHeading.getStyle().set("margin-top", "1em");
+        counterHeading.addClassName("plum-text");
+
+        add(counterHeading);
 
         StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
         add(adBar);
