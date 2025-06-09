@@ -3,6 +3,7 @@ package com.plumdevs.plumjob.unitTips;
 import com.plumdevs.plumjob.UI.ArticlesView;
 import com.plumdevs.plumjob.service.ArticleService;
 import com.plumdevs.plumjob.service.TagService;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.card.Card;
 import com.vaadin.flow.component.html.H2;
@@ -23,6 +24,7 @@ class ArticlesViewTest {
     private ArticleService mockService;
     private TagService mockTagService;
     private AuthenticationContext mockAuthContext;
+    private UserService userService;
 
     @BeforeEach
     void init() {
@@ -38,7 +40,7 @@ class ArticlesViewTest {
     @Test
     void constructor_createsAllArticleThumbnails() throws IOException {
         // Given
-        view = new ArticlesView(mockTagService, mockAuthContext); // if we want to create a new Add Position View we have to give public in the original view
+        view = new ArticlesView(mockTagService, mockAuthContext, userService); // if we want to create a new Add Position View we have to give public in the original view
         // Replace internal service with mock
         ReflectionTestUtils.setField(view, "articleService", mockService);
 
@@ -66,7 +68,7 @@ class ArticlesViewTest {
     @Test
     void constructor_addsCorrectNumberOfComponents() throws IOException {
         // Given & When
-        view = new ArticlesView(mockTagService, mockAuthContext); // if we want to create a new Add Position View we have to give public in the original view
+        view = new ArticlesView(mockTagService, mockAuthContext, userService); // if we want to create a new Add Position View we have to give public in the original view
 
         // Then
         // Should contain: H2 title + 5 article thumbnails + StickyAdBar = 7 components
@@ -76,7 +78,7 @@ class ArticlesViewTest {
     @Test
     void articleService_isInitialized() throws IOException {
         // Given & When
-        view = new ArticlesView(mockTagService, mockAuthContext); // if we want to create a new Add Position View we have to give public in the original view
+        view = new ArticlesView(mockTagService, mockAuthContext, userService); // if we want to create a new Add Position View we have to give public in the original view
 
         // Then
         Object articleService = ReflectionTestUtils.getField(view, "articleService");

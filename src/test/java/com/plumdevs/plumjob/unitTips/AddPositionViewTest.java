@@ -4,6 +4,7 @@ import com.plumdevs.plumjob.UI.AddPositionView;
 import com.plumdevs.plumjob.repository.PositionsRepository;
 import com.plumdevs.plumjob.repository.UserInfoRepository;
 import com.plumdevs.plumjob.service.ArticleService;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.card.Card;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ class AddPositionViewTest {
     private ArticleService mockService;
     private UserInfoRepository mockUserInfoRepository;
     private PositionsRepository mockPositionsRepository;
+    private UserService mockUserService;
 
     @BeforeEach
     void init() {
@@ -35,7 +37,7 @@ class AddPositionViewTest {
     @Test
     void constructor_createsArticleThumbnails() {
         // Given
-        view = new AddPositionView(mockUserInfoRepository, mockPositionsRepository); // if we want to create a new Add Position View we have to give public in the original view
+        view = new AddPositionView(mockUserInfoRepository, mockPositionsRepository, mockUserService); // if we want to create a new Add Position View we have to give public in the original view
         // Replace internal service with mock
         ReflectionTestUtils.setField(view, "articleService", mockService);
 
@@ -54,7 +56,7 @@ class AddPositionViewTest {
     @Test
     void articleService_isInitialized() {
         // Given & When
-        view = new AddPositionView(mockUserInfoRepository, mockPositionsRepository);
+        view = new AddPositionView(mockUserInfoRepository, mockPositionsRepository, mockUserService);
 
         // Then
         Object articleService = ReflectionTestUtils.getField(view, "articleService");
