@@ -65,7 +65,7 @@ public class Calendar extends VerticalLayout {
         HorizontalLayout calendarControls = new HorizontalLayout(datePicker, addEventButton);
         calendarControls.setAlignItems(Alignment.BASELINE);
 
-        add(new H2("Your Calendar"), calendarControls, eventsLayout);
+        add(calendarControls, eventsLayout);
     }
 
     private Dialog createEventDialog() {

@@ -1541,8 +1541,6 @@ public class UserProfileView extends VerticalLayout {
             this.matchingSkills = matchingSkills;
             this.totalSkills = totalSkills;
         }
-
-
     }
 }
 
