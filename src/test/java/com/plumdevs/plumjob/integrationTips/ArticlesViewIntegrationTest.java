@@ -3,6 +3,7 @@ package com.plumdevs.plumjob.integrationTips;
 import com.plumdevs.plumjob.UI.ArticlesView;
 import com.plumdevs.plumjob.service.ArticleService;
 import com.plumdevs.plumjob.service.TagService;
+import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ class ArticlesViewIntegrationTest {
     private TagService tagService;
 
     @MockitoBean
+    private UserService userService;
+
+    @MockitoBean
     private AuthenticationContext authContext;
 
     @Test
@@ -35,7 +39,7 @@ class ArticlesViewIntegrationTest {
         when(authContext.getPrincipalName()).thenReturn(java.util.Optional.of("testuser"));
 
         // When - we create ArticlesView (simulates page loading)
-        ArticlesView articlesView = new ArticlesView(tagService, authContext); // the same problem with private method, we need to change it form private to public if we want to use it
+        ArticlesView articlesView = new ArticlesView(tagService, authContext, userService); // the same problem with private method, we need to change it form private to public if we want to use it
 
         // Then - we check if the view was created with components
         assertNotNull(articlesView);
