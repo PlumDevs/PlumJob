@@ -85,7 +85,7 @@ public class SchemaValidationIT extends IntegrationTestBase {
         );
         assertEquals(
                 2, count,
-                "Index ix_auth_username powinien obejmować dokładnie 2 kolumny (username, authority), a jest: " + count
+                "The ix_auth_username index should include exactly 2 columns (username, authority), and it is: " + count
         );
     }
 

@@ -20,7 +20,8 @@ public class RecruitmentIntegrationIT extends IntegrationTestBase {
     @BeforeEach
     void cleanUp() {
         jdbc.execute("SET FOREIGN_KEY_CHECKS=0");
-        // — wyczyść wszystkie powiązane tabele w porządku od liści do korzeni —
+
+        // clear all related tables in leaf to root order
         jdbc.execute("DELETE FROM RecruitmentStatusHistory");
         jdbc.execute("DELETE FROM TagOffer");
         jdbc.execute("DELETE FROM TagUsers");
@@ -35,7 +36,7 @@ public class RecruitmentIntegrationIT extends IntegrationTestBase {
         jdbc.execute("DELETE FROM ErrorLogs");
         jdbc.execute("DELETE FROM users");
 
-        // — odtwórz domyślną listę statusów potrzebnych w testach —
+        // recreate the default list of statuses needed in tests
         jdbc.update("INSERT INTO RecruitmentStatus(status_id,status_name) VALUES (1, 'toApply')");
         jdbc.update("INSERT INTO RecruitmentStatus(status_id,status_name) VALUES (2, 'applied')");
         jdbc.update("INSERT INTO RecruitmentStatus(status_id,status_name) VALUES (3, 'onlineAssesment')");
@@ -52,13 +53,13 @@ public class RecruitmentIntegrationIT extends IntegrationTestBase {
 
 
     @Test
-    @DisplayName("sp_showUserHistory edge‑cases") // TEN TEST WYKRYL BLAD
+    @DisplayName("sp_showUserHistory edge‑cases") // THIS TEST HAS DETECTED AN ERROR
     void spShowUserHistoryEdgeCases() {
-        // 1) brak wpisów → pusta lista
+        // no entries → empty list
         List<?> empty = jdbc.queryForList("CALL sp_showUserHistory(?,?)", "none", false);
-        assertTrue(empty.isEmpty(), "Powinno być 0 wierszy gdy nie ma historii");
+        assertTrue(empty.isEmpty(), "There should be 0 lines when there is no history");
 
-        // 2) mix ended=0 i ended=1
+        // mix ended=0 and ended=1
         jdbc.update("INSERT INTO users(username,password,enabled) VALUES (?,?,?)",
                 "r1","p",true);
         jdbc.update(
@@ -70,22 +71,22 @@ public class RecruitmentIntegrationIT extends IntegrationTestBase {
                         "VALUES (?,?,?,?,?,?,?)",
                 "r1","P","C",Date.valueOf("2025-05-01"),"s","d",1);
 
-        // onlyActive=false → tylko ten z ended=0
+        // onlyActive=false → only the one with ended=0
         assertEquals(1,
                 jdbc.queryForList("CALL sp_showUserHistory(?,?)","r1", false).size(),
-                "Powinien zwrócić 1 wiersz z ended=0"
+                "It should return 1 row with ended=0"
         );
-        // onlyActive=true → tylko ten z ended=1
+        // onlyActive=true → only the one with ended=1
         assertEquals(1,
                 jdbc.queryForList("CALL sp_showUserHistory(?,?)","r1", true).size(),
-                "Powinien zwrócić 1 wiersz z ended=1"
+                "It should return 1 row with ended=1"
         );
 
-        // 3) null jako onlyActive → nie filtrujemy po ended, więc 2 wiersze
+        // null as onlyActive → we don't filter after ended, so 2 rows
         List<?> both = jdbc.queryForList("CALL sp_showUserHistory(?,?)","r1", (Object) null);
         assertEquals(2,
                 both.size(),
-                "null jako flag powinien zwrócić wszystkie wiersze"
+                "null as flag should return all rows"
         );
     }
 
@@ -102,23 +103,23 @@ public class RecruitmentIntegrationIT extends IntegrationTestBase {
         Integer hid = jdbc.queryForObject(
                 "SELECT history_id FROM RecruitmentHistory WHERE user_id='r2'", Integer.class);
 
-        // 1) zmiana na stan kończący
+        // change to ending state
         jdbc.update("CALL sp_updateStatus(?,?)", hid, "accepted the offer");
         assertEquals(1,
                 jdbc.queryForObject("SELECT ended FROM RecruitmentHistory WHERE history_id=?", Integer.class, hid),
-                "ended powinno być ustawione na 1");
+                "ended should be set to 1");
         assertEquals(1,
                 jdbc.queryForObject("SELECT COUNT(*) FROM RecruitmentStatusHistory WHERE recruitment_history_id=?", Integer.class, hid),
-                "Historia statusów powinna mieć 1 wpis");
+                "Status history should have 1 entry");
 
-        // 2) zmiana na stan nie‑kończący
+        // change to a non-terminating state
         jdbc.update("CALL sp_updateStatus(?,?)", hid, "in progress");
         assertEquals(0,
                 jdbc.queryForObject("SELECT ended FROM RecruitmentHistory WHERE history_id=?", Integer.class, hid),
-                "ended powinno być ustawione na 0");
+                "ended should be set to 0");
         assertEquals(2,
                 jdbc.queryForObject("SELECT COUNT(*) FROM RecruitmentStatusHistory WHERE recruitment_history_id=?", Integer.class, hid),
-                "Historia statusów powinna mieć 2 wpisy");
+                "Status history should have 2 entries");
     }
 
     @Test
@@ -126,7 +127,7 @@ public class RecruitmentIntegrationIT extends IntegrationTestBase {
     void functionGetAcceptedEdge() {
         jdbc.update("INSERT INTO users(username,password,enabled) VALUES (?,?,?)",
                 "r3","p",true);
-        // trzy wpisy: dwa ze stage='10', jeden inny
+        // three entries: two with stage='10', one other
         jdbc.update("INSERT INTO RecruitmentHistory(user_id,position,company,user_start_date,stage,description,ended) " +
                         "VALUES (?,?,?,?,?,?,?)",
                 "r3","A","B",Date.valueOf("2025-05-01"),"10",null,1);
@@ -138,7 +139,7 @@ public class RecruitmentIntegrationIT extends IntegrationTestBase {
                 "r3","A","B",Date.valueOf("2025-05-03"),"5", null,1);
 
         Integer cnt = jdbc.queryForObject("SELECT get_accepted()", Integer.class);
-        assertEquals(2, cnt, "get_accepted() powinno zliczać tylko wpisy ze stage='10'");
+        assertEquals(2, cnt, "get_accepted() \n" + "it should only count stage entries='10'");
     }
 
 }

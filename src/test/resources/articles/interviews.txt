@@ -1,0 +1,14 @@
+5 Quick Tips to Succeed in Tech Interviews
+Marianna Karthy
+Tech interviews can be intimidating, but with the right preparation, you can turn anxiety into confidence. Here are five quick tips to help you stand out:
+1. Understand the Basics
+Make sure your fundamentals are solid—data structures, algorithms, and system design frequently show up. Review concepts like arrays, trees, hash maps, and time complexity.
+2. Practice Coding Problems
+Platforms like LeetCode, HackerRank, and CodeSignal are excellent for sharpening your problem-solving skills. Focus on solving problems efficiently and under time pressure.
+3. Communicate Clearly
+Interviewers value your thought process as much as your solution. Talk through your logic as you code, and don’t be afraid to ask clarifying questions.
+4. Know the Company
+Spend time researching the company’s tech stack, mission, and recent projects. Tailoring your answers shows genuine interest and preparation.
+5. Prepare for Behavioral Questions
+Technical skills are only half the story. Use the STAR method (Situation, Task, Action, Result) to structure responses about teamwork, leadership, and challenges.
+With consistent preparation and the right mindset, you can navigate your tech interviews with confidence. Good luck!

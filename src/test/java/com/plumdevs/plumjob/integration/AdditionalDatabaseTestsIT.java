@@ -89,7 +89,7 @@ public class AdditionalDatabaseTestsIT extends IntegrationTestBase {
         TransactionStatus status = txManager.getTransaction(def);
         try {
             jdbc.update("INSERT INTO users(username,password,enabled) VALUES (?,?,?)", "uTx", "p", true);
-            // Force SQL syntax error
+            // we force SQL syntax error
             jdbc.update("INSER INTO users(username) VALUES (?)", "bad");
             txManager.commit(status);
             fail("Should have thrown exception");
@@ -111,9 +111,8 @@ public class AdditionalDatabaseTestsIT extends IntegrationTestBase {
                     "uPerf","Pos","Comp",Date.valueOf(LocalDate.now()),"applied",null,0
             );
         }
-        List<Map<String, Object>> rows = jdbc.queryForList("CALL sp_showUserHistory(?,?)", "uPerf", true); // dalem true a ma by false jesli zmienimi procedure sp_showUserHistory
-        assertEquals(n, rows.size());                                                                                 // chodzi o to ze zapytanie moze nie dzialac jak tego chcemy
+        List<Map<String, Object>> rows = jdbc.queryForList("CALL sp_showUserHistory(?,?)", "uPerf", true); // I gave true and it should be false if we change the sp_showUserHistory procedure
+        assertEquals(n, rows.size());                                                                                 // the point is that the query may not work as we want it to
     }
 
-    // Further tests (migrations, DAO/JPA) can be added similarly.
 }
