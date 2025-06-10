@@ -7,6 +7,8 @@ import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.avatar.Avatar;
+import com.vaadin.flow.component.card.Card;
+import com.vaadin.flow.component.card.CardVariant;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -32,26 +34,58 @@ public class AboutView extends VerticalLayout {
     AboutView(TagService tagService, AuthenticationContext authContext, UserService userService, JdbcTemplate jdbcTemplate) throws IOException {
 
         int acceptedCount = jdbcTemplate.queryForObject(
-                "select count(*) from plum.RecruitmentHistory where stage = 'accepted'",
+                "select count(*) from plum.RecruitmentHistory where stage = 'accepted the offer'",
                 Integer.class);
 
-        H1 counterHeading = new H1("This is how many people found a job with us: " + acceptedCount);
+        H2 heading = new H2("Have you ever felt like looking for a job is more stressful than the actual work?");
+        add(heading);
+
+        HorizontalLayout body = new HorizontalLayout();
+
+        /*Card counter = new Card();
+        counter.add(new H3("This many people found a job with us: " + acceptedCount));
+
+        counter.addThemeVariants(
+                CardVariant.LUMO_OUTLINED,
+                CardVariant.LUMO_ELEVATED,
+                CardVariant.LUMO_HORIZONTAL
+        );
+
+        counter.setWidth(200, Unit.PIXELS);
+        counter.setHeight(200, Unit.PIXELS);
+
+        counter.addClassName("plum-text");*/
+
+        Paragraph intro = new Paragraph("Plum Job is a web platform designed to make the job-hunting experience for young seekers more organized and less frustrating. To support this mission, we've designed features like: application archive with real-time updatable statuses, CV builder that transforms user data into a clean, ATS-friendly PDF using one of our beautiful templates, blog filled with tips and insights from seasoned recruiters, and visual graph summarizing each user's job-seeking journey.");
+
+        //body.add(intro, counter);
+        //add(body);
+
+        add(intro);
+
+        H4 counterHeading = new H4("This is how many people found a job with us: " + acceptedCount);
         counterHeading.getStyle()
-                .set("margin-bottom", "1em");
+                .set("margin-bottom", "0em");
         counterHeading.addClassName("plum-text");
 
         add(counterHeading);
-
-        add(new H2("Have you ever felt like looking for a job is more stressful than the actual work?"));
-
-        add(new Paragraph(" Plum Job is a web platform designed to make the job-hunting experience for young seekers more organized and less frustrating. To support this mission, we've designed features like: application archive with real-time updatable statuses, CV builder that transforms user data into a clean, ATS-friendly PDF using one of our beautiful templates, blog filled with tips and insights from seasoned recruiters, and visual graph summarizing each user's job-seeking journey."));
 
         Paragraph motto = new Paragraph("According to multiple dictionaries, plum job means a highly desirable job or position, often characterised by excellent pay, benefits, working conditions, and opportunities for advancement. Which is exactly the type of job we strive for our users to find in these uncertain times.");
         motto.addClassName("italics");
 
         add(motto);
 
+        /*
+        H4 counterHeading = new H4("This is how many people found a job with us: " + acceptedCount);
+        counterHeading.getStyle()
+                .set("margin-bottom", "1em");
+        counterHeading.addClassName("plum-text");
+
+        add(counterHeading);
+         */
+
         add(new H2("Our Team"));
+
 
         HorizontalLayout team = new HorizontalLayout();
 
