@@ -18,7 +18,7 @@
                 height: 297mm;
                 visibility: hidden;
             }
-        }a
+        }
         body {
             font-family: 'Cormorant Garamond', serif;
             margin: 10mm auto;
@@ -303,7 +303,7 @@
         <div class="left">
             <h2>Experience
                 <span class="add-button" onclick="addExperience()">➕</span>
-                <span class="delete-button" onclick="removeLast('sexperience-list')">🗑</span>
+                <span class="delete-button" onclick="removeLast('experience-list')">🗑</span>
             </h2>
             <div id="experience-list"></div>
 
@@ -333,7 +333,7 @@
 
             <h2>Languages
                 <span class="add-button" onclick="addLanguage()">➕</span>
-                <span class="delete-button" onclick="removeLast('languages')">🗑</span>
+                <span class="delete-button" onclick="removeLastForLanguage('languages')">🗑</span>
             </h2>
             <div class="languages"
                  id="languages"></div>
@@ -348,7 +348,7 @@
     <div class="section" id="rodo-section-container">
         <h2>
             <span class="add-button" onclick="addRODO()">➕</span>
-            <span class="delete-button" onclick="removeLast('rodo-section')">🗑</span>
+            <span class="delete-button" onclick="removeLastForRodo('rodo-section')">🗑</span>
         </h2>
         <div id="rodo-section"></div>
     </div>
@@ -745,7 +745,7 @@ body {
             <li class="custom-li"><textarea style="width: 100%; height: 34px; border:none;" placeholder="Responsibilities or achievement"></textarea></li>
         </ul>`;
         const container = document.getElementById("experience-list");
-        if (container) container.appendChild(div);
+    if (container) container.appendChild(div);
     }
 
     function addProject() {
@@ -760,7 +760,7 @@ body {
          <li class="custom-li"><textarea style="border:none; width: 100%; height: 34px;" placeholder="Project feature or functionality"></textarea></li>
     </ul>`;
         const container = document.getElementById("projects-list");
-        if (container) container.appendChild(div);
+    if (container) container.appendChild(div);
     }
 
     function addSkill() {
@@ -774,7 +774,7 @@ body {
         </li>
     </ul>`;
         const container = document.getElementById("skills-list");
-        if (container) container.appendChild(div);
+    if (container) container.appendChild(div);
     }
 
     function updateStyle(el) {
@@ -865,79 +865,79 @@ body {
     }
 
     function finalizeContactFields() {
-        if (selectedContacts.length < 3 || selectedContacts.length > 3) {
-            alert("Please select exactly 3 contact fields.");
-            return;
-        }
-
-        const container = document.getElementById("contact-fields");
-        if (!container) return;
-
-        const fields = container.querySelectorAll(".contact-field");
-        let hasEmptyFields = false;
-        let emptyFieldTypes = [];
-
-        fields.forEach(field => {
-            const input = field.querySelector("input");
-            if (input) {
-                const value = input.value.trim();
-                if (value === '') {
-                    hasEmptyFields = true;
-                    const fieldType = field.id.replace('contact-', '');
-                    emptyFieldTypes.push(fieldType);
-                }
-            }
-        });
-
-        if (hasEmptyFields) {
-            const fieldNames = emptyFieldTypes.map(type => {
-                switch(type) {
-                    case 'email': return 'Email';
-                    case 'phone': return 'Phone';
-                    case 'address': return 'Address';
-                    case 'linkedin': return 'LinkedIn';
-                    case 'github': return 'GitHub';
-                    default: return type;
-                }
-            }).join(', ');
-
-            alert(`Please fill in all contact fields. Empty fields: ${fieldNames}`);
-            return;
-        }
-
-        fields.forEach(field => {
-            const input = field.querySelector("input");
-            const icon = field.querySelector("i");
-
-            if (input && icon) {
-                const value = input.value.trim();
-                const fieldId = field.id; // Preserve the original ID
-
-                field.innerHTML = '';
-
-                const newIcon = document.createElement("i");
-                newIcon.className = icon.className;
-
-                const span = document.createElement("span");
-                span.textContent = value;
-                span.style.marginLeft = "5px";
-
-                field.appendChild(newIcon);
-                field.appendChild(span);
-                field.id = fieldId; // Restore the field ID after innerHTML clearing
-            }
-        });
-
-        const options = document.getElementById("contact-options");
-        if (options) {
-            options.style.animation = "fadeOut 0.5s ease";
-            setTimeout(() => {
-                if (options.parentNode) {
-                    options.style.display = "none";
-                }
-            }, 500);
-        }
+    if (selectedContacts.length < 3 || selectedContacts.length > 3) {
+        alert("Please select exactly 3 contact fields.");
+        return;
     }
+
+    const container = document.getElementById("contact-fields");
+    if (!container) return;
+
+    const fields = container.querySelectorAll(".contact-field");
+    let hasEmptyFields = false;
+    let emptyFieldTypes = [];
+
+    fields.forEach(field => {
+        const input = field.querySelector("input");
+        if (input) {
+            const value = input.value.trim();
+            if (value === '') {
+                hasEmptyFields = true;
+                const fieldType = field.id.replace('contact-', '');
+                emptyFieldTypes.push(fieldType);
+            }
+        }
+    });
+
+    if (hasEmptyFields) {
+        const fieldNames = emptyFieldTypes.map(type => {
+            switch(type) {
+                case 'email': return 'Email';
+                case 'phone': return 'Phone';
+                case 'address': return 'Address';
+                case 'linkedin': return 'LinkedIn';
+                case 'github': return 'GitHub';
+                default: return type;
+            }
+        }).join(', ');
+
+        alert(`Please fill in all contact fields. Empty fields: ${fieldNames}`);
+        return;
+    }
+
+    fields.forEach(field => {
+        const input = field.querySelector("input");
+        const icon = field.querySelector("i");
+
+        if (input && icon) {
+            const value = input.value.trim();
+            const fieldId = field.id; // Preserve the original ID
+
+            field.innerHTML = '';
+
+            const newIcon = document.createElement("i");
+            newIcon.className = icon.className;
+
+            const span = document.createElement("span");
+            span.textContent = value;
+            span.style.marginLeft = "5px";
+
+            field.appendChild(newIcon);
+            field.appendChild(span);
+            field.id = fieldId; // Restore the field ID after innerHTML clearing
+        }
+    });
+
+    const options = document.getElementById("contact-options");
+    if (options) {
+        options.style.animation = "fadeOut 0.5s ease";
+        setTimeout(() => {
+            if (options.parentNode) {
+                options.style.display = "none";
+            }
+        }, 500);
+    }
+}
 
     function removeContactField(type) {
         const field = document.getElementById(`contact-${type}`);
@@ -965,7 +965,7 @@ body {
         <li class="custom-li"><textarea style="border:none; width: 100%; height: 34px; margin:0;" placeholder="Subject, project, or activity"></textarea></li>
     </ul>`;
         const container = document.getElementById("education-list");
-        if (container) container.appendChild(div);
+    if (container) container.appendChild(div);
     }
 
     function addLanguage() {
@@ -1045,6 +1045,18 @@ body {
             list.removeChild(list.lastElementChild);
         }
     }
+    function removeLastForLanguage(listId) {
+        const list = document.getElementById(listId);
+        if (list && list.childElementCount > 0) {
+            list.removeChild(list.lastElementChild);
+        }
+    }
+    function removeLastForRodo(listId) {
+        const list = document.getElementById(listId);
+        if (list && list.childElementCount > 0) {
+            list.removeChild(list.lastElementChild);
+        }
+    }
 
     function addRODO() {
         const div = document.createElement("div");
@@ -1054,7 +1066,7 @@ body {
             placeholder="Enter here e.g. GDPR clause…"
             style="width: 100%; border: none; padding: 0.5rem; font-family: inherit; font-size: 0.85rem; line-height: 1.4; border-radius: 4px; resize: vertical; min-height: 70px;"></textarea>`;
         const container = document.getElementById("rodo-section");
-        if (container) container.appendChild(div);
+    if (container) container.appendChild(div);
     }
 
     function autoGrow(id) {

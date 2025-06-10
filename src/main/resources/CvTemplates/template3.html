@@ -425,7 +425,7 @@
     <div class="section" id="rodo-section-container">
         <h2>
             <span class="add-button" onclick="addRODO()">➕</span>
-            <span class="delete-button" onclick="removeLast('rodo-section')">🗑</span>
+            <span class="delete-button" onclick="removeLastForRodo('rodo-section')">🗑</span>
         </h2>
         <div id="rodo-section"></div>
     </div>
@@ -927,79 +927,79 @@ body {
 
 
     function finalizeContactFields() {
-        if (selectedContacts.length < 3 || selectedContacts.length > 3) {
-            alert("Please select exactly 3 contact fields.");
-            return;
-        }
-
-        const container = document.getElementById("contact-fields");
-        if (!container) return;
-
-        const fields = container.querySelectorAll(".contact-field");
-        let hasEmptyFields = false;
-        let emptyFieldTypes = [];
-
-        fields.forEach(field => {
-            const input = field.querySelector("input");
-            if (input) {
-                const value = input.value.trim();
-                if (value === '') {
-                    hasEmptyFields = true;
-                    const fieldType = field.id.replace('contact-', '');
-                    emptyFieldTypes.push(fieldType);
-                }
-            }
-        });
-
-        if (hasEmptyFields) {
-            const fieldNames = emptyFieldTypes.map(type => {
-                switch(type) {
-                    case 'email': return 'Email';
-                    case 'phone': return 'Phone';
-                    case 'address': return 'Address';
-                    case 'linkedin': return 'LinkedIn';
-                    case 'github': return 'GitHub';
-                    default: return type;
-                }
-            }).join(', ');
-
-            alert(`Please fill in all contact fields. Empty fields: ${fieldNames}`);
-            return;
-        }
-
-        fields.forEach(field => {
-            const input = field.querySelector("input");
-            const icon = field.querySelector("i");
-
-            if (input && icon) {
-                const value = input.value.trim();
-                const fieldId = field.id; // Preserve the original ID
-
-                field.innerHTML = '';
-
-                const newIcon = document.createElement("i");
-                newIcon.className = icon.className;
-
-                const span = document.createElement("span");
-                span.textContent = value;
-                span.style.marginLeft = "5px";
-
-                field.appendChild(newIcon);
-                field.appendChild(span);
-                field.id = fieldId; // Restore the field ID after innerHTML clearing
-            }
-        });
-
-        const options = document.getElementById("contact-options");
-        if (options) {
-            options.style.animation = "fadeOut 0.5s ease";
-            setTimeout(() => {
-                if (options.parentNode) {
-                    options.style.display = "none";
-                }
-            }, 500);
-        }
+    if (selectedContacts.length < 3 || selectedContacts.length > 3) {
+        alert("Please select exactly 3 contact fields.");
+        return;
     }
+
+    const container = document.getElementById("contact-fields");
+    if (!container) return;
+
+    const fields = container.querySelectorAll(".contact-field");
+    let hasEmptyFields = false;
+    let emptyFieldTypes = [];
+
+    fields.forEach(field => {
+        const input = field.querySelector("input");
+        if (input) {
+            const value = input.value.trim();
+            if (value === '') {
+                hasEmptyFields = true;
+                const fieldType = field.id.replace('contact-', '');
+                emptyFieldTypes.push(fieldType);
+            }
+        }
+    });
+
+    if (hasEmptyFields) {
+        const fieldNames = emptyFieldTypes.map(type => {
+            switch(type) {
+                case 'email': return 'Email';
+                case 'phone': return 'Phone';
+                case 'address': return 'Address';
+                case 'linkedin': return 'LinkedIn';
+                case 'github': return 'GitHub';
+                default: return type;
+            }
+        }).join(', ');
+
+        alert(`Please fill in all contact fields. Empty fields: ${fieldNames}`);
+        return;
+    }
+
+    fields.forEach(field => {
+        const input = field.querySelector("input");
+        const icon = field.querySelector("i");
+
+        if (input && icon) {
+            const value = input.value.trim();
+            const fieldId = field.id; // Preserve the original ID
+
+            field.innerHTML = '';
+
+            const newIcon = document.createElement("i");
+            newIcon.className = icon.className;
+
+            const span = document.createElement("span");
+            span.textContent = value;
+            span.style.marginLeft = "5px";
+
+            field.appendChild(newIcon);
+            field.appendChild(span);
+            field.id = fieldId; // Restore the field ID after innerHTML clearing
+        }
+    });
+
+    const options = document.getElementById("contact-options");
+    if (options) {
+        options.style.animation = "fadeOut 0.5s ease";
+        setTimeout(() => {
+            if (options.parentNode) {
+                options.style.display = "none";
+            }
+        }, 500);
+    }
+}
 
     function removeContactField(type) {
         const field = document.getElementById(`contact-${type}`);
@@ -1135,6 +1135,12 @@ body {
     function removeLast(listId) {
         const list = document.getElementById(listId);
         if (list && list.childElementCount > 1) {
+            list.removeChild(list.lastElementChild);
+        }
+    }
+    function removeLastForRodo(listId) {
+        const list = document.getElementById(listId);
+        if (list && list.childElementCount > 0) {
             list.removeChild(list.lastElementChild);
         }
     }
