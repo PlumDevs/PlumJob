@@ -869,10 +869,41 @@ body {
             alert("Please select exactly 3 contact fields.");
             return;
         }
+
         const container = document.getElementById("contact-fields");
         if (!container) return;
 
         const fields = container.querySelectorAll(".contact-field");
+        let hasEmptyFields = false;
+        let emptyFieldTypes = [];
+
+        fields.forEach(field => {
+            const input = field.querySelector("input");
+            if (input) {
+                const value = input.value.trim();
+                if (value === '') {
+                    hasEmptyFields = true;
+                    const fieldType = field.id.replace('contact-', '');
+                    emptyFieldTypes.push(fieldType);
+                }
+            }
+        });
+
+        if (hasEmptyFields) {
+            const fieldNames = emptyFieldTypes.map(type => {
+                switch(type) {
+                    case 'email': return 'Email';
+                    case 'phone': return 'Phone';
+                    case 'address': return 'Address';
+                    case 'linkedin': return 'LinkedIn';
+                    case 'github': return 'GitHub';
+                    default: return type;
+                }
+            }).join(', ');
+
+            alert(`Please fill in all contact fields. Empty fields: ${fieldNames}`);
+            return;
+        }
 
         fields.forEach(field => {
             const input = field.querySelector("input");
@@ -880,31 +911,20 @@ body {
 
             if (input && icon) {
                 const value = input.value.trim();
+                const fieldId = field.id; // Preserve the original ID
 
-                if (value !== '') {
-                    const fieldId = field.id;
+                field.innerHTML = '';
 
-                    field.innerHTML = '';
+                const newIcon = document.createElement("i");
+                newIcon.className = icon.className;
 
-                    const newIcon = document.createElement("i");
-                    newIcon.className = icon.className;
+                const span = document.createElement("span");
+                span.textContent = value;
+                span.style.marginLeft = "5px";
 
-                    const span = document.createElement("span");
-                    span.textContent = value;
-                    span.style.marginLeft = "5px";
-
-                    field.appendChild(newIcon);
-                    field.appendChild(span);
-
-                    field.id = fieldId;
-                } else {
-                    const fieldType = field.id.replace('contact-', '');
-                    const index = selectedContacts.indexOf(fieldType);
-                    if (index > -1) {
-                        selectedContacts.splice(index, 1);
-                    }
-                    field.remove();
-                }
+                field.appendChild(newIcon);
+                field.appendChild(span);
+                field.id = fieldId; // Restore the field ID after innerHTML clearing
             }
         });
 
