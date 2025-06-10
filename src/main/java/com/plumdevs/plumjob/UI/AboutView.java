@@ -17,22 +17,34 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.plumdevs.plumjob.UI.component.StickyAdBar;
 import com.plumdevs.plumjob.service.TagService;
 import com.vaadin.flow.spring.security.AuthenticationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.IOException;
 
 @PageTitle("Plum Job - About")
 @AnonymousAllowed
-@Route(value="about", layout = MainLayout.class) //the view will appear on localhost:8080/about, and use layout from MainLayout besides about own unique components
+@Route(value="about", layout = MainLayout.class)
 public class AboutView extends VerticalLayout {
 
     public int AVATAR_SIZE = 70;
     public int BOX_SIZE = 150;
 
-    AboutView(TagService tagService, AuthenticationContext authContext, UserService userService) throws IOException {
-        System.out.println("About");
+    AboutView(TagService tagService, AuthenticationContext authContext, UserService userService, JdbcTemplate jdbcTemplate) throws IOException {
+
+        int acceptedCount = jdbcTemplate.queryForObject(
+                "select count(*) from plum.RecruitmentHistory where stage = 'accepted'",
+                Integer.class);
+
+        H1 counterHeading = new H1("This is how many people found a job with us: " + acceptedCount);
+        counterHeading.getStyle()
+                .set("margin-bottom", "1em");
+        counterHeading.addClassName("plum-text");
+
+        add(counterHeading);
+
         add(new H2("Have you ever felt like looking for a job is more stressful than the actual work?"));
 
-        add(new Paragraph(" Plum Job is a web platform designed to make the job-hunting experience for young seekers more organized and less frustrating. To support this mission, we’ve designed features like: application archive with real-time updatable statuses, CV builder that transforms user data into a clean, ATS-friendly PDF using one of our beautiful templates, blog filled with tips and insights from seasoned recruiters, and visual graph summarizing each user’s job-seeking journey."));
+        add(new Paragraph(" Plum Job is a web platform designed to make the job-hunting experience for young seekers more organized and less frustrating. To support this mission, we've designed features like: application archive with real-time updatable statuses, CV builder that transforms user data into a clean, ATS-friendly PDF using one of our beautiful templates, blog filled with tips and insights from seasoned recruiters, and visual graph summarizing each user's job-seeking journey."));
 
         Paragraph motto = new Paragraph("According to multiple dictionaries, plum job means a highly desirable job or position, often characterised by excellent pay, benefits, working conditions, and opportunities for advancement. Which is exactly the type of job we strive for our users to find in these uncertain times.");
         motto.addClassName("italics");
@@ -53,9 +65,7 @@ public class AboutView extends VerticalLayout {
 
         StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
         add(adBar);
-
     }
-
 
     private VerticalLayout createAvatarBox(String name, String roleOne, String roleTwo) {
         Avatar avatar = new Avatar(name);
