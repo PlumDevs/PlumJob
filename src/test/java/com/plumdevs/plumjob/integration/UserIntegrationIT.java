@@ -20,7 +20,6 @@ public class UserIntegrationIT extends IntegrationTestBase {
 
     @BeforeEach
     void cleanUsersAndAuthorities() {
-        // wyłączamy chwilowo FK, żeby móc skasować wszystko bez błędów
         jdbc.execute("SET FOREIGN_KEY_CHECKS=0");
         jdbc.execute("DELETE FROM authorities");
         jdbc.execute("DELETE FROM users");
@@ -35,7 +34,7 @@ public class UserIntegrationIT extends IntegrationTestBase {
         assertThrows(DuplicateKeyException.class, () ->
                         jdbc.update("INSERT INTO users(username,password,enabled) VALUES (?,?,?)",
                                 "dup", "pass2", false),
-                "Powtórne wstawienie tego samego username powinno rzucić DuplicateKeyException"
+                "Re-inserting the same username should throw a DuplicateKeyException"
         );
     }
 
@@ -49,14 +48,14 @@ public class UserIntegrationIT extends IntegrationTestBase {
         assertThrows(DuplicateKeyException.class, () ->
                         jdbc.update("INSERT INTO authorities(username,authority) VALUES (?,?)",
                                 "u2", "ROLE_A"),
-                "Powtórne wstawienie tej samej pary (username,authority) powinno rzucić DuplicateKeyException"
+                "Repeatedly inserting the same pair (username,authority) should throw a DuplicateKeyException"
         );
     }
 
     @Test
     @DisplayName("Users & Authorities basic CRUD and FK guard")
     void usersAndAuthoritiesCrud() {
-        // wstawiamy raz
+        // we insert it once
         jdbc.update("INSERT INTO users(username,password,enabled) VALUES (?,?,?)",
                 "u1", "p1", true);
         Integer cnt = jdbc.queryForObject(
@@ -64,13 +63,13 @@ public class UserIntegrationIT extends IntegrationTestBase {
         );
         assertEquals(1, cnt);
 
-        // nie można wstawić authorities dla nieistniejącego usera
+        // you can't insert authorities for a non-existent user
         assertThrows(Exception.class, () ->
                 jdbc.update("INSERT INTO authorities(username,authority) VALUES (?,?)",
                         "no_such", "ROLE_X")
         );
 
-        // nie można usunąć usera, dopóki istnieją dla niego authorities
+        // you can't delete a user as long as authorities exist for him
         jdbc.update("INSERT INTO authorities(username,authority) VALUES (?,?)",
                 "u1", "ROLE_USER");
         assertThrows(Exception.class, () ->

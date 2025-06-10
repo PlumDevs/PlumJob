@@ -28,7 +28,6 @@ class TagUsersDaoTest {
     @Test
     @DisplayName("assignTag returns rows affected")
     void assignTagReturnsCount() {
-        // happy path
         when(jdbc.update(
                 eq("INSERT INTO TagUsers(user_id,tag_id) VALUES (?,?)"),
                 eq("u"), eq(1)))
@@ -45,7 +44,6 @@ class TagUsersDaoTest {
     @Test
     @DisplayName("assignTag throws on FK violation")
     void assignTagThrows() {
-        // stubujemy dowolne wywołanie update(...) na FK-violation
         when(jdbc.update(anyString(), anyString(), anyInt()))
                 .thenThrow(new DataIntegrityViolationException("fk"));
 

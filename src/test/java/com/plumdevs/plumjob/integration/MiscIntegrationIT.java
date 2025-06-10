@@ -39,7 +39,7 @@ public class MiscIntegrationIT extends IntegrationTestBase {
         );
         assertEquals(1, count);
 
-        // aktualizacja last_update
+        // update last_update
         jdbc.update(
                 "UPDATE Template SET last_update=? WHERE template_name='T1'",
                 Date.valueOf("2025-06-01")
@@ -62,7 +62,7 @@ public class MiscIntegrationIT extends IntegrationTestBase {
         );
         assertEquals(1, countA);
 
-        // ustawiamy last_update ręcznie
+        // we set last_update manually
         jdbc.update(
                 "UPDATE Article SET last_update=? WHERE article_name='A1'",
                 Date.valueOf("2025-06-02")

@@ -19,9 +19,7 @@ public class TagIntegrationIT extends IntegrationTestBase {
 
     @BeforeEach
     void cleanAllAndSeed() {
-        // 1) Wyłączamy FK
         jdbc.execute("SET FOREIGN_KEY_CHECKS=0");
-        // 2) Czyścimy WSZYSTKIE tabele w kolejności od najbardziej zależnych:
         String[] tables = {
                 "RecruitmentStatusHistory",
                 "TagOffer",
@@ -39,7 +37,6 @@ public class TagIntegrationIT extends IntegrationTestBase {
         for (String tbl : tables) {
             jdbc.execute("DELETE FROM " + tbl);
         }
-        // 3) Włączamy FK
         jdbc.execute("SET FOREIGN_KEY_CHECKS=1");
 
     }
@@ -47,28 +44,26 @@ public class TagIntegrationIT extends IntegrationTestBase {
     @Test
     @DisplayName("TagCodes, TagUsers, TagOffer CRUD + FK")
     void tagsCrud() {
-        // 1) Dodajemy kod tagu
         jdbc.update("INSERT INTO TagCodes(tag_name) VALUES (?)", "java");
         Integer tagId = jdbc.queryForObject(
                 "SELECT tag_id FROM TagCodes WHERE tag_name='java' LIMIT 1", Integer.class
         );
 
-        // 2) Dodajemy użytkownika
         jdbc.update("INSERT INTO users(username,password,enabled) VALUES (?,?,?)",
                 "u6","p",true);
 
-        // 3) Wstawiamy dwukrotnie tę samą parę user/tag (ponieważ schemat nie wymusza unikalności)
+        // We insert the same user/tag pair twice (because the scheme does not enforce uniqueness)
         jdbc.update("INSERT INTO TagUsers(user_id,tag_id) VALUES (?,?)", "u6", tagId);
         jdbc.update("INSERT INTO TagUsers(user_id,tag_id) VALUES (?,?)", "u6", tagId);
 
-        // 4) Sprawdzamy, że mamy dokładnie 2 wiersze
+        // We check that we have exactly 2 rows
         Integer count2 = jdbc.queryForObject(
                 "SELECT COUNT(*) FROM TagUsers WHERE user_id=? AND tag_id=?",
                 Integer.class, "u6", tagId
         );
-        assertEquals(2, count2, "Powinny istnieć 2 wiersze, bo brak unikalności pary user/tag");
+        assertEquals(2, count2, "There should be 2 rows because the user/tag pair is not unique");
 
-        // 5) Dodajemy wpis do historii rekrutacji, żeby móc przetestować TagOffer
+        // We add an entry to the recruitment history to be able to test TagOffer
         jdbc.update(
                 "INSERT INTO RecruitmentHistory(user_id,position,company,user_start_date,stage,description,ended) " +
                         "VALUES (?,?,?,?,?,?,?)",
@@ -78,10 +73,10 @@ public class TagIntegrationIT extends IntegrationTestBase {
                 "SELECT history_id FROM RecruitmentHistory WHERE user_id='u6'", Integer.class
         );
 
-        // 6) Poprawne wstawienie do TagOffer
+        // Correct insertion into TagOffer
         jdbc.update("INSERT INTO TagOffer(offer_id,tag_id) VALUES (?,?)", hid, tagId);
 
-        // 7) Wstawienie z nieistniejącym history_id MUSI rzucić FK violation
+        // Inserting with non-existent history_id MUST cause FK violation
         assertThrows(Exception.class, () ->
                 jdbc.update("INSERT INTO TagOffer(offer_id,tag_id) VALUES (?,?)", 999, tagId)
         );
