@@ -74,7 +74,6 @@ public class UserProfileView extends VerticalLayout {
     private Div compatibilityProgressBar;
     private com.vaadin.flow.component.textfield.TextArea notesArea;
     private boolean hasNotesFlag = false;
-    private final EventRepository eventRepository;
 
 
 
@@ -1545,16 +1544,6 @@ public class UserProfileView extends VerticalLayout {
             this.matchingSkills = matchingSkills;
             this.totalSkills = totalSkills;
         }
-    }
-
-    private VerticalLayout createCalendarCard() {
-        VerticalLayout calendarCard = createCard("Calendar", VaadinIcon.CALENDAR.create());
-
-        Calendar calendar = new Calendar(eventRepository, authContext);
-        calendar.setWidthFull();
-        calendarCard.add(calendar);
-
-        return calendar;
     }
 }
 
