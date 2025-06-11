@@ -1,3 +1,4 @@
+
 package com.plumdevs.plumjob.UI;
 
 import com.plumdevs.plumjob.repository.EventRepository;
@@ -206,7 +207,9 @@ public class UserProfileView extends VerticalLayout {
 
         VerticalLayout calendarCard = createCalendarCard();
 
+        rightColumn.add(notesCard, statsCard, skillsCard, calendarCard);
         rightColumn.add(notesCard, statsCard, skillsCard, calendarCard, skillsCard);
+
         return rightColumn;
     }
 
@@ -1545,5 +1548,14 @@ public class UserProfileView extends VerticalLayout {
             this.totalSkills = totalSkills;
         }
     }
-}
 
+    private VerticalLayout createCalendarCard() {
+        VerticalLayout calendarCard = createCard("Calendar", VaadinIcon.CALENDAR.create());
+
+        Calendar calendar = new Calendar(eventRepository, authContext);
+        calendar.setWidthFull();
+        calendarCard.add(calendar);
+
+        return calendar;
+    }
+}
