@@ -1,5 +1,7 @@
+
 package com.plumdevs.plumjob.UI;
 
+import com.plumdevs.plumjob.repository.EventRepository;
 import com.plumdevs.plumjob.service.UserService;
 import com.plumdevs.plumjob.UI.component.StickyAdBar;
 import com.plumdevs.plumjob.service.TagService;
@@ -7,6 +9,7 @@ import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.plumdevs.plumjob.UI.layout.MainLayout;
+import com.plumdevs.plumjob.UI.component.Calendar;
 import com.plumdevs.plumjob.service.TagService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -59,6 +62,8 @@ public class UserProfileView extends VerticalLayout {
     private TagService tagService;
     private AuthenticationContext authContext;
     private Image profileImage;
+
+    private EventRepository eventRepository;
     private String username;
     private UserService userService;
     private Span currentPreferencesLabel;
@@ -86,11 +91,12 @@ public class UserProfileView extends VerticalLayout {
     );
 
 
-    public UserProfileView(TagService tagService, AuthenticationContext authContext, UserService userService) {
+    public UserProfileView(TagService tagService, AuthenticationContext authContext, UserService userService, EventRepository eventRepository) {
         this.tagService = tagService;
         this.authContext = authContext;
         this.userService = userService;
         this.username = authContext.getPrincipalName().orElse(null);
+        this.eventRepository = eventRepository;
 
         setWidthFull();
         setSpacing(false);
@@ -190,7 +196,9 @@ public class UserProfileView extends VerticalLayout {
 
         VerticalLayout skillsCard = createSkillsCard();
 
-        rightColumn.add(notesCard, statsCard, skillsCard);
+        VerticalLayout calendarCard = createCalendarCard();
+
+        rightColumn.add(notesCard, statsCard, skillsCard, calendarCard);
         return rightColumn;
     }
 
@@ -1440,5 +1448,14 @@ public class UserProfileView extends VerticalLayout {
         //add(adBar);
 
     }
-}
 
+    private VerticalLayout createCalendarCard() {
+        VerticalLayout calendarCard = createCard("Calendar", VaadinIcon.CALENDAR.create());
+
+        Calendar calendar = new Calendar(eventRepository, authContext);
+        calendar.setWidthFull();
+        calendarCard.add(calendar);
+
+        return calendar;
+    }
+}

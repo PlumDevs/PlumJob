@@ -112,7 +112,7 @@ public class Calendar extends VerticalLayout {
             throw new IllegalArgumentException("Please provide all event details");
         }
 
-        Event newEvent = new Event(date, time, description, username);
+        Event newEvent = new Event(date, time, description, username,false);
         eventRepository.save(newEvent);
         refreshEvents();
     }

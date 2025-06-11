@@ -4,6 +4,7 @@ package com.plumdevs.plumjob.entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 public class Event {
@@ -15,15 +16,29 @@ public class Event {
     private LocalTime eventTime;
     private String description;
     private String username;
+    private boolean reminderSent = false;
+
+    public boolean isReminderSent() {
+        return reminderSent;
+    }
+
+    public void setReminderSent(boolean reminderSent) {
+        this.reminderSent = reminderSent;
+    }
+
+    public LocalDateTime getEventDateTime() {
+        return LocalDateTime.of(this.eventDate, this.eventTime);
+    }
 
 
     public Event() {}
 
-    public Event(LocalDate eventDate, LocalTime eventTime, String description, String username) {
+    public Event(LocalDate eventDate, LocalTime eventTime, String description, String username,boolean reminderSent) {
         this.eventDate = eventDate;
         this.eventTime = eventTime;
         this.description = description;
         this.username = username;
+        this.reminderSent = reminderSent;
     }
 
 
