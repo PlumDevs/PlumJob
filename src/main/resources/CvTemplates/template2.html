@@ -303,7 +303,7 @@
         <div class="left">
             <h2>Experience
                 <span class="add-button" onclick="addExperience()">➕</span>
-                <span class="delete-button" onclick="removeLast('sexperience-list')">🗑</span>
+                <span class="delete-button" onclick="removeLast('experience-list')">🗑</span>
             </h2>
             <div id="experience-list"></div>
 
@@ -333,7 +333,7 @@
 
             <h2>Languages
                 <span class="add-button" onclick="addLanguage()">➕</span>
-                <span class="delete-button" onclick="removeLast('languages')">🗑</span>
+                <span class="delete-button" onclick="removeLastForLanguage('languages')">🗑</span>
             </h2>
             <div class="languages"
                  id="languages"></div>
@@ -348,7 +348,7 @@
     <div class="section" id="rodo-section-container">
         <h2>
             <span class="add-button" onclick="addRODO()">➕</span>
-            <span class="delete-button" onclick="removeLast('rodo-section')">🗑</span>
+            <span class="delete-button" onclick="removeLastForRodo('rodo-section')">🗑</span>
         </h2>
         <div id="rodo-section"></div>
     </div>
@@ -711,7 +711,7 @@ body {
 
     function autoGrow(id) {
         const element = document.getElementById(id);
-        if (element) {
+        if (element && typeof element.scrollWidth !== 'undefined') {
             element.style.height = "auto";
             element.style.height = (element.scrollHeight) + "px";
         }
@@ -744,7 +744,8 @@ body {
         <ul>
             <li class="custom-li"><textarea style="width: 100%; height: 34px; border:none;" placeholder="Responsibilities or achievement"></textarea></li>
         </ul>`;
-        document.getElementById("experience-list").appendChild(div);
+        const container = document.getElementById("experience-list");
+    if (container) container.appendChild(div);
     }
 
     function addProject() {
@@ -758,7 +759,8 @@ body {
          <li class="custom-li" style="margin-top:0;"><textarea style="border:none; width: 100%; height: 15px;  font-size:15px;" placeholder="Project link (github.com/...)"></textarea></li>
          <li class="custom-li"><textarea style="border:none; width: 100%; height: 34px;" placeholder="Project feature or functionality"></textarea></li>
     </ul>`;
-        document.getElementById("projects-list").appendChild(div);
+        const container = document.getElementById("projects-list");
+    if (container) container.appendChild(div);
     }
 
     function addSkill() {
@@ -771,11 +773,14 @@ body {
                  style="width: 100%; min-height: 15px; border:none; font-weight: 400; font-size: 14px;"></div>
         </li>
     </ul>`;
-        document.getElementById("skills-list").appendChild(div);
+        const container = document.getElementById("skills-list");
+    if (container) container.appendChild(div);
     }
 
     function updateStyle(el) {
-        const text = el.innerText;
+        if (!el) return;
+        const text = el.innerText || el.textContent || '';
+        if (!text) return;
         const match = text.match(/^([^:]+:)(.*)$/);
 
         if (match) {
@@ -804,12 +809,23 @@ body {
         if (index > -1) {
             removeContactField(type);
             selectedContacts.splice(index, 1);
-            document.querySelector(`button[onclick="addContactField('${type}')]`).classList.remove('selected');
+            if (document.querySelector) {
+                const btn = document.querySelector(`button[onclick="addContactField('${type}')"]`);
+                if (btn && btn.classList) {
+                    btn.classList.remove('selected');
+                }
+            }
+
             return;
         }
 
         if (selectedContacts.length >= 3) {
             alert("You can only select exactly 3 contact fields.");
+            return;
+        }
+
+        const existingField = document.getElementById(`contact-${type}`);
+        if (existingField) {
             return;
         }
 
@@ -824,7 +840,7 @@ body {
         if (!fields[type]) return;
 
         const container = document.getElementById("contact-fields");
-
+        if (!container) return;
         if (document.getElementById(`contact-${type}`)) return;
 
         const wrapper = document.createElement("div");
@@ -840,56 +856,92 @@ body {
         container.appendChild(wrapper);
         selectedContacts.push(type);
 
-        document.querySelector(`button[onclick="addContactField('${type}')]`).classList.add('selected');
+        if (document.querySelector) {
+            const btn = document.querySelector(`button[onclick="addContactField('${type}')"]`);
+            if (btn && btn.classList) {
+                btn.classList.add('selected');
+            }
+        }
     }
 
     function finalizeContactFields() {
-        if (selectedContacts.length !== 3) {
-            alert("Please select exactly 3 contact fields.");
-            return;
-        }
-        const container = document.getElementById("contact-fields");
-        const fields = container.querySelectorAll(".contact-field");
+    if (selectedContacts.length < 3 || selectedContacts.length > 3) {
+        alert("Please select exactly 3 contact fields.");
+        return;
+    }
 
-        fields.forEach(field => {
-            const input = field.querySelector("input");
-            const icon = field.querySelector("i");
+    const container = document.getElementById("contact-fields");
+    if (!container) return;
 
-            if (input && icon) {
-                const value = input.value.trim();
-                field.innerHTML = '';
+    const fields = container.querySelectorAll(".contact-field");
+    let hasEmptyFields = false;
+    let emptyFieldTypes = [];
 
-                if (value !== '') {
-                    const newIcon = document.createElement("i");
-                    newIcon.className = icon.className;
-
-                    const span = document.createElement("span");
-                    span.textContent = value;
-                    span.style.marginLeft = "5px";
-
-                    field.appendChild(newIcon);
-                    field.appendChild(span);
-                } else {
-                    field.remove();
-                }
+    fields.forEach(field => {
+        const input = field.querySelector("input");
+        if (input) {
+            const value = input.value.trim();
+            if (value === '') {
+                hasEmptyFields = true;
+                const fieldType = field.id.replace('contact-', '');
+                emptyFieldTypes.push(fieldType);
             }
-            contactFieldsAdded = 0;
-        });
+        }
+    });
 
-        const options = document.getElementById("contact-options");
+    if (hasEmptyFields) {
+        const fieldNames = emptyFieldTypes.map(type => {
+            switch(type) {
+                case 'email': return 'Email';
+                case 'phone': return 'Phone';
+                case 'address': return 'Address';
+                case 'linkedin': return 'LinkedIn';
+                case 'github': return 'GitHub';
+                default: return type;
+            }
+        }).join(', ');
+
+        alert(`Please fill in all contact fields. Empty fields: ${fieldNames}`);
+        return;
+    }
+
+    fields.forEach(field => {
+        const input = field.querySelector("input");
+        const icon = field.querySelector("i");
+
+        if (input && icon) {
+            const value = input.value.trim();
+            const fieldId = field.id; // Preserve the original ID
+
+            field.innerHTML = '';
+
+            const newIcon = document.createElement("i");
+            newIcon.className = icon.className;
+
+            const span = document.createElement("span");
+            span.textContent = value;
+            span.style.marginLeft = "5px";
+
+            field.appendChild(newIcon);
+            field.appendChild(span);
+            field.id = fieldId; // Restore the field ID after innerHTML clearing
+        }
+    });
+
+    const options = document.getElementById("contact-options");
+    if (options) {
         options.style.animation = "fadeOut 0.5s ease";
         setTimeout(() => {
-            options.style.display = "none";
+            if (options.parentNode) {
+                options.style.display = "none";
+            }
         }, 500);
     }
+}
 
     function removeContactField(type) {
         const field = document.getElementById(`contact-${type}`);
         if (field) field.remove();
-    }
-
-    function finalizeContactFields() {
-        document.getElementById("contact-options").style.display = "none";
     }
 
     function addEducation() {
@@ -912,11 +964,15 @@ body {
     <ul style="margin:0;">
         <li class="custom-li"><textarea style="border:none; width: 100%; height: 34px; margin:0;" placeholder="Subject, project, or activity"></textarea></li>
     </ul>`;
-        document.getElementById("education-list").appendChild(div);
+        const container = document.getElementById("education-list");
+    if (container) container.appendChild(div);
     }
 
     function addLanguage() {
         const container = document.getElementById("languages");
+
+        if (!container) return;
+
 
         const wrapper = document.createElement("div");
         wrapper.style.display = "flex";
@@ -985,7 +1041,19 @@ body {
     }
     function removeLast(listId) {
         const list = document.getElementById(listId);
-        if (list.childElementCount > 1) {
+        if (list && list.childElementCount > 1) {
+            list.removeChild(list.lastElementChild);
+        }
+    }
+    function removeLastForLanguage(listId) {
+        const list = document.getElementById(listId);
+        if (list && list.childElementCount > 0) {
+            list.removeChild(list.lastElementChild);
+        }
+    }
+    function removeLastForRodo(listId) {
+        const list = document.getElementById(listId);
+        if (list && list.childElementCount > 0) {
             list.removeChild(list.lastElementChild);
         }
     }
@@ -997,12 +1065,13 @@ body {
         <textarea
             placeholder="Enter here e.g. GDPR clause…"
             style="width: 100%; border: none; padding: 0.5rem; font-family: inherit; font-size: 0.85rem; line-height: 1.4; border-radius: 4px; resize: vertical; min-height: 70px;"></textarea>`;
-        document.getElementById("rodo-section").appendChild(div);
+        const container = document.getElementById("rodo-section");
+    if (container) container.appendChild(div);
     }
 
     function autoGrow(id) {
         const field = document.getElementById(id);
-        if (field) {
+        if (field && typeof field.scrollWidth !== 'undefined') {
             field.style.width = "1px";
             field.style.width = (field.scrollWidth) + "px";
         }
@@ -1013,6 +1082,8 @@ body {
         const deleteButtonEls = document.querySelectorAll(".delete-button");
         const textAreaEls = document.querySelectorAll("textarea");
         const generatePDFButton = document.getElementById('generate-pdf-btn');
+        const inputEls = document.querySelectorAll("input"); // DODANE
+        const editableEls = document.querySelectorAll("div[contenteditable]"); // DODANE
 
         if (this.innerText === "Finished") {
             addButtonEls.forEach(el => el.style.display = 'none');
@@ -1021,19 +1092,24 @@ body {
             textAreaEls.forEach(el => {
                 el.style.border = 'none';
                 el.style.resize = 'none';
+                el.readOnly = true; // DODANE
             });
 
+            inputEls.forEach(el => el.readOnly = true); // DODANE
+            editableEls.forEach(el => el.contentEditable = "false"); // DODANE
             generatePDFButton.style.display = 'inline-block';
 
             this.innerText = "Edit";
         } else {
             addButtonEls.forEach(el => el.style.display = 'inline-block');
             deleteButtonEls.forEach(el => el.style.display = 'inline-block');
-
             textAreaEls.forEach(el => {
                 el.style.border = '1px solid #ccc';
                 el.style.resize = 'both';
+                el.readOnly = false; // DODANE
             });
+            inputEls.forEach(el => el.readOnly = false); // DODANE
+            editableEls.forEach(el => el.contentEditable = "true"); // DODANE
 
             generatePDFButton.style.display = 'none';
 
