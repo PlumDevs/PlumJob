@@ -29,10 +29,6 @@ public class DiagramView extends VerticalLayout {
 
 
     public DiagramView(DiagramRepository diagramRepository, UserService userService) {
-        //todo: rethink the diagram type - when it comes to job search timerframe?
-        //or just take a cap always from one before last accepted offer (not including) to last accepted offer (defined job search frame), like defined boxes, whole db divided to searches, and the user can choose only from those calculated timeframes :))
-        //therefore, we avoid diagrams that do not make sense or generation errors!!!
-
         HorizontalLayout titleBar = new HorizontalLayout();
         H2 title = new H2("Your job search summarized");
 
@@ -44,41 +40,14 @@ public class DiagramView extends VerticalLayout {
         titleBar.add(title, backToArchive);
         add(titleBar);
 
-        /*
-        List<DiagramLink> links1 = List.of(
-                new DiagramLink("Applications", "Interviews", 10), //temp, TODO: DB INTEGRATION
-                new DiagramLink("Applications", "Rejected", 30),
-                new DiagramLink("Applications", "No answer", 10),
-                new DiagramLink("Interviews", "Offers", 5),
-                new DiagramLink("Interviews", "Rejected", 5),
-                new DiagramLink("Offers", "Accepted", 1),
-                new DiagramLink("Offers", "Declined", 4)
-
-        );
-         */
-
-        //DiagramService diagramService = new DiagramService(diagramRepository); //TODO REVIEW THE ARCHITERCTURE!
-
-        //List<DiagramLink> links = diagramService.getLinksForUser((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
-
         List<DiagramLink> links = diagramRepository.callDiagramLinkProcedure(userService.getUsername());
 
         DiagramService diagramService = new DiagramService(links);
 
         if (links.isEmpty()) {
             add(new Paragraph("No recruitment history in archive"));
+            return;
         }
-
-        //diagramService.getLinksForUser(userService.getUsername());
-
-        /*List<DiagramLink> links2 = diagramRepository.callDiagramLinkProcedure("diagramTester1"); */
-
-//        for (DiagramLink link : links) {
-//            System.out.println("FROM: " + link.getFrom() +
-//                    " TO: " + link.getTo() +
-//                    " WEIGHT: " + link.getWeight());
-//        }
-
 
         String js = diagramService.convertToJs(); //array of links converted to javascript ready to inject below
 
@@ -126,6 +95,5 @@ public class DiagramView extends VerticalLayout {
                         "};"
         );
     }
-
 
 }

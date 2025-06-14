@@ -38,3 +38,4 @@ build/
 
 ### Application properies ###
 !**src/main/resources/application.properties
+!**src/main/resources/application.properties
