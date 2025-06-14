@@ -1005,16 +1005,33 @@ public class UserProfileView extends VerticalLayout {
             Integer level = levelField.getValue();
 
             if (skill != null && level != null) {
+                if (level < 1 || level > 100) {
+                    Notification.show("Proficiency level must be between 1 and 100!");
+                    return;
+                }
+
+                boolean skillExists = skillsList.getChildren()
+                        .anyMatch(component -> {
+                            if (component instanceof VerticalLayout) {
+                                VerticalLayout skillContainer = (VerticalLayout) component;
+                                return skillContainer.getChildren().findFirst()
+                                        .filter(headerComponent -> headerComponent instanceof HorizontalLayout)
+                                        .map(headerComponent -> (HorizontalLayout) headerComponent)
+                                        .flatMap(header -> header.getChildren().findFirst())
+                                        .filter(nameComponent -> nameComponent instanceof Span)
+                                        .map(nameComponent -> ((Span) nameComponent).getText())
+                                        .map(skillName -> skillName.equals(skill))
+                                        .orElse(false);
+                            }
+                            return false;
+                        });
+
+                if (skillExists) {
+                    Notification.show("Skill already exists! Please remove it first to update.");
+                    return;
+                }
+
                 if (username != null) {
-                    List<String> userTags = tagService.getUserTags(username);
-                    boolean skillExists = userTags.stream()
-                            .anyMatch(tag -> tag.startsWith("skill:" + skill + ":"));
-
-                    if (skillExists) {
-                        Notification.show("Skill already exists! Please remove it first to update.");
-                        return;
-                    }
-
                     tagService.assignTagToUser(username, "skill:" + skill + ":" + level);
                 }
 
