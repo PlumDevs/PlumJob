@@ -35,14 +35,13 @@ public class DiagramView extends VerticalLayout {
 
         HorizontalLayout titleBar = new HorizontalLayout();
         H2 title = new H2("Your job search summarized");
-        Paragraph diagramTimeframe = new Paragraph("[2024-01-01 - 2025-06-12]");
 
         Button backToArchive = new Button("Back");
         backToArchive.addClassName("light-button");
         backToArchive.addClickListener(buttonClickEvent -> getUI().ifPresent(ui ->
                 ui.navigate("archive")));
 
-        titleBar.add(title, diagramTimeframe, backToArchive);
+        titleBar.add(title, backToArchive);
         add(titleBar);
 
         /*
@@ -64,10 +63,22 @@ public class DiagramView extends VerticalLayout {
 
         List<DiagramLink> links = diagramRepository.callDiagramLinkProcedure(userService.getUsername());
 
-
-        //List<DiagramLink> links = diagramRepository.callDiagramLinkProcedure("diagramTester1");
-
         DiagramService diagramService = new DiagramService(links);
+
+        if (links.isEmpty()) {
+            add(new Paragraph("No recruitment history in archive"));
+        }
+
+        //diagramService.getLinksForUser(userService.getUsername());
+
+        /*List<DiagramLink> links2 = diagramRepository.callDiagramLinkProcedure("diagramTester1"); */
+
+//        for (DiagramLink link : links) {
+//            System.out.println("FROM: " + link.getFrom() +
+//                    " TO: " + link.getTo() +
+//                    " WEIGHT: " + link.getWeight());
+//        }
+
 
         String js = diagramService.convertToJs(); //array of links converted to javascript ready to inject below
 
@@ -75,6 +86,7 @@ public class DiagramView extends VerticalLayout {
         chartDiv.setId("sankey_basic");
         chartDiv.setWidth("600px");
         chartDiv.setHeight("400px");
+
         add(chartDiv);
 
         UI.getCurrent().getPage().addJavaScript("https://www.gstatic.com/charts/loader.js");

@@ -99,12 +99,12 @@ public class AboutView extends VerticalLayout {
 
         add(team);
 
-        H1 counterHeading = new H1("This is how many people found a job with us: " + acceptedCount);
-        counterHeading.getStyle().set("font-size", "1.5rem");
-        counterHeading.getStyle().set("margin-top", "1em");
-        counterHeading.addClassName("plum-text");
-
-        add(counterHeading);
+//        H1 counterHeading = new H1("This is how many people found a job with us: " + acceptedCount);
+//        counterHeading.getStyle().set("font-size", "1.5rem");
+//        counterHeading.getStyle().set("margin-top", "1em");
+//        counterHeading.addClassName("plum-text");
+//
+//        add(counterHeading);
 
         StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
         add(adBar);

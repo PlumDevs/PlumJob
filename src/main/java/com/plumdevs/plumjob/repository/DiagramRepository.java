@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface DiagramRepository extends JpaRepository<DiagramLink, Long> {
 
-    @Query(value = "CALL sp_getUserStatusTransitions(:userId)", nativeQuery = true)
+    @Query(value = "CALL sp_getUserStatusChangesFullPath(:userId)", nativeQuery = true)
     List<DiagramLink> callDiagramLinkProcedure(@Param("userId") String userId);
 
 }

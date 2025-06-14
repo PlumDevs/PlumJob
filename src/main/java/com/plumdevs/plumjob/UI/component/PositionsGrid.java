@@ -1,6 +1,7 @@
 package com.plumdevs.plumjob.UI.component;
 
-import java.util.Arrays;
+import java.util.*;
+
 import com.plumdevs.plumjob.UI.RecruitmentItemDetails;
 import com.plumdevs.plumjob.entity.RecruitmentItem;
 import com.plumdevs.plumjob.repository.PositionsRepository;
@@ -22,7 +23,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -103,16 +103,15 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
             RecruitmentItem item = editor.getItem();
             String newStage = stageComboBox.getValue();
 
-            if (newStage != null) {
+            if (validStatusChange(item.getStage(), newStage)) {
                 item.setStage(newStage);
                 positionsRepository.updateStatus(item.getHistory_id(), newStage); //database call to update
                 editor.save();
                 UI.getCurrent().getPage().reload(); //reload to make the ended value changes visible too
-                //TODO: gotta test that if does not affect performance too much
             }
 
             else {
-                Notification.show("Stage cannot be empty", 3000, Notification.Position.MIDDLE);
+                Notification.show("Stage change cannot be applied", 3000, Notification.Position.MIDDLE);
             }
         });
 
@@ -149,6 +148,28 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
                     .filter(item -> stage.equals(item.getStage()))
                     .collect(Collectors.toList()));
         }
+    }
+
+    public static final Map<String, Set<String>> VALID_STATUS_CHANGES = new HashMap<>();
+
+    static {
+        VALID_STATUS_CHANGES.put("to apply", new HashSet<>(Arrays.asList("applied")));
+        VALID_STATUS_CHANGES.put("applied", new HashSet<>(Arrays.asList("OA in progress", "interview scheduled")));
+        VALID_STATUS_CHANGES.put("OA in progress", new HashSet<>(Arrays.asList("after OA")));
+        VALID_STATUS_CHANGES.put("after OA", new HashSet<>(Arrays.asList("interview scheduled")));
+        VALID_STATUS_CHANGES.put("interview scheduled", new HashSet<>(Arrays.asList("after interview")));
+        VALID_STATUS_CHANGES.put("after interview", new HashSet<>(Arrays.asList("received offer", "rejected", "ghosted")));
+        VALID_STATUS_CHANGES.put("received offer", new HashSet<>(Arrays.asList("accepted the offer", "declined the offer", "ghosted")));
+        VALID_STATUS_CHANGES.put("accepted the offer", new HashSet<>());
+        VALID_STATUS_CHANGES.put("declined the offer", new HashSet<>());
+        VALID_STATUS_CHANGES.put("rejected", new HashSet<>());
+        VALID_STATUS_CHANGES.put("ghosted", new HashSet<>());
+    }
+
+
+    public boolean validStatusChange(String before, String after) {
+        Set<String> allowed = VALID_STATUS_CHANGES.get(before);
+        return allowed != null && allowed.contains(after);
     }
 }
 

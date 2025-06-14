@@ -5,6 +5,7 @@ import com.plumdevs.plumjob.repository.DiagramRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,28 +32,35 @@ public class DiagramService {
     }
 
     public DiagramService(List<DiagramLink> links) {
-        this.links = links;
+        this.links = new ArrayList<>(links);
     }
 
-    public List<DiagramLink> getLinksForUser(String userId) { //issue todo
+    public List<DiagramLink> getLinksForUser(String userId) {
         return diagramRepository.callDiagramLinkProcedure(userId);
     }
     public String convertToJs() {
-        StringBuilder js = new StringBuilder(); //for more efficient run than String
+
+        StringBuilder js = new StringBuilder();
         js.append("[");
+
         int numOfLinks = links.size();
 
         for (int i = 0; i < numOfLinks; i++) {
-            DiagramLink currentLink = links.get(i);
-            js.append("['");
-            js.append(currentLink.getFrom());
-            js.append("','");
-            js.append(currentLink.getTo());
-            js.append("',");
-            js.append(currentLink.getWeight());
-            js.append("]");
+            DiagramLink link = links.get(i);
 
-            if ((i + 1) < numOfLinks) {
+            String from = (link.getFrom() != null) ? link.getFrom().replace("'", "\\'") : "";
+            String to = (link.getTo() != null) ? link.getTo().replace("'", "\\'") : "";
+            int weight = link.getWeight();
+
+            js.append("['")
+                    .append(from)
+                    .append("','")
+                    .append(to)
+                    .append("',")
+                    .append(weight)
+                    .append("]");
+
+            if (i < numOfLinks - 1) {
                 js.append(",");
             }
         }
@@ -60,4 +68,5 @@ public class DiagramService {
         js.append("]");
         return js.toString();
     }
+
 }

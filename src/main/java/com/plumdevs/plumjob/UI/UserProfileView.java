@@ -709,16 +709,6 @@ public class UserProfileView extends VerticalLayout {
         jobRecommendationsContainer.add(jobCard);
     }
 
-    private VerticalLayout createCalendarCard() {
-        VerticalLayout calendarCard = createCard("Calendar", VaadinIcon.CALENDAR.create());
-
-        Calendar calendar = new Calendar(eventRepository, authContext);
-        calendar.setWidthFull();
-
-        calendarCard.add(calendar);
-        return calendarCard;
-    }
-
 
     private VerticalLayout createNotesCard() {
         VerticalLayout notesCard = createCard("Personal Notes", VaadinIcon.NOTEBOOK.create());

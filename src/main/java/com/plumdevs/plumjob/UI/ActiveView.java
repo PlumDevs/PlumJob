@@ -65,7 +65,5 @@ public class ActiveView extends VerticalLayout {
         add(top);
         add(grid);
 
-        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
-        add(adBar);
     }
 }
