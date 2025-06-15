@@ -60,7 +60,7 @@ Important: to use our custom CV Builder in the deployed version (to be precise, 
 npm install express body-parser cors puppeteer
 node pdf-server.js
 ```
-This should output: ```The server is running on http://localhost:3001``` 
+This should output: ```The server is running on http://localhost:3001``` and it has to be running for the whole time of using the app.
 
 3. Open in web browser http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/
 
@@ -71,7 +71,7 @@ This should output: ```The server is running on http://localhost:3001```
 npm install express body-parser cors puppeteer
 node pdf-server.js
 ```
-This should output: ```The server is running on http://localhost:3001``` 
+This should output: ```The server is running on http://localhost:3001``` and it has to be running for the whole time of using the app.
 
 3. Open terminal in DEMO/plumjob and run
 ```
