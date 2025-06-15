@@ -24,7 +24,7 @@ _According to multiple dictionaries, plum job means a __highly desirable job__ o
 + __Calendar__ providing e-mail notifications one hour prior to recorded events, like job interviews or online assessment deadlines,
 + __Targeted__ job offer __ads__ according to the preferences set in the user profile.
 
-*As per today, some of the features are aimed mostly at IT-related jobs; however, we would love to expand to other industries' needs in the future!.
+*As per today, some of the features are aimed mostly at IT-related jobs; however, we would love to expand to other industries' needs in the future!
 
 ### Built with
 [![My Skills](https://skillicons.dev/icons?i=java,spring,mysql,idea,figma,aws,js&theme=light)](https://skillicons.dev)<img src="https://avatars.githubusercontent.com/u/1171922?v=4" width="55" height="55" />
