@@ -44,7 +44,7 @@ plumjob/
 ```
 
 ## Demo
-To showcase our project, we deployed it using AWS here: <link>
+To showcase our project, we deployed it using AWS here: [http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/](http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/)
 
 Additionally, below are instructions on installing and running it locally.
 
@@ -52,6 +52,7 @@ Additionally, below are instructions on installing and running it locally.
 ### Prerequisites
 + Java 17, JDK
 + Maven 3.8+
++ Puppeteer
 + Stable internet connection (to access the online database)
 + .env file not included in Github repository but sent along with the rest of the project for grading, containing:
 ```
@@ -68,7 +69,7 @@ Run this in the directory where the .jar file is:
 ```
 java -jar target/plumjob-0.0.1-SNAPSHOT.jar
 ```
-The complete app should be accessible via any web browser on localhost:8080/
+The complete app should be accessible via any web browser on localhost:9090/
 
 ### Installation B - run from source code using Maven 
 After ensuring the .env file's content can be accessed by other files (i.e. with ```echo $DB_USER``` - should output "plum_demo", more on that here: https://www.baeldung.com/intellij-idea-environment-variables), run the commands below in the directory of the unzipped project.
@@ -76,7 +77,7 @@ After ensuring the .env file's content can be accessed by other files (i.e. with
 mvn spring-boot:run 
 mvn clean install -Pproduction
 ```
-The complete app should be accessible via any web browser on localhost:8080/
+The complete app should be accessible via any web browser on localhost:9090/
 
 ## Contributors
 👩🏻‍💻[Kinga Żmuda](https://github.com/kingazm) - Project Manager and Software Engineer <br>
