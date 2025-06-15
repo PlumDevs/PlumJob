@@ -5,7 +5,7 @@
 
 ## 📋 Table of contents
 + [About](#about)
-+ [Getting started - custom installation](#getting-started)
++ [Installation instructions](#getting-started)
 + [Contributors](#contributors)
 
 ## About
