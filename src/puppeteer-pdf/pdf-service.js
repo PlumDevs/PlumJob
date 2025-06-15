@@ -18,7 +18,7 @@ async function generatePDF(html, additionalStyles = '') {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=block" rel="stylesheet">
@@ -78,7 +78,7 @@ async function generatePDF(html, additionalStyles = '') {
             align-items: center !important;
             justify-content: center !important;
             margin-bottom: 10px;
-            flex-direction: row !important; 
+            flex-direction: row !important;
           }
 
           .contact-field {
@@ -87,7 +87,7 @@ async function generatePDF(html, additionalStyles = '') {
             gap: 6px !important;
             font-size: 0.85rem;
             color: #444;
-            flex-direction: row !important; 
+            flex-direction: row !important;
           }
 
           .contact-fields {
@@ -95,7 +95,7 @@ async function generatePDF(html, additionalStyles = '') {
             gap: 4px !important;
             justify-content: center !important;
             align-items: center !important;
-            flex-direction: row !important; 
+            flex-direction: row !important;
           }
 
           ${additionalStyles}
