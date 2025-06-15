@@ -46,7 +46,18 @@ plumjob/
 ## Demo
 To showcase our project, we deployed it using AWS here: [http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/](http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/)
 
-Additionally, below are instructions on installing and running it locally.
+Important: to use our custom CV Builder in the deployed version (to be precise, to successfully download .pdf versions of created resumes), you still need to do these steps:
+
+1. Open terminal in src/puppeteer-pdf and run
+```
+npm install express body-parser cors puppeteer
+node pdf-server.js
+```
+This should output: ```The server is running on http://localhost:3001``` and CV Builder module should work fine.
+
+
+
+Additionally to the deployed demo, below are instructions on installing and running the app locally.
 
 ## Getting started
 ### Prerequisites
