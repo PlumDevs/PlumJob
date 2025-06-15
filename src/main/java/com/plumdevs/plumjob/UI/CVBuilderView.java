@@ -44,20 +44,16 @@ public class CVBuilderView extends VerticalLayout {
         });
 
 
-        //temporary media - CV template thumbnail
-        String tempThumbnail = "https://www.colorhexa.com/820346.png";
-
-
-        Image tempImage1 = new Image(tempThumbnail,"Template One Thumbnail");
-        tempImage1.setHeight(220, Unit.PIXELS);
+        Image tempImage1 = new Image("/images/template1_thumbnail.png","Template One Thumbnail");
+        tempImage1.setHeight(280, Unit.PIXELS);
         tempImage1.setWidth(220, Unit.PIXELS);
 
-        Image tempImage2 = new Image(tempThumbnail, "Template Two Thumbnail");
-        tempImage2.setHeight(220, Unit.PIXELS);
+        Image tempImage2 = new Image("/images/template2_thumbnail.png", "Template Two Thumbnail");
+        tempImage2.setHeight(280, Unit.PIXELS);
         tempImage2.setWidth(220, Unit.PIXELS);
 
-        Image tempImage3 = new Image(tempThumbnail, "Template Three Thumbnail");
-        tempImage3.setHeight(220, Unit.PIXELS);
+        Image tempImage3 = new Image("/images/template3_thumbnail.png", "Template Three Thumbnail");
+        tempImage3.setHeight(280, Unit.PIXELS);
         tempImage3.setWidth(220, Unit.PIXELS);
 
         VerticalLayout choiceOne = new VerticalLayout(tempImage1, templateOne);
@@ -74,9 +70,5 @@ public class CVBuilderView extends VerticalLayout {
         HorizontalLayout templates = new HorizontalLayout(choiceOne, choiceTwo, choiceThree);
         add(templates);
 
-       //add(articleService.createArticleThumbnail("resume", "Crafting a Standout Tech CV"));
-
-        StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
-        add(adBar);
     }
 }

@@ -17,6 +17,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.component.button.Button;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 @AnonymousAllowed
@@ -24,10 +25,12 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 public class RegisterView extends VerticalLayout {
     private final JdbcUserDetailsManager userDetailsManager;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public RegisterView(JdbcUserDetailsManager userDetailsManager, UserService userService) {
+    public RegisterView(JdbcUserDetailsManager userDetailsManager, UserService userService, PasswordEncoder passwordEncoder) {
         this.userDetailsManager = userDetailsManager;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
 
         Image logo = new Image("https://raw.githubusercontent.com/PlumDevs/PlumJob/refs/heads/master/src/main/resources/META-INF/resources/img/logo.png", "Plum");
         logo.setWidth(180, Unit.PIXELS);
@@ -80,18 +83,15 @@ public class RegisterView extends VerticalLayout {
             //correct email validation
             if (!email.isEmpty() && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+([.com]|[.pl])$")) {
                 UserDetails user = User.withUsername(username)
-                        //.password(passwordEncoder.encode(password))
-                        .password("{noop}" + password)
+                        .password(passwordEncoder.encode(password))
+                        //.password("{noop}" + password)
                         .roles("USER")
                         .build();
                 userDetailsManager.createUser(user);
 
                 userService.addUserInfo(username, firstName, lastName, email);
 
-                //TODO: HERE AND IN LOGIN, ADD PASSWORD ENCODER
-
                 Notification.show("Registration successful!", 3000, Notification.Position.MIDDLE);
-                //Notification.show("Registration successful!", 3000, Notification.Position.MIDDLE).getElement().setAttribute("id", "success-msg");
                 getUI().ifPresent(ui -> ui.navigate("login"));
             }
 
@@ -104,7 +104,6 @@ public class RegisterView extends VerticalLayout {
 
 
         H2 registerTitle = new H2("Register");
-        //registerTitle.setId("register-title");
         add(registerTitle);
 
         firstNameField.setWidth("200px");
@@ -112,7 +111,6 @@ public class RegisterView extends VerticalLayout {
 
         HorizontalLayout nameLayout = new HorizontalLayout(firstNameField, lastNameField);
         nameLayout.setSpacing("15px");
-        //nameLayout.setId("name-layout");
 
         add(nameLayout);
 
@@ -124,12 +122,10 @@ public class RegisterView extends VerticalLayout {
 
         HorizontalLayout passwordLayout = new HorizontalLayout(usernameField, passwordField);
         passwordLayout.setSpacing("15px");
-        //passwordLayout.setId("password-layout");
 
         add(passwordLayout);
 
         Button loginButton = new Button("Back to login");
-        //loginButton.setId("login-btn");
         loginButton.addClassName("plum-text");
 
         RouterLink routerLink = new RouterLink("", LoginView.class);
@@ -137,7 +133,6 @@ public class RegisterView extends VerticalLayout {
 
         HorizontalLayout buttonLayout = new HorizontalLayout(routerLink, registerButton);
         buttonLayout.setSpacing(true);
-        //buttonLayout.setId("button-layout");
 
         add(buttonLayout);
 

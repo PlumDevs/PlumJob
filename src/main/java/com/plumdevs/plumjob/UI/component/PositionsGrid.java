@@ -30,7 +30,10 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
 
     private List<RecruitmentItem> originalItems = new ArrayList<>();
 
+    private boolean isActiveView;
+
     public PositionsGrid(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository, boolean active) {
+        this.isActiveView = active;
 
         setWidthFull();
 
@@ -38,9 +41,22 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
         addColumn(RecruitmentItem::getCompany).setHeader("Company").setSortable(true);
         Column<RecruitmentItem> stageColumn = addColumn(RecruitmentItem::getStage).setHeader("Stage").setSortable(true);
 
+        if (active) {
+            originalItems = new ArrayList<>(positionsRepository.findActivePositions(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
+        }
 
+        else {
+            originalItems = new ArrayList<>(positionsRepository.findArchivePositions(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
+        }
+
+        setItems(originalItems);
+
+        setItemDetailsRenderer(new ComponentRenderer<RecruitmentItemDetails, RecruitmentItem>(RecruitmentItemDetails::new, RecruitmentItemDetails::setItem));
+        setDetailsVisibleOnClick(true);
 
         Editor<RecruitmentItem> editor = getEditor();
+
+        if (!isActiveView) return;
 
         Column<RecruitmentItem> editColumn = addComponentColumn(person -> {
             Button editButton = new Button("Edit");
@@ -66,10 +82,8 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
         editor.setBinder(binder);
         editor.setBuffered(true);
 
-        //temp
-
         ComboBox<String> stageComboBox = new ComboBox<>();
-        stageComboBox.setItems(List.of( //TODO: MAKE REUSABLE
+        stageComboBox.setItems(List.of(
                 "to apply",
                 "applied",
                 "OA in progress",
@@ -85,17 +99,13 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
         stageComboBox.setWidthFull();
 
         binder.bind(stageComboBox, RecruitmentItem::getStage, RecruitmentItem::setStage);
-        stageColumn.setEditorComponent(stageComboBox);
 
-        setItemDetailsRenderer(new ComponentRenderer<RecruitmentItemDetails, RecruitmentItem>(RecruitmentItemDetails::new, RecruitmentItemDetails::setItem));
-        setDetailsVisibleOnClick(true);
+        stageColumn.setEditorComponent(stageComboBox);
 
         binder.forField(stageComboBox)
                 .asRequired("Stage is required")
                 .withValidator(stageComboBox.getDefaultValidator())
                 .bind(RecruitmentItem::getStage, RecruitmentItem::setStage);
-
-        //List<RecruitmentItem> items;
 
         Button saveButton = new Button("Save");
 
@@ -122,21 +132,8 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
         HorizontalLayout actions = new HorizontalLayout(saveButton,
                 cancelButton);
         actions.setPadding(false);
+
         editColumn.setEditorComponent(actions);
-        //TODO: ON SAVE CLICK, UPDATE @QUERY TO DATABASE
-
-
-        if (active) {
-            //addColumn(RecruitmentItem::getStage).setHeader("Stage").setSortable(true);
-            originalItems = new ArrayList<>(positionsRepository.findActivePositions(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
-        }
-
-        else {
-            originalItems = new ArrayList<>(positionsRepository.findArchivePositions(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
-        }
-
-        setItems(originalItems);
-
 
     }
 
@@ -154,9 +151,9 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
 
     static {
         VALID_STATUS_CHANGES.put("to apply", new HashSet<>(Arrays.asList("applied")));
-        VALID_STATUS_CHANGES.put("applied", new HashSet<>(Arrays.asList("OA in progress", "interview scheduled")));
+        VALID_STATUS_CHANGES.put("applied", new HashSet<>(Arrays.asList("OA in progress", "interview scheduled", "rejected", "received offer", "ghosted")));
         VALID_STATUS_CHANGES.put("OA in progress", new HashSet<>(Arrays.asList("after OA")));
-        VALID_STATUS_CHANGES.put("after OA", new HashSet<>(Arrays.asList("interview scheduled")));
+        VALID_STATUS_CHANGES.put("after OA", new HashSet<>(Arrays.asList("interview scheduled", "rejected", "received offer", "ghosted")));
         VALID_STATUS_CHANGES.put("interview scheduled", new HashSet<>(Arrays.asList("after interview")));
         VALID_STATUS_CHANGES.put("after interview", new HashSet<>(Arrays.asList("received offer", "rejected", "ghosted")));
         VALID_STATUS_CHANGES.put("received offer", new HashSet<>(Arrays.asList("accepted the offer", "declined the offer", "ghosted")));
@@ -172,7 +169,3 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
         return allowed != null && allowed.contains(after);
     }
 }
-
-//TODO: RESTRUCTURE STATUSES VIEWING - FETCH THE TEXT VALUE, NOT NUMBER
-//TODO: FILTERING BY STATUSES
-//TODO: STATUS EDITING

@@ -17,11 +17,9 @@ public class LoginView extends VerticalLayout {
 
     public LoginView() {
 
-        //TODO: reusable component
         Image logo = new Image("https://raw.githubusercontent.com/PlumDevs/PlumJob/refs/heads/master/src/main/resources/META-INF/resources/img/logo.png", "Plum");
         logo.setWidth(180, Unit.PIXELS);
         logo.setHeight(70, Unit.PIXELS);
-        //logo.setId("logo");
         add(logo);
 
         setSizeFull();
@@ -37,7 +35,6 @@ public class LoginView extends VerticalLayout {
         //TODO: ERROR MESSAGE WHEN INCORRECT CREDENTIALS
 
         Button registerButton = new Button("Register");
-        //registerButton.setId("register-btn");
         registerButton.addClassName("plum-text");
 
         RouterLink routerLink = new RouterLink("", RegisterView.class);
@@ -45,7 +42,6 @@ public class LoginView extends VerticalLayout {
         add(routerLink);
 
         Button aboutButton = new Button("About");
-        //aboutButton.setId("about-btn");
         aboutButton.addClassName("plum-text-white");
 
         RouterLink aboutLink = new RouterLink("", AboutView.class);

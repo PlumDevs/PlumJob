@@ -1,7 +1,5 @@
-
 package com.plumdevs.plumjob.UI;
 
-import com.plumdevs.plumjob.repository.EventRepository;
 import com.plumdevs.plumjob.service.UserService;
 import com.plumdevs.plumjob.UI.component.StickyAdBar;
 import com.plumdevs.plumjob.UI.component.Calendar;
@@ -10,7 +8,6 @@ import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.plumdevs.plumjob.UI.layout.MainLayout;
-import com.plumdevs.plumjob.UI.component.Calendar;
 import com.plumdevs.plumjob.service.TagService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -64,8 +61,6 @@ public class UserProfileView extends VerticalLayout {
     private TagService tagService;
     private AuthenticationContext authContext;
     private Image profileImage;
-
-    private EventRepository eventRepository;
     private String username;
     private UserService userService;
     private Span currentPreferencesLabel;
@@ -75,6 +70,7 @@ public class UserProfileView extends VerticalLayout {
     private Div compatibilityProgressBar;
     private com.vaadin.flow.component.textfield.TextArea notesArea;
     private boolean hasNotesFlag = false;
+    private final EventRepository eventRepository;
 
 
 
@@ -207,9 +203,7 @@ public class UserProfileView extends VerticalLayout {
 
         VerticalLayout calendarCard = createCalendarCard();
 
-        rightColumn.add(notesCard, statsCard, skillsCard, calendarCard);
-        rightColumn.add(notesCard, statsCard, skillsCard, calendarCard, skillsCard);
-
+        rightColumn.add(calendarCard, notesCard, statsCard, skillsCard);
         return rightColumn;
     }
 
@@ -709,6 +703,16 @@ public class UserProfileView extends VerticalLayout {
         jobRecommendationsContainer.add(jobCard);
     }
 
+    private VerticalLayout createCalendarCard() {
+        VerticalLayout calendarCard = createCard("Calendar", VaadinIcon.CALENDAR.create());
+
+        Calendar calendar = new Calendar(eventRepository, authContext);
+        calendar.setWidthFull();
+
+        calendarCard.add(calendar);
+        return calendarCard;
+    }
+
 
     private VerticalLayout createNotesCard() {
         VerticalLayout notesCard = createCard("Personal Notes", VaadinIcon.NOTEBOOK.create());
@@ -1001,16 +1005,33 @@ public class UserProfileView extends VerticalLayout {
             Integer level = levelField.getValue();
 
             if (skill != null && level != null) {
+                if (level < 1 || level > 100) {
+                    Notification.show("Proficiency level must be between 1 and 100!");
+                    return;
+                }
+
+                boolean skillExists = skillsList.getChildren()
+                        .anyMatch(component -> {
+                            if (component instanceof VerticalLayout) {
+                                VerticalLayout skillContainer = (VerticalLayout) component;
+                                return skillContainer.getChildren().findFirst()
+                                        .filter(headerComponent -> headerComponent instanceof HorizontalLayout)
+                                        .map(headerComponent -> (HorizontalLayout) headerComponent)
+                                        .flatMap(header -> header.getChildren().findFirst())
+                                        .filter(nameComponent -> nameComponent instanceof Span)
+                                        .map(nameComponent -> ((Span) nameComponent).getText())
+                                        .map(skillName -> skillName.equals(skill))
+                                        .orElse(false);
+                            }
+                            return false;
+                        });
+
+                if (skillExists) {
+                    Notification.show("Skill already exists! Please remove it first to update.");
+                    return;
+                }
+
                 if (username != null) {
-                    List<String> userTags = tagService.getUserTags(username);
-                    boolean skillExists = userTags.stream()
-                            .anyMatch(tag -> tag.startsWith("skill:" + skill + ":"));
-
-                    if (skillExists) {
-                        Notification.show("Skill already exists! Please remove it first to update.");
-                        return;
-                    }
-
                     tagService.assignTagToUser(username, "skill:" + skill + ":" + level);
                 }
 
@@ -1537,15 +1558,5 @@ public class UserProfileView extends VerticalLayout {
             this.matchingSkills = matchingSkills;
             this.totalSkills = totalSkills;
         }
-    }
-
-    private VerticalLayout createCalendarCard() {
-        VerticalLayout calendarCard = createCard("Calendar", VaadinIcon.CALENDAR.create());
-
-        Calendar calendar = new Calendar(eventRepository, authContext);
-        calendar.setWidthFull();
-        calendarCard.add(calendar);
-
-        return calendar;
     }
 }
