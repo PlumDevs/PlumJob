@@ -76,7 +76,7 @@ This should output: ```The server is running on http://localhost:3001``` and it 
 ```
 java -jar DEMO/plumjob/plumjob-0.0.1-SNAPSHOT.jar
 ```
-The complete app should be accessible via any web browser on localhost:9090/
+The complete app should be accessible via any web browser on [localhost:9090/](http://localhost:9090/)
 
 ## Contributors
 👩🏻‍💻[Kinga Żmuda](https://github.com/kingazm) - Project Manager and Software Engineer <br>
