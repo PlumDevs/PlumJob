@@ -43,50 +43,39 @@ plumjob/
 └── README.md
 ```
 
-## Demo
-To showcase our project, we deployed it using AWS here: [http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/](http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/)
-
-Important: to use our custom CV Builder in the deployed version (to be precise, to successfully download .pdf versions of created resumes), you still need to do these steps:
-
-1. Open terminal in src/puppeteer-pdf and run
-```
-npm install express body-parser cors puppeteer
-node pdf-server.js
-```
-This should output: ```The server is running on http://localhost:3001``` and CV Builder module should work fine.
-
-
-
-Additionally to the deployed demo, below are instructions on installing and running the app locally.
-
 ## Getting started
 ### Prerequisites
 + Java 17, JDK
 + Maven 3.8+
-+ Puppeteer
 + Stable internet connection (to access the online database)
-+ .env file not included in Github repository but sent along with the rest of the project for grading, containing:
-```
-DB_USER=<db_username>
-DB_PASSWORD=<db_password>
-DB_URL=<db_url>
-```
-(not applicable if running from .jar)
 
-Below, find two options on running the project locally:
+### Installation A - run deployed demo (recommended)
+To showcase our project, we deployed it using AWS here: [http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/](http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/)
 
-### Installation A - run from .jar file (recommended)
-Run this in the directory where the .jar file is:
-```
-java -jar target/plumjob-0.0.1-SNAPSHOT.jar
-```
-The complete app should be accessible via any web browser on localhost:9090/
+Important: to use our custom CV Builder in the deployed version (to be precise, to successfully download .pdf versions of created resumes), you still need to do these steps:
 
-### Installation B - run from source code using Maven 
-After ensuring the .env file's content can be accessed by other files (i.e. with ```echo $DB_USER``` - should output "plum_demo", more on that here: https://www.baeldung.com/intellij-idea-environment-variables), run the commands below in the directory of the unzipped project.
+1. Download folder DEMO.
+2. Open terminal in DEMO/plumjob/puppeteer-pdf and run
 ```
-mvn spring-boot:run 
-mvn clean install -Pproduction
+npm install express body-parser cors puppeteer
+node pdf-server.js
+```
+This should output: ```The server is running on http://localhost:3001``` 
+
+3. Open in web browser http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/
+
+### Installation B - run from .jar file
+1. Download folder DEMO.
+2. Open terminal in DEMO/plumjob/puppeteer-pdf and run
+```
+npm install express body-parser cors puppeteer
+node pdf-server.js
+```
+This should output: ```The server is running on http://localhost:3001``` 
+
+3. Open terminal in DEMO/plumjob and run
+```
+java -jar DEMO/plumjob/plumjob-0.0.1-SNAPSHOT.jar
 ```
 The complete app should be accessible via any web browser on localhost:9090/
 
