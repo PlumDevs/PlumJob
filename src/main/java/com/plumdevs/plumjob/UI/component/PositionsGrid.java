@@ -29,15 +29,16 @@ import java.util.stream.Collectors;
 public class PositionsGrid extends Grid<RecruitmentItem> {
 
     private List<RecruitmentItem> originalItems = new ArrayList<>();
-    private boolean isActiveView;
 
     public PositionsGrid(UserInfoRepository userInfoRepository, PositionsRepository positionsRepository, boolean active) {
-        this.isActiveView = active;
+
         setWidthFull();
 
         addColumn(RecruitmentItem::getPositon).setHeader("Position").setSortable(true);
         addColumn(RecruitmentItem::getCompany).setHeader("Company").setSortable(true);
         Column<RecruitmentItem> stageColumn = addColumn(RecruitmentItem::getStage).setHeader("Stage").setSortable(true);
+
+
 
         Editor<RecruitmentItem> editor = getEditor();
 
@@ -65,8 +66,10 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
         editor.setBinder(binder);
         editor.setBuffered(true);
 
+        //temp
+
         ComboBox<String> stageComboBox = new ComboBox<>();
-        stageComboBox.setItems(List.of(
+        stageComboBox.setItems(List.of( //TODO: MAKE REUSABLE
                 "to apply",
                 "applied",
                 "OA in progress",
@@ -92,22 +95,23 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
                 .withValidator(stageComboBox.getDefaultValidator())
                 .bind(RecruitmentItem::getStage, RecruitmentItem::setStage);
 
+        //List<RecruitmentItem> items;
+
         Button saveButton = new Button("Save");
 
         saveButton.addClickListener(e -> {
             RecruitmentItem item = editor.getItem();
             String newStage = stageComboBox.getValue();
 
-            if (validStatusChange(item.getStage(), newStage, isActiveView)) {
+            if (validStatusChange(item.getStage(), newStage)) {
                 item.setStage(newStage);
-                positionsRepository.updateStatus(item.getHistory_id(), newStage);
+                positionsRepository.updateStatus(item.getHistory_id(), newStage); //database call to update
                 editor.save();
-                UI.getCurrent().getPage().reload();
-            } else {
-                String message = isActiveView ?
-                        "Stage change cannot be applied" :
-                        "Cannot modify archived recruitment statuses";
-                Notification.show(message, 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().getPage().reload(); //reload to make the ended value changes visible too
+            }
+
+            else {
+                Notification.show("Stage change cannot be applied", 3000, Notification.Position.MIDDLE);
             }
         });
 
@@ -119,14 +123,21 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
                 cancelButton);
         actions.setPadding(false);
         editColumn.setEditorComponent(actions);
+        //TODO: ON SAVE CLICK, UPDATE @QUERY TO DATABASE
+
 
         if (active) {
+            //addColumn(RecruitmentItem::getStage).setHeader("Stage").setSortable(true);
             originalItems = new ArrayList<>(positionsRepository.findActivePositions(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
-        } else {
+        }
+
+        else {
             originalItems = new ArrayList<>(positionsRepository.findArchivePositions(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()));
         }
 
         setItems(originalItems);
+
+
     }
 
     public void filterByStage(String stage) {
@@ -139,57 +150,29 @@ public class PositionsGrid extends Grid<RecruitmentItem> {
         }
     }
 
-    public static final Set<String> FINAL_STATUSES = new HashSet<>(Arrays.asList(
-            "rejected", "declined the offer", "ghosted", "accepted the offer"
-    ));
-
-    public static final Map<String, Set<String>> BASIC_STATUS_CHANGES = new HashMap<>();
+    public static final Map<String, Set<String>> VALID_STATUS_CHANGES = new HashMap<>();
 
     static {
-        BASIC_STATUS_CHANGES.put("to apply", new HashSet<>(Arrays.asList("applied")));
-        BASIC_STATUS_CHANGES.put("applied", new HashSet<>(Arrays.asList("OA in progress", "interview scheduled", "received offer")));
-        BASIC_STATUS_CHANGES.put("OA in progress", new HashSet<>(Arrays.asList("after OA", "interview scheduled")));
-        BASIC_STATUS_CHANGES.put("after OA", new HashSet<>(Arrays.asList("interview scheduled", "received offer")));
-        BASIC_STATUS_CHANGES.put("interview scheduled", new HashSet<>(Arrays.asList("after interview")));
-        BASIC_STATUS_CHANGES.put("after interview", new HashSet<>(Arrays.asList("received offer", "rejected", "ghosted")));
-        BASIC_STATUS_CHANGES.put("received offer", new HashSet<>(Arrays.asList("accepted the offer", "declined the offer")));
-        BASIC_STATUS_CHANGES.put("accepted the offer", new HashSet<>());
-        BASIC_STATUS_CHANGES.put("declined the offer", new HashSet<>());
-        BASIC_STATUS_CHANGES.put("rejected", new HashSet<>());
-        BASIC_STATUS_CHANGES.put("ghosted", new HashSet<>());
+        VALID_STATUS_CHANGES.put("to apply", new HashSet<>(Arrays.asList("applied")));
+        VALID_STATUS_CHANGES.put("applied", new HashSet<>(Arrays.asList("OA in progress", "interview scheduled")));
+        VALID_STATUS_CHANGES.put("OA in progress", new HashSet<>(Arrays.asList("after OA")));
+        VALID_STATUS_CHANGES.put("after OA", new HashSet<>(Arrays.asList("interview scheduled")));
+        VALID_STATUS_CHANGES.put("interview scheduled", new HashSet<>(Arrays.asList("after interview")));
+        VALID_STATUS_CHANGES.put("after interview", new HashSet<>(Arrays.asList("received offer", "rejected", "ghosted")));
+        VALID_STATUS_CHANGES.put("received offer", new HashSet<>(Arrays.asList("accepted the offer", "declined the offer", "ghosted")));
+        VALID_STATUS_CHANGES.put("accepted the offer", new HashSet<>());
+        VALID_STATUS_CHANGES.put("declined the offer", new HashSet<>());
+        VALID_STATUS_CHANGES.put("rejected", new HashSet<>());
+        VALID_STATUS_CHANGES.put("ghosted", new HashSet<>());
     }
 
-    public static final Map<String, Set<String>> ACTIVE_ONLY_JUMPS = new HashMap<>();
-
-    static {
-        ACTIVE_ONLY_JUMPS.put("to apply", new HashSet<>(Arrays.asList("rejected", "ghosted")));
-        ACTIVE_ONLY_JUMPS.put("applied", new HashSet<>(Arrays.asList("accepted the offer", "declined the offer", "rejected", "ghosted")));
-        ACTIVE_ONLY_JUMPS.put("OA in progress", new HashSet<>(Arrays.asList("rejected", "ghosted")));
-        ACTIVE_ONLY_JUMPS.put("after OA", new HashSet<>(Arrays.asList("rejected", "ghosted")));
-        ACTIVE_ONLY_JUMPS.put("interview scheduled", new HashSet<>(Arrays.asList("rejected", "ghosted")));
-    }
-
-    public boolean validStatusChange(String before, String after, boolean isActiveView) {
-        if (!isActiveView && FINAL_STATUSES.contains(before)) {
-            return false;
-        }
-
-        Set<String> basicAllowed = BASIC_STATUS_CHANGES.get(before);
-        if (basicAllowed != null && basicAllowed.contains(after)) {
-            return true;
-        }
-
-        if (isActiveView) {
-            Set<String> jumpAllowed = ACTIVE_ONLY_JUMPS.get(before);
-            if (jumpAllowed != null && jumpAllowed.contains(after)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     public boolean validStatusChange(String before, String after) {
-        return validStatusChange(before, after, true);
+        Set<String> allowed = VALID_STATUS_CHANGES.get(before);
+        return allowed != null && allowed.contains(after);
     }
 }
+
+//TODO: RESTRUCTURE STATUSES VIEWING - FETCH THE TEXT VALUE, NOT NUMBER
+//TODO: FILTERING BY STATUSES
+//TODO: STATUS EDITING
