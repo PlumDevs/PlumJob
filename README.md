@@ -5,8 +5,9 @@
 
 ## 📋 Table of contents
 + [About](#about)
++ [Demo -  recommended for testing the app](#demo)
++ [Getting started - custom installation](#getting-started)
 + [Contributors](#contributors)
-+ [Project Roadmap](https://github.com/PlumDevs/.github-private/blob/main/Roadmap.md)
 
 ## About
 Have you ever felt like looking for a job is more stressful than the actual work?
@@ -19,21 +20,64 @@ _According to multiple dictionaries, plum job means a __highly desirable job__ o
 + Active and past __application archive__ with real-time updatable statuses, 
 + __CV builder__ that transforms user data into a clean, ATS-friendly PDF using one of our beautiful templates,
 + __Blog section__ filled with tips and insights from seasoned recruiters,
-+ __Flow diagram generation__ based on the application archive, summarising the user’s job-seeking journey.
++ __Flow diagram generation__ based on the application archive, summarising the user’s job-seeking journey,
++ __Calendar__ providing e-mail notifications one hour prior to recorded events, like job interviews or online assessment deadlines,
++ __Targeted__ job offer __ads__ according to the preferences set in the user profile.
+
+*As per today, some of the features are aimed mostly at IT-related jobs; however, we would love to expand to other industries' needs in the future!
 
 ### Built with
-[![My Skills](https://skillicons.dev/icons?i=java,spring,mysql,idea,figma,aws&theme=light)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=java,spring,mysql,idea,figma,aws,js&theme=light)](https://skillicons.dev)<img src="https://avatars.githubusercontent.com/u/1171922?v=4" width="55" height="55" />
 
-<!-- TODO:
+
+## Project key structure
+```
+plumjob/
+├── src/
+│   ├── main/
+│   │   ├── java/...
+│   │   └── resources/
+│   └── test/
+├── .env
+├── pom.xml
+└── README.md
+```
+
 ## Demo
-<Here there will be a link to a deployed demo of our platform>
+To showcase our project, we deployed it using AWS here: [http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/](http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/)
+
+Additionally, below are instructions on installing and running it locally.
 
 ## Getting started
-<Here there will be instructions on installing and running our project locally, via clonning from repo>
-### Prerequisites (mysql, java, maven, etc.)
-### Instalation (cloning project, setting up database using our script, addind .env, etc)
-``` git clone https://github.com/PlumDevs/PlumJob.git ```
--->
+### Prerequisites
++ Java 17, JDK
++ Maven 3.8+
++ Puppeteer
++ Stable internet connection (to access the online database)
++ .env file not included in Github repository but sent along with the rest of the project for grading, containing:
+```
+DB_USER=<db_username>
+DB_PASSWORD=<db_password>
+DB_URL=<db_url>
+```
+(not applicable if running from .jar)
+
+Below, find two options on running the project locally:
+
+### Installation A - run from .jar file (recommended)
+Run this in the directory where the .jar file is:
+```
+java -jar target/plumjob-0.0.1-SNAPSHOT.jar
+```
+The complete app should be accessible via any web browser on localhost:9090/
+
+### Installation B - run from source code using Maven 
+After ensuring the .env file's content can be accessed by other files (i.e. with ```echo $DB_USER``` - should output "plum_demo", more on that here: https://www.baeldung.com/intellij-idea-environment-variables), run the commands below in the directory of the unzipped project.
+```
+mvn spring-boot:run 
+mvn clean install -Pproduction
+```
+The complete app should be accessible via any web browser on localhost:9090/
 
 ## Contributors
 👩🏻‍💻[Kinga Żmuda](https://github.com/kingazm) - Project Manager and Software Engineer <br>
