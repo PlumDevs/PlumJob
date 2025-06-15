@@ -5,7 +5,6 @@
 
 ## 📋 Table of contents
 + [About](#about)
-+ [Demo -  recommended for testing the app](#demo)
 + [Getting started - custom installation](#getting-started)
 + [Contributors](#contributors)
 
