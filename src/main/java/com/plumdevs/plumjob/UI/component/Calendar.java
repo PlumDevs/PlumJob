@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.plumdevs.plumjob.UI.component.Calendar;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Calendar extends VerticalLayout {
@@ -48,6 +49,7 @@ public class Calendar extends VerticalLayout {
     private void initCalendarSection() {
         datePicker.setPrefixComponent(VaadinIcon.CALENDAR.create());
         datePicker.setWidth("300px");
+        datePicker.setMin(LocalDate.now());
 
         eventsLayout.setPadding(false);
         eventsLayout.setSpacing(false);
@@ -55,6 +57,11 @@ public class Calendar extends VerticalLayout {
         Button addEventButton = new Button("Add Event", VaadinIcon.PLUS.create(), e -> {
             if (datePicker.getValue() == null) {
                 Notification.show("Please select a date first");
+                return;
+            }
+
+            if (datePicker.getValue().isBefore(LocalDate.now())) {
+                Notification.show("Cannot add events for past dates");
                 return;
             }
             addEventDialog.open();
@@ -72,7 +79,10 @@ public class Calendar extends VerticalLayout {
         Dialog dialog = new Dialog();
         TextField eventField = new TextField("Event description");
         TimePicker eventTimePicker = new TimePicker("Event time");
-        eventTimePicker.setValue(LocalTime.NOON);
+
+        updateTimePickerConstraints(eventTimePicker);
+
+        datePicker.addValueChangeListener(e -> updateTimePickerConstraints(eventTimePicker));
 
         Button saveButton = new Button("Save", e -> {
             try {
@@ -83,6 +93,8 @@ public class Calendar extends VerticalLayout {
                 saveEvent(selectedDate, eventTime, description);
                 dialog.close();
                 Notification.show("Event saved successfully!");
+                eventField.clear();
+                eventTimePicker.clear();
             } catch (Exception ex) {
                 Notification.show("Error: " + ex.getMessage());
             }
@@ -105,6 +117,19 @@ public class Calendar extends VerticalLayout {
         return dialog;
     }
 
+    private void updateTimePickerConstraints(TimePicker timePicker) {
+        LocalDate selectedDate = datePicker.getValue();
+        if (selectedDate != null && selectedDate.equals(LocalDate.now())) {
+            LocalTime currentTime = LocalTime.now();
+            timePicker.setMin(currentTime);
+
+            if (timePicker.getValue() != null && timePicker.getValue().isBefore(currentTime)) {
+                timePicker.setValue(currentTime);
+            }
+        } else {
+            timePicker.setMin(null);
+        }
+    }
 
     @Transactional
     public void saveEvent(LocalDate date, LocalTime time, String description) {
@@ -113,7 +138,15 @@ public class Calendar extends VerticalLayout {
             throw new IllegalArgumentException("Please provide all event details");
         }
 
-        Event newEvent = new Event(date, time, description, username,false);
+        if (date.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Cannot add events for past dates");
+        }
+
+        if (date.equals(LocalDate.now()) && time.isBefore(LocalTime.now())) {
+            throw new IllegalArgumentException("Cannot add events for past times today");
+        }
+
+        Event newEvent = new Event(date, time, description, username, false);
         eventRepository.save(newEvent);
         refreshEvents();
     }
