@@ -63,7 +63,7 @@ node pdf-server.js
 This should output: ```The server is running on http://localhost:3001``` and it has to be running for the whole time of using the app.
 If any issues occur with this or pdf generation functionality, please contact us.
 
-3. Open in web browser http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/
+3. Open in web browser http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/ and register new user and/or access some of our prepared test accounts to explore!
 
 ### Installation B - run from .jar file
 1. Download folder ``` Demo (executable) ```.
@@ -79,7 +79,11 @@ If any issues occur with this or pdf generation functionality, please contact us
 ```
 java -jar plumjob-0.0.1-SNAPSHOT.jar
 ```
-The complete app should be accessible via any web browser on [localhost:9090/](http://localhost:9090/)
+The complete app should be accessible via any web browser on [localhost:9090/](http://localhost:9090/) and register new user and/or access some of our prepared test accounts to explore!
+
+### Test User credentials
+username: johndoe
+password: &2aW}%6o8J61
 
 ## Tests
 More in the Test Documentation files.
