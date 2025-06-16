@@ -47,14 +47,15 @@ plumjob/
 + Java 17, JDK
 + Maven 3.8+
 + Stable internet connection (to access the online database)
++ *Node.js - instructions on getting everything necessary from node are below.
 
 ### Installation A - run deployed demo (recommended)
 To showcase our project, we deployed it using AWS here: [http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/](http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/)
 
 Important: to use our custom CV Builder in the deployed version (to be precise, to successfully download .pdf versions of created resumes), you still need to do these steps:
 
-1. Download folder DEMO.
-2. Open terminal in DEMO/plumjob/puppeteer-pdf and run
+1. Download folder ``` Demo (executable) ```.
+2. Open terminal in ``` Demo (executable)/puppeteer-pdf ``` and run
 ```
 npm install express body-parser cors puppeteer
 node pdf-server.js
@@ -64,19 +65,23 @@ This should output: ```The server is running on http://localhost:3001``` and it 
 3. Open in web browser http://ec2-13-51-60-227.eu-north-1.compute.amazonaws.com:9090/
 
 ### Installation B - run from .jar file
-1. Download folder DEMO.
-2. Open terminal in DEMO/plumjob/puppeteer-pdf and run
+1. Download folder ``` Demo (executable) ```.
+2. Open terminal in ``` Demo (executable)/puppeteer-pdf ``` and run
 ```
 npm install express body-parser cors puppeteer
 node pdf-server.js
 ```
 This should output: ```The server is running on http://localhost:3001``` and it has to be running for the whole time of using the app.
+If any issues occur with this or pdf generation functionality, please contact us.
 
-3. Open terminal in DEMO/plumjob and run
+3. Open terminal in Demo (executable) and run
 ```
-java -jar DEMO/plumjob/plumjob-0.0.1-SNAPSHOT.jar
+java -jar plumjob-0.0.1-SNAPSHOT.jar
 ```
 The complete app should be accessible via any web browser on [localhost:9090/](http://localhost:9090/)
+
+## Tests
+More in the Test Documentation files.
 
 ## Contributors
 👩🏻‍💻[Kinga Żmuda](https://github.com/kingazm) - Project Manager and Software Engineer <br>
@@ -84,8 +89,6 @@ The complete app should be accessible via any web browser on [localhost:9090/](h
 👩🏼‍💻[Martyna Cios](https://github.com/cssma) - Software Engineer <br>
 👨🏻‍💻[Wojciech Popiel](https://github.com/PopielWojciech) - Database Engineer and Documentation Lead <br>
 👨🏻‍💻[Piotr Szulej](https://github.com/PiterParker32) - Software Engineer
-
-<!-- ## Contact -->
 
 ### Acknowledgements
 [Skill Icons](https://github.com/tandpfun/skill-icons) <br>
