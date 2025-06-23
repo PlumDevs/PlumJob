@@ -1,1 +1,0 @@
-Free trial of StarUML only lets to save the diagrams with watermarks all over the background, so we in addition to those files, we provide screenshots with more visible connections between blocks.
