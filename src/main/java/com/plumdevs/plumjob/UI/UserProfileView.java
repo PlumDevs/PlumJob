@@ -4,11 +4,8 @@ import com.plumdevs.plumjob.service.UserService;
 import com.plumdevs.plumjob.UI.component.StickyAdBar;
 import com.plumdevs.plumjob.UI.component.Calendar;
 import com.plumdevs.plumjob.service.TagService;
-import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.spring.security.AuthenticationContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.plumdevs.plumjob.UI.layout.MainLayout;
-import com.plumdevs.plumjob.service.TagService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -20,36 +17,22 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.FileBuffer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
-import com.vaadin.flow.spring.security.AuthenticationContext;
 import jakarta.annotation.security.PermitAll;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.*;
 import java.util.stream.Collectors;
 import static java.util.Map.entry;
 import java.io.ByteArrayInputStream;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import com.plumdevs.plumjob.repository.EventRepository;
 
 
@@ -310,6 +293,7 @@ public class UserProfileView extends VerticalLayout {
                 Notification.show("User not logged in");
                 return;
             }
+
             tagService.assignTagToUser(username, "industry:" + industry);
             tagService.assignTagToUser(username, "experience:" + experience);
 
@@ -768,7 +752,7 @@ public class UserProfileView extends VerticalLayout {
                     "localStorage.setItem($0, $1)", noteStorageKey, note);
 
             if (username != null) {
-                tagService.assignTagToUser(username, "note:" + note);
+                tagService.assignTagToUser(username, "note:");
                 Notification.show("Note saved to your account and browser!");
             } else {
                 Notification.show("Note saved to browser! Log in to save to your account.");

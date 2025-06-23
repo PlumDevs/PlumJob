@@ -1,7 +1,6 @@
 package com.plumdevs.plumjob.repository;
 
 import com.plumdevs.plumjob.entity.DiagramLink;
-import com.plumdevs.plumjob.entity.RecruitmentItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

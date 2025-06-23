@@ -1,6 +1,5 @@
 package com.plumdevs.plumjob.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -10,7 +9,7 @@ public class DiagramLink {
     @Id
     public int status_history_id;
 
-    public String from_status; //TODO: CHECK IF THERE IS NO ISSUE WITH APPLIED-APPLIED, EVENTUALLY CAN DELETE THE APPLIED-APPLIED?
+    public String from_status;
 
     public String to_status;
 

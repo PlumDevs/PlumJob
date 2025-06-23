@@ -23,7 +23,6 @@ public class UserService {
         userInfoRepository.addUserInfo(username, firstName, lastName, email);
     }
 
-    //TODO; figure out and transition to services
     public String getUsername(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

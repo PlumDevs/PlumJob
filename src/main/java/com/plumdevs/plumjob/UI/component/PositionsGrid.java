@@ -6,14 +6,14 @@ import com.plumdevs.plumjob.UI.RecruitmentItemDetails;
 import com.plumdevs.plumjob.entity.RecruitmentItem;
 import com.plumdevs.plumjob.repository.PositionsRepository;
 import com.plumdevs.plumjob.repository.UserInfoRepository;
-import com.plumdevs.plumjob.service.UserService;
+
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.editor.Editor;
-import com.vaadin.flow.component.icon.Icon;
+
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -22,7 +22,6 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 

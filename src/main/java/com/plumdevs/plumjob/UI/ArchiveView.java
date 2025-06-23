@@ -21,9 +21,6 @@ import com.plumdevs.plumjob.service.TagService;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 
 
-
-
-
 @PermitAll
 
 @PageTitle("Plum Job - Archive")
@@ -39,7 +36,7 @@ public class ArchiveView extends VerticalLayout {
         System.out.println("Archive");
         H2 title = new H2("Archive recruitments");
 
-        Button generateDiagram = new Button("Generate diagram"); //TODO TIMEFRAME CHOICE & DB
+        Button generateDiagram = new Button("Generate diagram");
         generateDiagram.addClassName("plum-button");
         generateDiagram.addClickListener(buttonClickEvent -> getUI().ifPresent(ui ->
                 ui.navigate("diagram")));

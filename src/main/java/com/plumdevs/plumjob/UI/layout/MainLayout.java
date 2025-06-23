@@ -28,22 +28,18 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 @Layout
 public class MainLayout extends AppLayout {
 
-
-
     public MainLayout(HttpServletRequest request, HttpServletResponse response, AuthenticationContext authContext) {
 
-        //Header
         HorizontalLayout header = new HorizontalLayout();
         header.setWidthFull();
         header.setPadding(true);
         header.setAlignItems(FlexComponent.Alignment.CENTER);
         header.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
         Image logo = new Image("img/logo.png", "Plum Job logo");
-        //Image logo = new Image("https://private-user-images.githubusercontent.com/147309514/435481240-b7c77535-383d-4c42-9346-6ef7bcac2a55.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDcyNDg2MzMsIm5iZiI6MTc0NzI0ODMzMywicGF0aCI6Ii8xNDczMDk1MTQvNDM1NDgxMjQwLWI3Yzc3NTM1LTM4M2QtNGM0Mi05MzQ2LTZlZjdiY2FjMmE1NS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNTE0JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDUxNFQxODQ1MzNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hOTI0YjI4Njg1YmM2NjMzMjY1YTdlNmQyMDI1OTk5NDg5YzdhZDhjYTI1MGQxNWE2MDUwODY3ZmVlMzBmNmZlJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.40rbexNwjNjTjvVijHu_IDdf6BPLqmttYoh_ZPVlynk", "Plum Job logo");
         logo.setWidth(160, Unit.PIXELS);
         logo.setHeight(60, Unit.PIXELS);
         header.add(logo);
-        //Navigation on the side
+
         SideNav nav = new SideNav();
         DrawerToggle toggle = new DrawerToggle();
 
@@ -52,8 +48,6 @@ public class MainLayout extends AppLayout {
 
         addToDrawer(scroller);
         addToNavbar(toggle, header);
-
-        // #### navigation items ####
 
         SideNavItem activeLink = new SideNavItem("Active recruitments",
                 ActiveView.class, VaadinIcon.BULLETS.create());
@@ -81,8 +75,6 @@ public class MainLayout extends AppLayout {
         nav.addItem(profileLink);
 
 
-        // #### end navigation links ####
-
         setPrimarySection(Section.DRAWER);
 
         HorizontalLayout footer = new HorizontalLayout();
@@ -101,7 +93,7 @@ public class MainLayout extends AppLayout {
 
     private Button getButton(HttpServletRequest request, HttpServletResponse response, AuthenticationContext authContext) {
 
-        String username = authContext.getPrincipalName().orElse(null); // TODO: Consider moving this logic to a UserService
+        String username = authContext.getPrincipalName().orElse(null);
         Button authButton;
 
 

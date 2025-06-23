@@ -1,6 +1,5 @@
 package com.plumdevs.plumjob.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -31,7 +30,7 @@ public class RecruitmentItem {
         this.position = positon;
         this.company = company;
         this.stage = stage;
-        this.user_start_Date = LocalDate.now(); //temp, later fetch from database
+        this.user_start_Date = LocalDate.now();
     }
 
     public RecruitmentItem(String positon, String company, String stage, String description) {
@@ -39,7 +38,7 @@ public class RecruitmentItem {
         this.company = company;
         this.stage = stage;
         this.description = description;
-        user_start_Date = LocalDate.now(); //temp, later fetch from database
+        user_start_Date = LocalDate.now();
     }
 
     public RecruitmentItem(String positon, String company, String stage, String description, LocalDate startDate) {
@@ -47,7 +46,7 @@ public class RecruitmentItem {
         this.company = company;
         this.stage = stage;
         this.description = description;
-        this.user_start_Date = startDate; //temp, later fetch from database
+        this.user_start_Date = startDate;
     }
 
     public int getHistory_id() {
@@ -89,7 +88,6 @@ public class RecruitmentItem {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
 
     public LocalDate getStartDate() {

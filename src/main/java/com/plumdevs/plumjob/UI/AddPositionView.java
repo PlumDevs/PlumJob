@@ -52,7 +52,7 @@ public class AddPositionView extends VerticalLayout {
 
         positionField.setWidthFull();
         companyField.setWidthFull();
-        //description.setWidthFull();
+
         linkField.setWidthFull();
 
         statusField.setItems(List.of(
@@ -81,12 +81,9 @@ public class AddPositionView extends VerticalLayout {
         });
 
         Image articlePreview = new Image("https://m.media-amazon.com/images/I/41qW0-s6kSL._AC_UF894,1000_QL80_.jpg", "Where to look for job offers - article preview");
-        //articlePreview.setSizeFull();
+
         articlePreview.setWidth(550, Unit.PIXELS);
         articlePreview.setHeight(450, Unit.PIXELS);
-        //TODO: SWAP FOR REAL DATA ABOUT WHERE TO LOOK FOR JOB OFFERS
-        //great to both fill the empty space on the right, and to provide some extra value
-        //best if on click guides to the full article or just straight job offer page(s)
 
         positionField.setMaxLength(50);
         companyField.setMaxLength(50);
@@ -114,7 +111,6 @@ public class AddPositionView extends VerticalLayout {
         left.add(descriptionField);
         left.add(buttons);
 
-        //right.add(articlePreview); //about where to look for job offers
         right.add(
             articleService.createArticleThumbnail("jobhunt", "Mastering the Tech Job Hunt"),
             articleService.createArticleThumbnail("portfolio", "Building a Portfolio That Gets Interviews")
@@ -132,8 +128,7 @@ public class AddPositionView extends VerticalLayout {
             company += companyField.getValue().trim();
             String description = "";
             description += descriptionField.getValue().trim();
-            //String link = "";
-            //link += linkField.getValue().trim();
+
 
             String status = "";
             status += statusField.getValue().trim();
@@ -143,14 +138,12 @@ public class AddPositionView extends VerticalLayout {
             LocalDate date = datePicker.getValue();
 
 
-            //positionsRepository.addPosition((((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()), position, company, date, status, description, ifEnded(status));
             positionsRepository.addPosition(userService.getUsername(), position, company, date, status, description, ifEnded(status));
 
             Notification.show("Position added successfully", 3000, Notification.Position.MIDDLE);
 
         });
 
-        // TODO: IF OTHER STATUS THAN APPLIED, ADD OTHER STATUSES AUTOMATICALLY? (THE BEFORE STATUSES, SO THAT THE DIAGRAM IS CREATED CORRECTLY? AND THE DATES WILL BE JUST TAKEN ONLY FROM RECRUITMENTHISTORY NOT STATUSES (NULL/SAME AS CREATION)
     }
 
     private static int getStatusNumber(String status) {

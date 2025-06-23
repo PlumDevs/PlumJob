@@ -1,7 +1,6 @@
 package com.plumdevs.plumjob.service;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.card.Card;
@@ -44,7 +43,7 @@ public class ArticleService {
 
         int numOfParagraphs = array.length - 4;
 
-        for (int i = 3; i < numOfParagraphs; i+=2) { //uregulowac zmiennymi - ilosc paragrafow
+        for (int i = 3; i < numOfParagraphs; i+=2) {
             H4 sectionTitle = new H4(array[i + 1]);
             paragraph = new Paragraph(array[i + 1]);
             article.add(sectionTitle, paragraph);
@@ -92,18 +91,13 @@ public class ArticleService {
                 go.getUI().ifPresent(ui -> ui.navigate("articles/read/" + articleTitle))
         );
 
-        //Image image = new Image("https://m.media-amazon.com/images/I/41qW0-s6kSL._AC_UF894,1000_QL80_.jpg", "Where to look for job offers - article preview");
-        //image.setWidth(200, Unit.PIXELS);
-        //image.setHeight(10, Unit.PIXELS);
-
         Card card = new Card();
         card.addThemeVariants(
                 CardVariant.LUMO_OUTLINED,
                 CardVariant.LUMO_ELEVATED,
-                CardVariant.LUMO_HORIZONTAL//,
-                //CardVariant.LUMO_COVER_MEDIA
+                CardVariant.LUMO_HORIZONTAL
         );
-        //card.setMedia(image);
+
         card.add(title, snippet, go);
         card.setWidthFull();
 

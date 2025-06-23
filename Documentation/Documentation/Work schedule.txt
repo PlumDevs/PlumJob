@@ -1,0 +1,7 @@
+Link to our work schedule (both Kanban divided into sprints, as well as Gantt diagram and task distribution)
+
+https://github.com/orgs/PlumDevs/projects/1/views/4
+
+Here link to our main GitHub repository - with recorded commits from developers.
+
+https://github.com/orgs/PlumDevs/PlumJob

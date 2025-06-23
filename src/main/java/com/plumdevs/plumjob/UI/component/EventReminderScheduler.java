@@ -8,11 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 
 @Component

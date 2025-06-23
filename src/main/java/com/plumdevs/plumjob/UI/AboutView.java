@@ -42,26 +42,9 @@ public class AboutView extends VerticalLayout {
         H2 heading = new H2("Have you ever felt like looking for a job is more stressful than the actual work?");
         add(heading);
 
-        HorizontalLayout body = new HorizontalLayout();
-
-        /*Card counter = new Card();
-        counter.add(new H3("This many people found a job with us: " + acceptedCount));
-
-        counter.addThemeVariants(
-                CardVariant.LUMO_OUTLINED,
-                CardVariant.LUMO_ELEVATED,
-                CardVariant.LUMO_HORIZONTAL
-        );
-
-        counter.setWidth(200, Unit.PIXELS);
-        counter.setHeight(200, Unit.PIXELS);
-
-        counter.addClassName("plum-text");*/
 
         Paragraph intro = new Paragraph("Plum Job is a web platform designed to make the job-hunting experience for young seekers more organized and less frustrating. To support this mission, we've designed features like: application archive with real-time updatable statuses, CV builder that transforms user data into a clean, ATS-friendly PDF using one of our beautiful templates, blog filled with tips and insights from seasoned recruiters, and visual graph summarizing each user's job-seeking journey.");
 
-        //body.add(intro, counter);
-        //add(body);
 
         add(intro);
 
@@ -77,14 +60,6 @@ public class AboutView extends VerticalLayout {
 
         add(motto);
 
-        /*
-        H4 counterHeading = new H4("This is how many people found a job with us: " + acceptedCount);
-        counterHeading.getStyle()
-                .set("margin-bottom", "1em");
-        counterHeading.addClassName("plum-text");
-
-        add(counterHeading);
-         */
 
         add(new H2("Our Team"));
 
@@ -99,12 +74,6 @@ public class AboutView extends VerticalLayout {
 
         add(team);
 
-//        H1 counterHeading = new H1("This is how many people found a job with us: " + acceptedCount);
-//        counterHeading.getStyle().set("font-size", "1.5rem");
-//        counterHeading.getStyle().set("margin-top", "1em");
-//        counterHeading.addClassName("plum-text");
-//
-//        add(counterHeading);
 
         StickyAdBar adBar = new StickyAdBar(tagService, authContext, userService);
         add(adBar);

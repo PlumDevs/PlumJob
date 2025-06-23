@@ -31,7 +31,7 @@ public class TagService {
         if (tagType == null) return;
 
         jdbc.update("""
-            DELETE FROM TagUsers
+            DELETE FROM TagUsers 
             WHERE user_id = ?
               AND tag_id IN (
                   SELECT tag_id FROM TagCodes WHERE tag_name LIKE ?

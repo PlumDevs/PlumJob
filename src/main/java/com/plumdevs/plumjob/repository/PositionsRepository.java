@@ -21,7 +21,6 @@ public interface PositionsRepository extends JpaRepository<RecruitmentItem, Long
     @Query(value = "CALL sp_showUserHistory(:username, false);", nativeQuery = true)
     List<RecruitmentItem> findArchivePositions(@Param("username") String username);
 
-    // TODO in database
     @Query(value = "CALL sp_getDiagramContent(:username)", nativeQuery = true)
     List<DiagramLink> getDiagramContent(@Param("username") String username);
 

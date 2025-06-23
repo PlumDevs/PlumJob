@@ -1,6 +1,5 @@
 package com.plumdevs.plumjob.UI;
 
-import com.plumdevs.plumjob.repository.UserInfoRepository;
 import com.plumdevs.plumjob.service.UserService;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.html.H2;
@@ -35,7 +34,6 @@ public class RegisterView extends VerticalLayout {
         Image logo = new Image("https://raw.githubusercontent.com/PlumDevs/PlumJob/refs/heads/master/src/main/resources/META-INF/resources/img/logo.png", "Plum");
         logo.setWidth(180, Unit.PIXELS);
         logo.setHeight(70, Unit.PIXELS);
-        //logo.setId("logo");
         add(logo);
 
         setSizeFull();
@@ -43,22 +41,15 @@ public class RegisterView extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.CENTER);
 
         TextField firstNameField = new TextField("First Name");
-        //firstNameField.setId("firstName");
         TextField lastNameField = new TextField("Last Name");
-        //lastNameField.setId("lastName");
         EmailField emailAddressField = new EmailField("E-mail");
-        //emailAddressField.setId("email");
         TextField usernameField = new TextField("Username");
-        //usernameField.setId("username");
         PasswordField passwordField = new PasswordField("Password");
-        //passwordField.setId("password");
         Button registerButton = new Button("Register");
-        //registerButton.setId("register-btn");
-        //addClassName("register-view");
         registerButton.addClassName("plum-button");
 
         registerButton.addClickListener(e -> {
-            String firstName = firstNameField.getValue().trim(); //to save in UserInfo
+            String firstName = firstNameField.getValue().trim();
             String lastName = lastNameField.getValue().trim();
             String email = emailAddressField.getValue().trim();
 
@@ -84,7 +75,6 @@ public class RegisterView extends VerticalLayout {
             if (!email.isEmpty() && email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+([.com]|[.pl])$")) {
                 UserDetails user = User.withUsername(username)
                         .password(passwordEncoder.encode(password))
-                        //.password("{noop}" + password)
                         .roles("USER")
                         .build();
                 userDetailsManager.createUser(user);

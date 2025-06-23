@@ -1,6 +1,5 @@
 package com.plumdevs.plumjob.UI;
 
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
