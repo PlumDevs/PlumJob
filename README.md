@@ -54,7 +54,7 @@ To showcase our project, we deployed it using AWS here: [http://ec2-13-51-60-227
 
 Important: to use our custom CV Builder in the deployed version (to be precise, to successfully download .pdf versions of created resumes), you still need to do these steps:
 
-1. Download folder ``` Demo (executable) ```.
+1. Download folder ``` Demo (executable) ``` or just ``` puppeteer-pdf ```.
 2. Open terminal in ``` Demo (executable)/puppeteer-pdf ``` and run
 ```
 npm install express body-parser cors puppeteer
